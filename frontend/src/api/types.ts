@@ -281,6 +281,21 @@ export interface Effectiveness {
   mean_stabilization_improvement: number
 }
 
+export interface RecommendationOutcome {
+  outcome_id: string
+  recommendation_id: string
+  metrics: {
+    prediction_accuracy: number
+    recommendation_accuracy: number
+    crossing_avoided: boolean
+    crossing_delayed: boolean
+    stabilization_improvement: number
+    actual_vs_predicted_deviation: number
+    deviation_improvement: number
+  }
+  evaluated_at: string
+}
+
 export interface RegisteredModel {
   model_id: string
   version: string

@@ -5,8 +5,10 @@ live process monitoring, multi-horizon Basis Weight forecasting, constraint-safe
 simulation, operator workflow tracking, model governance, and production observability in one
 deployable application.
 
-This repository is the final Honeywell Hackathon submission candidate. Runtime code never trains a
-model or generates a dataset automatically.
+This repository is the final Honeywell Hackathon submission candidate. Production demos load the
+supplied pre-trained artifacts and never train or generate data automatically during startup.
+The explicit `/dataset/regenerate` compatibility endpoint and offline scripts remain available for
+controlled development and experimentation.
 
 ## Honeywell challenge mapping
 
@@ -236,4 +238,3 @@ formal model approval workflows, and controlled DCS integration.
 - [Deployment guide](docs/DEPLOYMENT.md)
 - [Model overview](docs/MODEL_OVERVIEW.md)
 - [Demo guide](docs/DEMO_GUIDE.md)
-

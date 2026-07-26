@@ -24,6 +24,8 @@ import type {
   AuditEntry,
   AdminMetrics,
   AdminHealth,
+  RecommendationOutcome,
+  TrajectoryPoint,
 } from './types'
 
 const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:8000').replace(/\/$/, '')
@@ -51,6 +53,7 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
     if (!response.ok) {
       const message =
         payload?.error?.message ||
+        (typeof payload?.detail === 'string' ? payload.detail : undefined) ||
         payload?.detail?.[0]?.msg ||
         `Request failed (${response.status})`
       throw new ApiError(message, response.status, payload)
@@ -128,6 +131,11 @@ export const api = {
       body: JSON.stringify(body),
     }),
   interventionEffectiveness: () => request<Effectiveness>('/interventions/effectiveness'),
+  evaluateRecommendationOutcome: (id: string, body: { observations: TrajectoryPoint[] }) =>
+    request<RecommendationOutcome>(`/interventions/recommendations/${id}/outcome`, {
+      method: 'POST',
+      body: JSON.stringify(body),
+    }),
   registeredModels: () => request<RegisteredModel[]>('/models'),
   promoteModel: (model_id: string) =>
     request<RegisteredModel>('/models/promote', {

@@ -3,8 +3,9 @@
 The backend provides snapshot intelligence, sequential forecasting, constraint-safe intervention
 support, real-time streaming, model governance, observability, audit, configuration, and exports.
 
-Runtime startup requires the supplied datasets and model artifacts. It never generates data or
-trains models automatically.
+Runtime startup requires the supplied datasets and pre-trained model artifacts and does not
+generate or train automatically. The explicit `/dataset/regenerate` compatibility endpoint and
+offline scripts are retained for controlled development and experimentation.
 
 ## Development
 
@@ -36,4 +37,3 @@ Module boundaries:
 
 See the repository [README](../README.md), [API reference](../docs/API_REFERENCE.md), and
 [system architecture](../docs/SYSTEM_ARCHITECTURE.md).
-

@@ -8,6 +8,7 @@ import { renderApp } from '../test/render'
 import { PredictionPage } from './PredictionPage'
 import { RecommendationsPage } from './RecommendationsPage'
 import { NotFoundPage } from './NotFoundPage'
+import { RecommendationHistoryPage } from './RecommendationHistoryPage'
 
 const prediction = {
   prediction_id: 'prediction-1',
@@ -79,6 +80,103 @@ describe('operator workflows', () => {
     renderApp(<PredictionPage />)
     await userEvent.click(screen.getByRole('button', { name: 'Run transition prediction' }))
     expect(await screen.findByText('Backend unavailable')).toBeInTheDocument()
+  })
+
+  it('submits observed values and displays recommendation effectiveness', async () => {
+    const trajectory = [1, 2, 3].map((step) => ({
+      step,
+      timestamp: `2026-07-25T12:0${step}:00Z`,
+      basis_weight: 80 + step,
+      lower_bound: 78 + step,
+      upper_bound: 82 + step,
+      deviation_pct: step,
+      lower_spec_limit: 78,
+      upper_spec_limit: 82,
+    }))
+    vi.spyOn(api, 'recommendationHistory').mockResolvedValue({
+      items: [],
+      pagination: { page: 1, page_size: 20, total: 0, total_pages: 1 },
+    })
+    vi.spyOn(api, 'interventionHistory').mockResolvedValue([
+      {
+        recommendation_id: 'forecast-recommendation-1',
+        forecast_id: 'forecast-1',
+        state: 'accepted',
+        rank: 1,
+        affected_variables: ['machine_speed'],
+        changes: [{ variable: 'machine_speed', value: 900 }],
+        baseline_trajectory: trajectory,
+        intervention_trajectory: trajectory,
+        metrics: {
+          crossing_probability_before: 0.7,
+          crossing_probability_after: 0.2,
+          predicted_peak_deviation_before: 4.1,
+          predicted_peak_deviation_after: 1.2,
+          predicted_stabilization_time_before: 8,
+          predicted_stabilization_time_after: 4,
+          estimated_improvement: 0.5,
+          crossing_avoided: true,
+          crossing_delay_steps: null,
+        },
+        confidence: 0.82,
+        constraint_validation: { feasible: true, checks: [], violations: [] },
+        explanation: {
+          selection_reason: 'Best forecast improvement.',
+          forecast_causes: ['machine speed'],
+          trajectory_effect: 'Reduces peak deviation.',
+          expected_risks: [],
+          remaining_uncertainty: 'Model uncertainty remains.',
+        },
+        created_at: '2026-07-25T12:00:00Z',
+        updated_at: '2026-07-25T12:05:00Z',
+        expires_at: null,
+      },
+    ])
+    vi.spyOn(api, 'interventionEffectiveness').mockResolvedValue({
+      evaluated_count: 0,
+      crossing_avoidance_rate: 0,
+      crossing_delay_rate: 0,
+      mean_prediction_error: 0,
+      mean_deviation_improvement: 0,
+      mean_stabilization_improvement: 0,
+    })
+    const decide = vi.spyOn(api, 'decideRecommendation').mockResolvedValue({})
+    const evaluate = vi.spyOn(api, 'evaluateRecommendationOutcome').mockResolvedValue({
+      outcome_id: 'outcome-1',
+      recommendation_id: 'forecast-recommendation-1',
+      metrics: {
+        prediction_accuracy: 0.98,
+        recommendation_accuracy: 0.91,
+        crossing_avoided: true,
+        crossing_delayed: false,
+        stabilization_improvement: 4,
+        actual_vs_predicted_deviation: 0.2,
+        deviation_improvement: 2.8,
+      },
+      evaluated_at: '2026-07-25T12:30:00Z',
+    })
+
+    renderApp(<RecommendationHistoryPage />)
+    await userEvent.click(await screen.findByText('Evaluate outcome'))
+    await userEvent.clear(screen.getByLabelText('Actual Basis Weight at step 1'))
+    await userEvent.type(screen.getByLabelText('Actual Basis Weight at step 1'), '80.5')
+    await userEvent.type(
+      screen.getByPlaceholderText('Describe the applied change and observed process response'),
+      'Machine speed change applied successfully.',
+    )
+    await userEvent.click(screen.getByRole('button', { name: 'Submit observed outcome' }))
+
+    await waitFor(() => expect(evaluate).toHaveBeenCalled())
+    expect(decide).toHaveBeenCalledWith(
+      'forecast-recommendation-1',
+      expect.objectContaining({
+        operator_action: 'applied',
+        notes: 'Machine speed change applied successfully.',
+      }),
+    )
+    expect(await screen.findByText('Outcome evaluation complete')).toBeInTheDocument()
+    expect(screen.getByText('98%')).toBeInTheDocument()
+    expect(screen.getByText(/Machine speed change applied successfully/)).toBeInTheDocument()
   })
 
   it('renders navigation and the 404 page', () => {

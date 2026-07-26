@@ -156,6 +156,14 @@ async def evaluate_outcome(
         )
     ):
         raise HTTPException(status_code=409, detail="Outcome already evaluated.")
+    if row.state not in {"accepted", "applied"}:
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "Outcome evaluation requires an accepted or applied recommendation; "
+                f"current state is {row.state}."
+            ),
+        )
     metrics = OutcomeEvaluator().evaluate(row, payload.observations)
     outcome = RecommendationOutcome(
         recommendation_id=row.id,

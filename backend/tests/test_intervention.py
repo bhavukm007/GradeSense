@@ -55,6 +55,17 @@ def test_outcome_evaluation_and_effectiveness(client) -> None:
         "/interventions/recommendations",
         json={"forecast_id": forecast["forecast_id"], "max_results": 1},
     ).json()[0]
+    pending = client.post(
+        f"/interventions/recommendations/{created['recommendation_id']}/outcome",
+        json={"observations": created["intervention_trajectory"]},
+    )
+    assert pending.status_code == 400
+    assert "accepted or applied" in pending.json()["error"]["message"]
+    accepted = client.post(
+        f"/interventions/recommendations/{created['recommendation_id']}/decisions",
+        json={"operator_action": "accepted", "reason": "Approved for outcome validation"},
+    )
+    assert accepted.status_code == 201
     outcome = client.post(
         f"/interventions/recommendations/{created['recommendation_id']}/outcome",
         json={"observations": created["intervention_trajectory"]},
@@ -65,6 +76,38 @@ def test_outcome_evaluation_and_effectiveness(client) -> None:
     effectiveness = client.get("/interventions/effectiveness")
     assert effectiveness.status_code == 200
     assert effectiveness.json()["evaluated_count"] >= 1
+
+
+def test_outcome_rejects_ineligible_recommendation_states(client) -> None:
+    forecast = create_forecast(client)
+    for state, decision in (
+        ("proposed", None),
+        ("rejected", {"operator_action": "rejected", "reason": "Not suitable"}),
+        (
+            "delayed",
+            {
+                "operator_action": "delayed",
+                "reason": "Awaiting process confirmation",
+                "delay_duration_seconds": 300,
+            },
+        ),
+    ):
+        created = client.post(
+            "/interventions/recommendations",
+            json={"forecast_id": forecast["forecast_id"], "max_results": 1},
+        ).json()[0]
+        if decision:
+            response = client.post(
+                f"/interventions/recommendations/{created['recommendation_id']}/decisions",
+                json=decision,
+            )
+            assert response.status_code == 201
+        outcome = client.post(
+            f"/interventions/recommendations/{created['recommendation_id']}/outcome",
+            json={"observations": created["intervention_trajectory"]},
+        )
+        assert outcome.status_code == 400
+        assert f"current state is {state}" in outcome.json()["error"]["message"]
 
 
 def test_relationship_filtering_and_ranking(client) -> None:

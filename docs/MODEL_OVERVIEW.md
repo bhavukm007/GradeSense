@@ -8,7 +8,9 @@
 | Sequential forecast | Future Basis Weight trajectory and crossing probability | `models/basis_weight_forecast.joblib` |
 
 Both artifacts are supplied with the repository and loaded read-only. Training utilities exist only
-as explicit offline scripts; application startup and request paths never train.
+as explicit offline scripts. Application startup and production demo requests use the supplied
+pre-trained artifacts. The compatibility regeneration endpoint can retrain the snapshot model when
+explicitly invoked in a writable development environment.
 
 The backend pins scikit-learn 1.9.0 because that is the serialization version embedded in the
 forecast artifact. Exact runtime compatibility avoids unsupported cross-version unpickling.
