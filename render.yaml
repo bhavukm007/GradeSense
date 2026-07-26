@@ -28,6 +28,10 @@ services:
     envVars:
       - key: VITE_API_URL
         sync: false
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: no-store
     routes:
       - type: rewrite
         source: /*
