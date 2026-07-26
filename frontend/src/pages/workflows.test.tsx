@@ -201,9 +201,9 @@ describe('operator workflows', () => {
       'href',
       '/prediction',
     )
-    expect(screen.getByRole('link', { name: 'Honeywell Demo' })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: 'Demo Workspace' })).toHaveAttribute(
       'href',
-      '/honeywell-demo',
+      '/demo-workspace',
     )
     cleanup()
     renderApp(<NotFoundPage />)

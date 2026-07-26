@@ -9,7 +9,7 @@ interface EmptyStateProps {
 export function EmptyState({ icon: Icon, title, description }: EmptyStateProps) {
   return (
     <section className="mt-8 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-panel dark:border-white/[0.08] dark:bg-ink-900">
-      <div className="relative grid min-h-[430px] place-items-center px-6 py-16 text-center">
+      <div className="relative grid min-h-80 place-items-center px-6 py-12 text-center">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(45,212,191,0.08),transparent_45%)]" />
         <div className="relative max-w-md">
           <div className="mx-auto grid size-16 place-items-center rounded-2xl border border-cyan-500/20 bg-cyan-500/10 text-cyan-500 dark:text-cyan-400">

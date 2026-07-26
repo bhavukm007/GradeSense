@@ -118,6 +118,6 @@ describe('live monitoring', () => {
     expect(screen.getByText('Live stream connected')).toBeInTheDocument()
     expect(screen.getByText('88.4')).toBeInTheDocument()
     expect(screen.getByText('Basis-weight forecast and specification envelope')).toBeInTheDocument()
-    expect(screen.getByText('Current transition: Kraft → CopyPaper')).toBeInTheDocument()
+    expect(screen.getByText('Active Transition: Kraft → CopyPaper')).toBeInTheDocument()
   })
 })

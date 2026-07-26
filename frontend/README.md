@@ -1,4 +1,4 @@
-# GradeSenseAI Frontend
+# GradeSense Frontend
 
 React 19 and TypeScript operator workspace for live transition monitoring, prediction, forecasting,
 intervention comparison, recommendation lifecycle, history, model governance, health, metrics,

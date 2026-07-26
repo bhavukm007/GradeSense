@@ -122,23 +122,74 @@ GradeSense/
 └── docker-compose.yml
 ```
 
-## Quick start with Docker
+## Quick Start
 
-Prerequisites: Docker Desktop with the Linux engine and Docker Compose.
+Run:
 
-```bash
-docker compose up --build
+```text
+run.bat
 ```
 
-Open:
+(or `./run.sh`)
 
-- Operator UI: `http://localhost:5173`
-- API: `http://localhost:8000`
-- OpenAPI: `http://localhost:8000/docs`
+Nothing else should be required.
 
-Both supplied datasets and both supplied model artifacts are mounted read-only. PostgreSQL data is
-stored in the `postgres_data` volume. See [DEPLOYMENT.md](docs/DEPLOYMENT.md) for production
-configuration, health checks, persistence, security, and troubleshooting.
+## Deploy to Render for free
+
+The repository includes a Render Blueprint at [`render.yaml`](render.yaml). It provisions exactly
+two free resources:
+
+- `gradesense-api`: FastAPI web service;
+- `gradesense`: React static site.
+
+No Render PostgreSQL database is created. The backend uses an external PostgreSQL connection from
+`DATABASE_URL`.
+
+### 1. Create a free Neon database
+
+1. Create a project at [Neon](https://neon.tech/) using the free plan.
+2. In the Neon dashboard, open **Connect** and copy the pooled PostgreSQL connection string.
+3. Change the URL scheme from `postgresql://` to `postgresql+psycopg://` so SQLAlchemy uses the
+   repository's installed Psycopg 3 driver.
+4. Keep `sslmode=require` in the connection string.
+
+Example format:
+
+```text
+postgresql+psycopg://USER:PASSWORD@HOST/gradesense?sslmode=require
+```
+
+### 2. Deploy the Blueprint
+
+1. Push this repository to GitHub or GitLab.
+2. In Render, choose **New → Blueprint** and connect the repository.
+3. Render detects the root-level `render.yaml`.
+4. During the initial Blueprint setup, provide the three prompted variables:
+
+| Service | Variable | Value |
+| --- | --- | --- |
+| Backend | `DATABASE_URL` | Neon pooled connection string using `postgresql+psycopg://` |
+| Backend | `FRONTEND_URL` | Final frontend origin, such as `https://gradesense.onrender.com` |
+| Frontend | `VITE_API_URL` | Final backend origin, such as `https://gradesense-api.onrender.com` |
+
+5. Apply the Blueprint. The backend build installs the existing Python package, runs
+   `alembic upgrade head`, and starts Uvicorn on Render's assigned `PORT`. Render checks `/health`.
+6. If Render requires globally unique service names, choose unique names and use their resulting
+   origins for `FRONTEND_URL` and `VITE_API_URL`, then redeploy both services.
+
+Expected URLs with the default service names:
+
+- Frontend: `https://gradesense.onrender.com`
+- Backend API: `https://gradesense-api.onrender.com`
+- API documentation: `https://gradesense-api.onrender.com/docs`
+- Demo Workspace: `https://gradesense.onrender.com/demo-workspace`
+
+Free Render web services can sleep while idle, so the first backend request after inactivity may
+take longer. Static-site client routes are rewritten to `index.html`, allowing direct navigation
+and refreshes without 404 errors.
+
+The Render configuration does not alter local development or Docker Compose. Continue using
+`run.bat`, `./run.sh`, or the local development commands below.
 
 ## Local development
 

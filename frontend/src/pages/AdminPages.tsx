@@ -8,7 +8,7 @@ import type { RuntimeConfig } from '../api/types'
 import { formatDate, formatPercent } from '../lib/format'
 import { PageHeader } from '../components/ui/PageHeader'
 import { Panel } from '../components/ui/Panel'
-import { ErrorState, SkeletonGrid } from '../components/ui/QueryState'
+import { EmptyMessage, ErrorState, SkeletonGrid } from '../components/ui/QueryState'
 
 export function ModelRegistryPage() {
   const queryClient = useQueryClient()
@@ -68,6 +68,9 @@ export function ModelRegistryPage() {
             </div>
           </Panel>
         ))}
+        {!query.data?.length && (
+          <EmptyMessage>No model versions are registered in this environment.</EmptyMessage>
+        )}
       </div>
     </AdminShell>
   )
@@ -124,6 +127,9 @@ export function SystemMetricsPage() {
               </div>
             </Panel>
           ))}
+          {!Object.keys(data?.latency ?? {}).length && (
+            <EmptyMessage>Latency samples will appear after requests are processed.</EmptyMessage>
+          )}
         </div>
       </Panel>
     </AdminShell>
@@ -147,6 +153,9 @@ export function AuditLogPage() {
               <span className="truncate">{entry.request_id ?? 'system'}</span>
             </div>
           ))}
+          {!query.data?.length && (
+            <EmptyMessage>No audit events have been recorded yet.</EmptyMessage>
+          )}
         </div>
       </Panel>
     </AdminShell>
@@ -228,6 +237,9 @@ export function HealthDashboardPage() {
             </pre>
           </Panel>
         ))}
+        {!Object.keys(query.data?.checks ?? {}).length && (
+          <EmptyMessage>No service health checks are available.</EmptyMessage>
+        )}
       </div>
     </AdminShell>
   )
@@ -275,6 +287,9 @@ export function ExportCenterPage() {
               </div>
             </div>
           ))}
+          {!query.data?.length && (
+            <EmptyMessage>No exportable resources are available.</EmptyMessage>
+          )}
         </div>
       </Panel>
     </AdminShell>
@@ -297,7 +312,7 @@ function AdminShell({
       <PageHeader
         eyebrow={eyebrow}
         title={title}
-        description="Production operations and governance for GradeSenseAI."
+        description="Production operations and governance for GradeSense."
       />
       {query.isLoading ? (
         <div className="mt-8">

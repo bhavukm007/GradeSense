@@ -193,7 +193,7 @@ export function LiveMonitoring() {
 
       {live.sensor && (
         <Panel
-          title={`Current transition: ${live.sensor.current_grade} → ${live.sensor.target_grade}`}
+          title={`Active Transition: ${live.sensor.current_grade} → ${live.sensor.target_grade}`}
         >
           <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-5">
             {Object.entries(live.sensor)

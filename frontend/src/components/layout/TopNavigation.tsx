@@ -11,7 +11,13 @@ export function TopNavigation({ onOpenSidebar }: TopNavigationProps) {
 
   return (
     <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-slate-50/80 backdrop-blur-xl dark:border-white/[0.07] dark:bg-ink-950/80">
-      <div className="flex h-16 items-center justify-between px-5 sm:px-8 lg:px-10">
+      <a
+        href="#main-content"
+        className="sr-only z-50 rounded-lg bg-cyan-500 px-4 py-2 font-semibold text-ink-950 focus:not-sr-only focus:absolute focus:left-4 focus:top-3"
+      >
+        Skip to content
+      </a>
+      <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-10">
         <div className="flex items-center gap-3">
           <button
             className="rounded-lg p-2 text-slate-500 hover:bg-slate-200 dark:text-slate-400 dark:hover:bg-white/10 lg:hidden"
@@ -22,7 +28,7 @@ export function TopNavigation({ onOpenSidebar }: TopNavigationProps) {
           </button>
           <div>
             <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
-              Paper Mill Operations
+              GradeSense Operations
             </p>
             <p className="hidden text-xs text-slate-500 sm:block">Decision support workspace</p>
           </div>
