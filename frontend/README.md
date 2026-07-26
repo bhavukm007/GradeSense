@@ -11,7 +11,7 @@ npm ci
 npm run dev
 ```
 
-Set `VITE_API_URL` when the backend is not at `http://localhost:8000`.
+Set `VITE_API_URL` to the backend origin before starting or building the frontend.
 
 ## Quality
 

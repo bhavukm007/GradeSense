@@ -30,7 +30,10 @@ import type {
   DemoSeedResult,
 } from './types'
 
-const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:8000').replace(/\/$/, '')
+const API_URL = (import.meta.env.VITE_API_URL ?? '').trim().replace(/\/$/, '')
+if (!API_URL) {
+  throw new Error('VITE_API_URL must be configured before building or starting GradeSense.')
+}
 
 export class ApiError extends Error {
   constructor(
