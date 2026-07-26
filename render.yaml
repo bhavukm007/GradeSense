@@ -4,7 +4,12 @@ services:
     runtime: python
     plan: free
     buildCommand: pip install --upgrade pip && pip install ./backend
-    startCommand: cd backend && export GRADESENSE_DATABASE_URL="$DATABASE_URL" && export GRADESENSE_CORS_ORIGINS="[\"https://gradesense.onrender.com\",\"$FRONTEND_URL\"]" && alembic upgrade head && exec uvicorn app.main:app --host 0.0.0.0 --port "$PORT"
+    startCommand: >
+      cd backend &&
+      export GRADESENSE_DATABASE_URL="$DATABASE_URL" &&
+      export GRADESENSE_CORS_ORIGINS="[\"https://gradesense-4weh.onrender.com\",\"$FRONTEND_URL\"]" &&
+      alembic upgrade head &&
+      exec uvicorn app.main:app --host 0.0.0.0 --port "$PORT"
     healthCheckPath: /health
     autoDeployTrigger: commit
     envVars:
@@ -25,13 +30,11 @@ services:
     buildCommand: cd frontend && npm ci && npm run build
     staticPublishPath: ./frontend/dist
     autoDeployTrigger: commit
+
     envVars:
       - key: VITE_API_URL
         sync: false
-    headers:
-      - path: /*
-        name: Cache-Control
-        value: no-store
+
     routes:
       - type: rewrite
         source: /*
