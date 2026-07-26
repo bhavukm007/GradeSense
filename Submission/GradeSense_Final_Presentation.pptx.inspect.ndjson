@@ -1,0 +1,302 @@
+{"kind":"deck","id":"pr/kg4g3y","name":"Deck"}
+{"kind":"layout","layoutId":"/ppt/slideMasters/slideMaster1.xml","name":"","type":"master","placeholders":[{"name":"title","type":"title","textPreview":"Click to edit Master title style"},{"name":"body","type":"body","textPreview":"Click to edit Master text styles | Second level | Third level | Fourth level | Fifth level"},{"name":"dateTime","type":"dateTime","textPreview":"7/24/2026"},{"name":"footer","type":"footer","textPreview":"@SIH Idea submission- Template"},{"name":"slideNumber","type":"slideNumber","textPreview":"‹#›"}]}
+{"kind":"layout","layoutId":"/ppt/slideLayouts/slideLayout1.xml","name":"Title Slide","type":"title","placeholders":[{"name":"title","type":"title","textPreview":"Click to edit Master title style"},{"name":"subtitle","type":"subtitle","textPreview":"Click to edit Master subtitle style"},{"name":"dateTime","type":"dateTime","textPreview":"7/24/2026"},{"name":"footer","type":"footer","textPreview":"@SIH Idea submission- Template"},{"name":"slideNumber","type":"slideNumber","textPreview":"‹#›"}]}
+{"kind":"layout","layoutId":"/ppt/slideLayouts/slideLayout2.xml","name":"Title and Content","type":"obj","placeholders":[{"name":"title","type":"title","textPreview":"Click to edit Master title style"},{"name":"content placeholder 2","textPreview":"Click to edit Master text styles | Second level | Third level | Fourth level | Fifth level"},{"name":"dateTime","type":"dateTime","textPreview":"7/24/2026"},{"name":"footer","type":"footer","textPreview":"@SIH Idea submission- Template"},{"name":"slideNumber","type":"slideNumber","textPreview":"‹#›"}]}
+{"kind":"layout","layoutId":"/ppt/slideLayouts/slideLayout3.xml","name":"Section Header","type":"secHead","placeholders":[{"name":"title","type":"title","textPreview":"Click to edit Master title style"},{"name":"body","type":"body","textPreview":"Click to edit Master text styles"},{"name":"dateTime","type":"dateTime","textPreview":"7/24/2026"},{"name":"footer","type":"footer","textPreview":"@SIH Idea submission- Template"},{"name":"slideNumber","type":"slideNumber","textPreview":"‹#›"}]}
+{"kind":"layout","layoutId":"/ppt/slideLayouts/slideLayout4.xml","name":"Two Content","type":"twoObj","placeholders":[{"name":"title","type":"title","textPreview":"Click to edit Master title style"},{"name":"content placeholder 2","textPreview":"Click to edit Master text styles | Second level | Third level | Fourth level | Fifth level"},{"name":"content placeholder 3","textPreview":"Click to edit Master text styles | Second level | Third level | Fourth level | Fifth level"},{"name":"dateTime","type":"dateTime","textPreview":"7/24/2026"},{"name":"footer","type":"footer","textPreview":"@SIH Idea submission- Template"},{"name":"slideNumber","type":"slideNumber","textPreview":"‹#›"}]}
+{"kind":"layout","layoutId":"/ppt/slideLayouts/slideLayout5.xml","name":"Comparison","type":"twoTxTwoObj","placeholders":[{"name":"title","type":"title","textPreview":"Click to edit Master title style"},{"name":"body","type":"body","textPreview":"Click to edit Master text styles"},{"name":"content placeholder 3","textPreview":"Click to edit Master text styles | Second level | Third level | Fourth level | Fifth level"},{"name":"body","type":"body","textPreview":"Click to edit Master text styles"},{"name":"content placeholder 5","textPreview":"Click to edit Master text styles | Second level | Third level | Fourth level | Fifth level"},{"name":"dateTime","type":"dateTime","textPreview":"7/24/2026"},{"name":"footer","type":"footer","textPreview":"@SIH Idea submission- Template"},{"name":"slideNumber","type":"slideNumber","textPreview":"‹#›"}]}
+{"kind":"layout","layoutId":"/ppt/slideLayouts/slideLayout6.xml","name":"Title Only","type":"titleOnly","placeholders":[{"name":"title","type":"title","textPreview":"Click to edit Master title style"},{"name":"dateTime","type":"dateTime","textPreview":"7/24/2026"},{"name":"footer","type":"footer","textPreview":"@SIH Idea submission- Template"},{"name":"slideNumber","type":"slideNumber","textPreview":"‹#›"}]}
+{"kind":"layout","layoutId":"/ppt/slideLayouts/slideLayout7.xml","name":"Blank","type":"blank","placeholders":[{"name":"dateTime","type":"dateTime","textPreview":"7/24/2026"},{"name":"footer","type":"footer","textPreview":"@SIH Idea submission- Template"},{"name":"slideNumber","type":"slideNumber","textPreview":"‹#›"}]}
+{"kind":"layout","layoutId":"/ppt/slideLayouts/slideLayout8.xml","name":"Content with Caption","type":"objTx","placeholders":[{"name":"title","type":"title","textPreview":"Click to edit Master title style"},{"name":"content placeholder 2","textPreview":"Click to edit Master text styles | Second level | Third level | Fourth level | Fifth level"},{"name":"body","type":"body","textPreview":"Click to edit Master text styles"},{"name":"dateTime","type":"dateTime","textPreview":"7/24/2026"},{"name":"footer","type":"footer","textPreview":"@SIH Idea submission- Template"},{"name":"slideNumber","type":"slideNumber","textPreview":"‹#›"}]}
+{"kind":"layout","layoutId":"/ppt/slideLayouts/slideLayout9.xml","name":"Picture with Caption","type":"picTx","placeholders":[{"name":"title","type":"title","textPreview":"Click to edit Master title style"},{"name":"picture","type":"picture"},{"name":"body","type":"body","textPreview":"Click to edit Master text styles"},{"name":"dateTime","type":"dateTime","textPreview":"7/24/2026"},{"name":"footer","type":"footer","textPreview":"@SIH Idea submission- Template"},{"name":"slideNumber","type":"slideNumber","textPreview":"‹#›"}]}
+{"kind":"layout","layoutId":"/ppt/slideLayouts/slideLayout10.xml","name":"Title and Vertical Text","type":"vertTx","placeholders":[{"name":"title","type":"title","textPreview":"Click to edit Master title style"},{"name":"body","type":"body","textPreview":"Click to edit Master text styles | Second level | Third level | Fourth level | Fifth level"},{"name":"dateTime","type":"dateTime","textPreview":"7/24/2026"},{"name":"footer","type":"footer","textPreview":"@SIH Idea submission- Template"},{"name":"slideNumber","type":"slideNumber","textPreview":"‹#›"}]}
+{"kind":"layout","layoutId":"/ppt/slideLayouts/slideLayout11.xml","name":"Vertical Title and Text","type":"vertTitleAndTx","placeholders":[{"name":"title","type":"title","textPreview":"Click to edit Master title style"},{"name":"body","type":"body","textPreview":"Click to edit Master text styles | Second level | Third level | Fourth level | Fifth level"},{"name":"dateTime","type":"dateTime","textPreview":"7/24/2026"},{"name":"footer","type":"footer","textPreview":"@SIH Idea submission- Template"},{"name":"slideNumber","type":"slideNumber","textPreview":"‹#›"}]}
+{"kind":"slide","id":"sl/y90nupkv","slide":1,"title":"GradeSense | Honeywell Hackathon Final Submission","textShapes":8}
+{"kind":"textbox","id":"sh/7qp4be9c","slide":1,"name":"Footer Placeholder 3","placeholder":"footer","text":"GradeSense | Honeywell Hackathon Final Submission","textPreview":"GradeSense | Honeywell Hackathon Final Submission","textChars":49,"textLines":1,"bbox":[0,0,0,0]}
+{"kind":"textbox","id":"sh/65g3298r","slide":1,"name":"Slide Number Placeholder 4","placeholder":"slideNumber","text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[0,0,0,0]}
+{"kind":"textbox","id":"sh/ts7md4r2","slide":1,"name":"Subtitle 3","text":"\nGRADESENSE","textPreview":"| GRADESENSE","textChars":11,"textLines":2,"bbox":[148.6,-38.4,896,184]}
+{"kind":"textbox","id":"sh/sryl4zqx","slide":1,"name":"TextBox 6","text":"Explainable AI for safer, faster paper grade transitions\n\nHoneywell Hackathon Final Submission\nIndustrial AI | Software Prototype\nBhavuk Mahajan | GradeSense","textPreview":"Explainable AI for safer, faster paper grade transitions |  | Honeywell Hackathon Final Submission | Industrial AI | Software Prototype |...","textChars":157,"textLines":5,"bbox":[41.71,126.35,622,492.04]}
+{"kind":"shape","id":"sh/fu94fe98","slide":1,"bbox":[700,165,490,370]}
+{"kind":"textbox","id":"sh/utg3698n","slide":1,"text":"PREDICT","textPreview":"PREDICT","textChars":7,"textLines":1,"bbox":[740,205,410,45]}
+{"kind":"shape","id":"sh/wn6dc7eh","slide":1,"bbox":[943.5,265,3,45]}
+{"kind":"shape","id":"sh/hofulsf2","slide":1,"bbox":[938,302,14,12]}
+{"kind":"textbox","id":"sh/ul4vaxgb","slide":1,"text":"EXPLAIN","textPreview":"EXPLAIN","textChars":7,"textLines":1,"bbox":[740,315,410,45]}
+{"kind":"shape","id":"sh/vmdcj2xw","slide":1,"bbox":[943.5,375,3,45]}
+{"kind":"shape","id":"sh/4r6dg7et","slide":1,"bbox":[938,412,14,12]}
+{"kind":"textbox","id":"sh/5sfepcfe","slide":1,"text":"RECOMMEND","textPreview":"RECOMMEND","textChars":9,"textLines":1,"bbox":[740,425,410,45]}
+{"kind":"textbox","id":"sh/ipovexwn","slide":1,"text":"Human-in-the-loop • Constraint-aware • Real-time","textPreview":"Human-in-the-loop • Constraint-aware • Real-time","textChars":48,"textLines":1,"bbox":[735,492,420,28]}
+{"kind":"notes","id":"nt/y90nupkv","slide":1,"text":"[Sources]\nInternal source: GradeSense README.md\nNo external claims or assets."}
+{"kind":"slide","id":"sl/hwbqtkby","slide":2,"title":"PREDICT BEFORE QUALITY DRIFTS","textShapes":20}
+{"kind":"textbox","id":"sh/dkvmpszm","slide":2,"name":"Title 1","placeholder":"title","text":"PREDICT BEFORE QUALITY DRIFTS","textPreview":"PREDICT BEFORE QUALITY DRIFTS","textChars":29,"textLines":1,"bbox":[19.21,12,1152,92]}
+{"kind":"shape","id":"sh/qx4nud0b","slide":2,"name":"TextBox 8","bbox":[0,216.79,1280,261.73]}
+{"kind":"textbox","id":"sh/x4r21kru","slide":2,"name":"Slide Number Placeholder 5","placeholder":"slideNumber","text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[0,0,0,0]}
+{"kind":"textbox","id":"sh/w3i1sfa9","slide":2,"name":"Footer Placeholder 6","placeholder":"footer","text":"GradeSense | Honeywell Hackathon Final Submission","textPreview":"GradeSense | Honeywell Hackathon Final Submission","textChars":49,"textLines":1,"bbox":[488,667.33,336.38,38.33]}
+{"kind":"shape","id":"sh/ryd4nihw","slide":2,"bbox":[55,112,1170,5]}
+{"kind":"textbox","id":"sh/0n650nid","slide":2,"text":"THE PROBLEM","textPreview":"THE PROBLEM","textChars":11,"textLines":1,"bbox":[70,145,350,35]}
+{"kind":"textbox","id":"sh/1ofmtszy","slide":2,"text":"Grade transitions are multivariable, time-dependent, and costly when deviation is detected late.","textPreview":"Grade transitions are multivariable, time-dependent, and costly when deviation is detected late.","textChars":96,"textLines":1,"bbox":[70,185,400,92]}
+{"kind":"textbox","id":"sh/el4nyd07","slide":2,"text":"Operators must connect changing sensor values, future basis-weight behavior, safety constraints, and past outcomes under time pressure.","textPreview":"Operators must connect changing sensor values, future basis-weight behavior, safety constraints, and past outcomes under time pressure.","textChars":135,"textLines":1,"bbox":[70,295,400,120]}
+{"kind":"textbox","id":"sh/zmx4rihs","slide":2,"text":"THE GRADE SENSE LOOP","textPreview":"THE GRADE SENSE LOOP","textChars":20,"textLines":1,"bbox":[535,145,630,35]}
+{"kind":"shape","id":"sh/or6547i9","slide":2,"bbox":[680,240.5,95,3]}
+{"kind":"shape","id":"sh/9sf6xczu","slide":2,"bbox":[767,235,12,14]}
+{"kind":"shape","id":"sh/jylgjq58","slide":2,"bbox":[910,240.5,95,3]}
+{"kind":"shape","id":"sh/ixszalon","slide":2,"bbox":[997,235,12,14]}
+{"kind":"shape","id":"sh/5k3yl0ne","slide":2,"bbox":[535,195,145,95]}
+{"kind":"shape","id":"sh/kzuhcv6t","slide":2,"bbox":[535,195,7,95]}
+{"kind":"textbox","id":"sh/vu1gfq5c","slide":2,"text":"Sense","textPreview":"Sense","textChars":5,"textLines":1,"bbox":[553,204,119,26]}
+{"kind":"textbox","id":"sh/atsz6lor","slide":2,"text":"Live process state","textPreview":"Live process state","textChars":18,"textLines":1,"bbox":[553,233,119,50]}
+{"kind":"shape","id":"sh/xwjyh0n2","slide":2,"bbox":[775,195,145,95]}
+{"kind":"shape","id":"sh/wvah8v6x","slide":2,"bbox":[775,195,7,95]}
+{"kind":"textbox","id":"sh/fq50ra5g","slide":2,"text":"Predict","textPreview":"Predict","textChars":7,"textLines":1,"bbox":[793,204,119,26]}
+{"kind":"textbox","id":"sh/upczi54v","slide":2,"text":"Quality, risk, time","textPreview":"Quality, risk, time","textChars":19,"textLines":1,"bbox":[793,233,119,50]}
+{"kind":"shape","id":"sh/qp8fed4r","slide":2,"bbox":[1005,195,160,95]}
+{"kind":"shape","id":"sh/rqhw7ilc","slide":2,"bbox":[1005,195,7,95]}
+{"kind":"textbox","id":"sh/srqxgnmx","slide":2,"text":"Act","textPreview":"Act","textChars":3,"textLines":1,"bbox":[1023,204,134,26]}
+{"kind":"textbox","id":"sh/dsjy983i","slide":2,"text":"Safe ranked guidance","textPreview":"Safe ranked guidance","textChars":20,"textLines":1,"bbox":[1023,233,134,50]}
+{"kind":"shape","id":"sh/il8fat4v","slide":2,"bbox":[1083.5,315,3,65]}
+{"kind":"shape","id":"sh/3mhw3yl0","slide":2,"bbox":[1078,372,14,12]}
+{"kind":"shape","id":"sh/4nqxc3ml","slide":2,"bbox":[920,428.5,85,3]}
+{"kind":"shape","id":"sh/5oze5836","slide":2,"bbox":[912,423,12,14]}
+{"kind":"shape","id":"sh/uxof6t4j","slide":2,"bbox":[690,428.5,85,3]}
+{"kind":"shape","id":"sh/vixwzyl4","slide":2,"bbox":[682,423,12,14]}
+{"kind":"shape","id":"sh/xo7q1gry","slide":2,"bbox":[535,382,155,95]}
+{"kind":"shape","id":"sh/wne9svad","slide":2,"bbox":[535,382,7,95]}
+{"kind":"textbox","id":"sh/vm58zq9s","slide":2,"text":"Learn","textPreview":"Learn","textChars":5,"textLines":1,"bbox":[553,391,129,26]}
+{"kind":"textbox","id":"sh/alwrqls7","slide":2,"text":"Decision + outcome","textPreview":"Decision + outcome","textChars":18,"textLines":1,"bbox":[553,420,129,50]}
+{"kind":"shape","id":"sh/9knqxgrm","slide":2,"bbox":[775,382,145,95]}
+{"kind":"shape","id":"sh/oje9obah","slide":2,"bbox":[775,382,7,95]}
+{"kind":"textbox","id":"sh/ny58v69w","slide":2,"text":"Explain","textPreview":"Explain","textChars":7,"textLines":1,"bbox":[793,391,119,26]}
+{"kind":"textbox","id":"sh/mxwrm1sb","slide":2,"text":"Drivers + confidence","textPreview":"Drivers + confidence","textChars":20,"textLines":1,"bbox":[793,420,119,50]}
+{"kind":"shape","id":"sh/1w3qtwrq","slide":2,"bbox":[1005,382,160,95]}
+{"kind":"shape","id":"sh/0vu9kba5","slide":2,"bbox":[1005,382,7,95]}
+{"kind":"textbox","id":"sh/143yx4jm","slide":2,"text":"Simulate","textPreview":"Simulate","textChars":8,"textLines":1,"bbox":[1023,391,134,26]}
+{"kind":"textbox","id":"sh/g3uhoz21","slide":2,"text":"Forecast under action","textPreview":"Forecast under action","textChars":21,"textLines":1,"bbox":[1023,420,134,50]}
+{"kind":"textbox","id":"sh/f2lgve1g","slide":2,"text":"One governed system connects detection, explanation, intervention, and measurable learning.","textPreview":"One governed system connects detection, explanation, intervention, and measurable learning.","textChars":91,"textLines":1,"bbox":[535,510,630,48]}
+{"kind":"notes","id":"nt/hwbqtkby","slide":2,"text":"[Sources]\nInternal source: README.md and docs/SYSTEM_ARCHITECTURE.md\nNo external claims or assets."}
+{"kind":"slide","id":"sl/ofy9wn61","slide":3,"title":"WHY GRADESENSE IS DIFFERENT","textShapes":55}
+{"kind":"textbox","id":"sh/j6dgf6tk","slide":3,"name":"Title 1","placeholder":"title","text":"WHY GRADESENSE IS DIFFERENT","textPreview":"WHY GRADESENSE IS DIFFERENT","textChars":27,"textLines":1,"bbox":[19.21,12,1152,92]}
+{"kind":"shape","id":"sh/1k3214v2","slide":3,"name":"TextBox 8","bbox":[64,266,985.33,190.64]}
+{"kind":"textbox","id":"sh/obq90bml","slide":3,"name":"Slide Number Placeholder 5","placeholder":"slideNumber","text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[0,0,0,0]}
+{"kind":"textbox","id":"sh/pcjqtg36","slide":3,"name":"Footer Placeholder 6","placeholder":"footer","text":"GradeSense | Honeywell Hackathon Final Submission","textPreview":"GradeSense | Honeywell Hackathon Final Submission","textChars":49,"textLines":1,"bbox":[488,667.33,336.38,38.33]}
+{"kind":"shape","id":"sh/0zalszuh","slide":3,"bbox":[55,112,1170,5]}
+{"kind":"textbox","id":"sh/zy1kzedw","slide":3,"text":"SYSTEM ARCHITECTURE","textPreview":"SYSTEM ARCHITECTURE","textChars":19,"textLines":1,"bbox":[70,142,500,30]}
+{"kind":"shape","id":"sh/exsjq9cb","slide":3,"bbox":[285,248.5,75,3]}
+{"kind":"shape","id":"sh/9o325ovy","slide":3,"bbox":[352,243,12,14]}
+{"kind":"shape","id":"sh/onulwjut","slide":3,"bbox":[575,248.5,75,3]}
+{"kind":"shape","id":"sh/nmlk3ed8","slide":3,"bbox":[642,243,12,14]}
+{"kind":"shape","id":"sh/mlc3u9cn","slide":3,"bbox":[865,248.5,75,3]}
+{"kind":"shape","id":"sh/psz2tkvu","slide":3,"bbox":[932,243,12,14]}
+{"kind":"shape","id":"sh/4rq1kfu9","slide":3,"bbox":[70,195,215,110]}
+{"kind":"shape","id":"sh/gnetwj6h","slide":3,"bbox":[70,195,7,110]}
+{"kind":"textbox","id":"sh/honupo72","slide":3,"text":"React UI","textPreview":"React UI","textChars":8,"textLines":1,"bbox":[88,204,189,26]}
+{"kind":"textbox","id":"sh/ulwbu9ob","slide":3,"text":"Operations + governance","textPreview":"Operations + governance","textChars":23,"textLines":1,"bbox":[88,233,189,65]}
+{"kind":"shape","id":"sh/fm5cnepw","slide":3,"bbox":[360,195,215,110]}
+{"kind":"shape","id":"sh/4byt036d","slide":3,"bbox":[360,195,7,110]}
+{"kind":"textbox","id":"sh/pc7ut87y","slide":3,"text":"FastAPI","textPreview":"FastAPI","textChars":7,"textLines":1,"bbox":[378,204,189,26]}
+{"kind":"textbox","id":"sh/2pwbyton","slide":3,"text":"REST + WebSocket","textPreview":"REST + WebSocket","textChars":16,"textLines":1,"bbox":[378,233,189,65]}
+{"kind":"shape","id":"sh/3q5cryps","slide":3,"bbox":[650,195,215,110]}
+{"kind":"shape","id":"sh/cfyt436p","slide":3,"bbox":[650,195,7,110]}
+{"kind":"textbox","id":"sh/dg7ux87a","slide":3,"text":"Domain services","textPreview":"Domain services","textChars":15,"textLines":1,"bbox":[668,204,189,26]}
+{"kind":"textbox","id":"sh/natwn29c","slide":3,"text":"Inference + intervention","textPreview":"Inference + intervention","textChars":24,"textLines":1,"bbox":[668,233,189,65]}
+{"kind":"shape","id":"sh/m90fux8r","slide":3,"bbox":[940,195,225,110]}
+{"kind":"shape","id":"sh/9cbepcri","slide":3,"bbox":[940,195,7,110]}
+{"kind":"textbox","id":"sh/ob2xw7qx","slide":3,"text":"SQL + artifacts","textPreview":"SQL + artifacts","textChars":15,"textLines":1,"bbox":[958,204,199,26]}
+{"kind":"textbox","id":"sh/z69wj290","slide":3,"text":"History + immutable models","textPreview":"History + immutable models","textChars":26,"textLines":1,"bbox":[958,233,199,65]}
+{"kind":"textbox","id":"sh/e50vqx8v","slide":3,"text":"AI WORKFLOW","textPreview":"AI WORKFLOW","textChars":11,"textLines":1,"bbox":[70,345,500,30]}
+{"kind":"shape","id":"sh/18relsr6","slide":3,"bbox":[256,456.5,32,3]}
+{"kind":"shape","id":"sh/07ids7ql","slide":3,"bbox":[280,451,12,14]}
+{"kind":"shape","id":"sh/j2dwvm9k","slide":3,"bbox":[70,395,186,128]}
+{"kind":"textbox","id":"sh/y1kf2h8z","slide":3,"text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[82,405,35,35]}
+{"kind":"textbox","id":"sh/6pkzqlo3","slide":3,"text":"Validate","textPreview":"Validate","textChars":8,"textLines":1,"bbox":[112,406,128,35]}
+{"kind":"textbox","id":"sh/rqt0jq5o","slide":3,"text":"Typed process state","textPreview":"Typed process state","textChars":19,"textLines":1,"bbox":[86,453,154,44]}
+{"kind":"shape","id":"sh/sr2hsv69","slide":3,"bbox":[480,456.5,32,3]}
+{"kind":"shape","id":"sh/tsbil0nu","slide":3,"bbox":[504,451,12,14]}
+{"kind":"shape","id":"sh/il0zm1o7","slide":3,"bbox":[294,395,186,128]}
+{"kind":"textbox","id":"sh/jm90f65s","slide":3,"text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[306,405,35,35]}
+{"kind":"textbox","id":"sh/4nihob6d","slide":3,"text":"Forecast","textPreview":"Forecast","textChars":8,"textLines":1,"bbox":[336,406,128,35]}
+{"kind":"textbox","id":"sh/5orihgni","slide":3,"text":"Direct horizon","textPreview":"Direct horizon","textChars":14,"textLines":1,"bbox":[310,453,154,44]}
+{"kind":"shape","id":"sh/2h4jy54b","slide":3,"bbox":[704,456.5,32,3]}
+{"kind":"shape","id":"sh/3id0ra5w","slide":3,"bbox":[728,451,12,14]}
+{"kind":"shape","id":"sh/dcf2x47y","slide":3,"bbox":[518,395,186,128]}
+{"kind":"textbox","id":"sh/cb6lozqd","slide":3,"text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[530,405,35,35]}
+{"kind":"textbox","id":"sh/baxkvup8","slide":3,"text":"Explain","textPreview":"Explain","textChars":7,"textLines":1,"bbox":[560,406,128,35]}
+{"kind":"textbox","id":"sh/q9o3mp8n","slide":3,"text":"Drivers + confidence","textPreview":"Drivers + confidence","textChars":20,"textLines":1,"bbox":[534,453,154,44]}
+{"kind":"shape","id":"sh/p8f2tk72","slide":3,"bbox":[928,456.5,32,3]}
+{"kind":"shape","id":"sh/o7mlkzqh","slide":3,"bbox":[952,451,12,14]}
+{"kind":"shape","id":"sh/3mdkrupw","slide":3,"bbox":[742,395,186,128]}
+{"kind":"textbox","id":"sh/2l43ip8b","slide":3,"text":"4","textPreview":"4","textChars":1,"textLines":1,"bbox":[754,405,35,35]}
+{"kind":"textbox","id":"sh/94zm5o76","slide":3,"text":"Constrain","textPreview":"Constrain","textChars":9,"textLines":1,"bbox":[784,406,128,35]}
+{"kind":"textbox","id":"sh/83qlwj6l","slide":3,"text":"Safety gate","textPreview":"Safety gate","textChars":11,"textLines":1,"bbox":[758,453,154,44]}
+{"kind":"shape","id":"sh/szixori9","slide":3,"bbox":[966,395,186,128]}
+{"kind":"textbox","id":"sh/t0rehwju","slide":3,"text":"5","textPreview":"5","textChars":1,"textLines":1,"bbox":[978,405,35,35]}
+{"kind":"textbox","id":"sh/6x0vmh03","slide":3,"text":"Recommend","textPreview":"Recommend","textChars":9,"textLines":1,"bbox":[1008,406,128,35]}
+{"kind":"textbox","id":"sh/ry9wfm1o","slide":3,"text":"Ranked benefit","textPreview":"Ranked benefit","textChars":14,"textLines":1,"bbox":[982,453,154,44]}
+{"kind":"textbox","id":"sh/kvydk7ix","slide":3,"text":"Python • FastAPI • SQLAlchemy • scikit-learn • React • TypeScript • PostgreSQL • Docker","textPreview":"Python • FastAPI • SQLAlchemy • scikit-learn • React • TypeScript • PostgreSQL • Docker","textChars":87,"textLines":1,"bbox":[110,548,1060,30]}
+{"kind":"shape","id":"sh/5w7edcji","slide":3,"bbox":[42,125,1195,475]}
+{"kind":"textbox","id":"sh/itgvih07","slide":3,"text":"WHY THIS APPROACH","textPreview":"WHY THIS APPROACH","textChars":17,"textLines":1,"bbox":[65,142,420,30]}
+{"kind":"textbox","id":"sh/jupwb21c","slide":3,"text":"Forecast the whole trajectory, then simulate only constraint-valid actions with the same active model.","textPreview":"Forecast the whole trajectory, then simulate only constraint-valid actions with the same active model.","textChars":102,"textLines":1,"bbox":[65,180,430,100]}
+{"kind":"textbox","id":"sh/wrydg7i1","slide":3,"text":"The result is earlier warning without recursive error accumulation - plus recommendations an operator can verify before acting.","textPreview":"The result is earlier warning without recursive error accumulation - plus recommendations an operator can verify before acting.","textChars":127,"textLines":1,"bbox":[65,292,430,90]}
+{"kind":"textbox","id":"sh/xs7e9cjm","slide":3,"text":"DESIGN ADVANTAGES","textPreview":"DESIGN ADVANTAGES","textChars":17,"textLines":1,"bbox":[65,420,380,28]}
+{"kind":"textbox","id":"sh/z25wj2l8","slide":3,"text":"• Windows never cross transitions\n• Empirical confidence bands\n• Safety gate before inference\n• Human approval + outcome audit","textPreview":"• Windows never cross transitions | • Empirical confidence bands | • Safety gate before inference | • Human approval + outcome audit","textChars":126,"textLines":4,"bbox":[65,455,430,112]}
+{"kind":"textbox","id":"sh/y1wfqx4n","slide":3,"text":"APPROACH COMPARISON","textPreview":"APPROACH COMPARISON","textChars":19,"textLines":1,"bbox":[545,142,630,30]}
+{"kind":"textbox","id":"sh/lonelc3e","slide":3,"text":"METHOD","textPreview":"METHOD","textChars":6,"textLines":1,"bbox":[555,184,175,28]}
+{"kind":"textbox","id":"sh/0nexs7mt","slide":3,"text":"WARNING","textPreview":"WARNING","textChars":7,"textLines":1,"bbox":[730,184,170,28]}
+{"kind":"textbox","id":"sh/nqpgn2lk","slide":3,"text":"ACTION QUALITY","textPreview":"ACTION QUALITY","textChars":14,"textLines":1,"bbox":[900,184,205,28]}
+{"kind":"textbox","id":"sh/mpwfux4z","slide":3,"text":"TRUST","textPreview":"TRUST","textChars":5,"textLines":1,"bbox":[1105,184,80,28]}
+{"kind":"shape","id":"sh/9s7ypc3a","slide":3,"bbox":[545,220,635,58]}
+{"kind":"textbox","id":"sh/8ryxw7m5","slide":3,"text":"Reactive thresholds","textPreview":"Reactive thresholds","textChars":19,"textLines":1,"bbox":[560,227,185,42]}
+{"kind":"textbox","id":"sh/vupgrmlg","slide":3,"text":"Late","textPreview":"Late","textChars":4,"textLines":1,"bbox":[750,227,165,42]}
+{"kind":"textbox","id":"sh/atgfyh4v","slide":3,"text":"None","textPreview":"None","textChars":4,"textLines":1,"bbox":[915,227,195,42]}
+{"kind":"textbox","id":"sh/i1wjml0f","slide":3,"text":"Low","textPreview":"Low","textChars":3,"textLines":1,"bbox":[1110,227,58,42]}
+{"kind":"shape","id":"sh/3250f6hk","slide":3,"bbox":[545,292,635,58]}
+{"kind":"textbox","id":"sh/43e1obi5","slide":3,"text":"Recursive forecast","textPreview":"Recursive forecast","textChars":18,"textLines":1,"bbox":[560,299,185,42]}
+{"kind":"textbox","id":"sh/547ihgzq","slide":3,"text":"Early","textPreview":"Early","textChars":5,"textLines":1,"bbox":[750,299,165,42]}
+{"kind":"textbox","id":"sh/q5gjql0b","slide":3,"text":"Error compounds","textPreview":"Error compounds","textChars":15,"textLines":1,"bbox":[915,299,195,42]}
+{"kind":"textbox","id":"sh/r6p0jqhw","slide":3,"text":"Medium","textPreview":"Medium","textChars":6,"textLines":1,"bbox":[1110,299,58,42]}
+{"kind":"shape","id":"sh/s7y1svih","slide":3,"bbox":[545,364,635,58]}
+{"kind":"textbox","id":"sh/d87il0z2","slide":3,"text":"Black-box optimizer","textPreview":"Black-box optimizer","textChars":19,"textLines":1,"bbox":[560,371,185,42]}
+{"kind":"textbox","id":"sh/e9gju507","slide":3,"text":"Early","textPreview":"Early","textChars":5,"textLines":1,"bbox":[750,371,165,42]}
+{"kind":"textbox","id":"sh/fapknqhs","slide":3,"text":"Needs external guardrails","textPreview":"Needs external guardrails","textChars":25,"textLines":1,"bbox":[915,371,195,42]}
+{"kind":"textbox","id":"sh/p4bmt4ja","slide":3,"text":"Low","textPreview":"Low","textChars":3,"textLines":1,"bbox":[1110,371,58,42]}
+{"kind":"shape","id":"sh/o32lkz2p","slide":3,"bbox":[545,436,635,58]}
+{"kind":"textbox","id":"sh/n294ru14","slide":3,"text":"GradeSense","textPreview":"GradeSense","textChars":10,"textLines":1,"bbox":[560,443,185,42]}
+{"kind":"textbox","id":"sh/2103ipkj","slide":3,"text":"Early + 12-step","textPreview":"Early + 12-step","textChars":15,"textLines":1,"bbox":[750,443,165,42]}
+{"kind":"textbox","id":"sh/xsbmx4j6","slide":3,"text":"Pre-checked + simulated","textPreview":"Pre-checked + simulated","textChars":23,"textLines":1,"bbox":[915,443,195,42]}
+{"kind":"textbox","id":"sh/cr2loz2l","slide":3,"text":"High","textPreview":"High","textChars":4,"textLines":1,"bbox":[1110,443,58,42]}
+{"kind":"notes","id":"nt/ofy9wn61","slide":3,"text":"[Sources]\nInternal source: docs/MODEL_OVERVIEW.md and backend/app/services/forecasting.\nThe comparison is qualitative; no external benchmark is claimed."}
+{"kind":"slide","id":"sl/jyx0ra1s","slide":4,"title":"EXPLAINABILITY, SAFETY, AND OUTCOMES","textShapes":25}
+{"kind":"textbox","id":"sh/ud8fyt4z","slide":4,"name":"Title 1","placeholder":"title","text":"EXPLAINABILITY, SAFETY, AND OUTCOMES","textPreview":"EXPLAINABILITY, SAFETY, AND OUTCOMES","textChars":36,"textLines":1,"bbox":[19.21,12,1152,92]}
+{"kind":"shape","id":"sh/sjad83id","slide":4,"name":"TextBox 8","bbox":[64,266,985.33,145.41]}
+{"kind":"textbox","id":"sh/doj29oba","slide":4,"name":"Slide Number Placeholder 5","placeholder":"slideNumber","text":"4","textPreview":"4","textChars":1,"textLines":1,"bbox":[0,0,0,0]}
+{"kind":"textbox","id":"sh/sna103ap","slide":4,"name":"Footer Placeholder 6","placeholder":"footer","text":"GradeSense | Honeywell Hackathon Final Submission","textPreview":"GradeSense | Honeywell Hackathon Final Submission","textChars":49,"textLines":1,"bbox":[488,667.33,336.38,38.33]}
+{"kind":"shape","id":"sh/tkjeh8jy","slide":4,"bbox":[55,112,1170,5]}
+{"kind":"textbox","id":"sh/6h8v6d07","slide":4,"text":"EXPLAINABLE AI","textPreview":"EXPLAINABLE AI","textChars":14,"textLines":1,"bbox":[70,145,335,30]}
+{"kind":"shape","id":"sh/rihwfy1s","slide":4,"bbox":[70,188,330,305]}
+{"kind":"textbox","id":"sh/4fqd43i1","slide":4,"text":"Why did risk change?","textPreview":"Why did risk change?","textChars":20,"textLines":1,"bbox":[92,208,285,34]}
+{"kind":"textbox","id":"sh/5gzed8jm","slide":4,"text":"Moisture","textPreview":"Moisture","textChars":8,"textLines":1,"bbox":[92,265,145,24]}
+{"kind":"shape","id":"sh/id8v2t0b","slide":4,"bbox":[235,274,130,12]}
+{"kind":"shape","id":"sh/jehwby1g","slide":4,"bbox":[235,274,109.2,12]}
+{"kind":"textbox","id":"sh/wr6d0ji5","slide":4,"text":"Steam pressure","textPreview":"Steam pressure","textChars":14,"textLines":1,"bbox":[92,323,145,24]}
+{"kind":"shape","id":"sh/hsze9ojq","slide":4,"bbox":[235,332,130,12]}
+{"kind":"shape","id":"sh/x8rudkbe","slide":4,"bbox":[235,332,88.4,12]}
+{"kind":"textbox","id":"sh/c7yt4fut","slide":4,"text":"Machine speed","textPreview":"Machine speed","textChars":13,"textLines":1,"bbox":[92,381,145,24]}
+{"kind":"shape","id":"sh/b6pcbat8","slide":4,"bbox":[235,390,130,12]}
+{"kind":"shape","id":"sh/algb25cn","slide":4,"bbox":[235,390,67.6,12]}
+{"kind":"textbox","id":"sh/pk7u90bi","slide":4,"text":"Feature direction • model version • confidence • drift","textPreview":"Feature direction • model version • confidence • drift","textChars":54,"textLines":1,"bbox":[92,443,285,34]}
+{"kind":"textbox","id":"sh/ojyt0vux","slide":4,"text":"RECOMMENDATION ENGINE","textPreview":"RECOMMENDATION ENGINE","textChars":21,"textLines":1,"bbox":[455,145,365,30]}
+{"kind":"shape","id":"sh/nipc7atc","slide":4,"bbox":[565,256.5,55,3]}
+{"kind":"shape","id":"sh/2hgby5cr","slide":4,"bbox":[612,251,12,14]}
+{"kind":"shape","id":"sh/9gbul4bm","slide":4,"bbox":[730,256.5,55,3]}
+{"kind":"shape","id":"sh/8fidczu1","slide":4,"bbox":[777,251,12,14]}
+{"kind":"shape","id":"sh/qlcr61sj","slide":4,"bbox":[455,205,110,105]}
+{"kind":"shape","id":"sh/rml8f694","slide":4,"bbox":[455,205,7,105]}
+{"kind":"textbox","id":"sh/snu98bap","slide":4,"text":"Generate","textPreview":"Generate","textChars":8,"textLines":1,"bbox":[473,214,84,26]}
+{"kind":"textbox","id":"sh/do3q1wra","slide":4,"text":"1-4 variable actions","textPreview":"1-4 variable actions","textChars":20,"textLines":1,"bbox":[473,243,84,60]}
+{"kind":"shape","id":"sh/ihcr2hsn","slide":4,"bbox":[620,205,110,105]}
+{"kind":"shape","id":"sh/3il8bm9s","slide":4,"bbox":[620,205,7,105]}
+{"kind":"textbox","id":"sh/4ju94rad","slide":4,"text":"Gate","textPreview":"Gate","textChars":4,"textLines":1,"bbox":[638,214,84,26]}
+{"kind":"textbox","id":"sh/5k3qdwry","slide":4,"text":"Reject unsafe sets","textPreview":"Reject unsafe sets","textChars":18,"textLines":1,"bbox":[638,243,84,60]}
+{"kind":"shape","id":"sh/2dwrelsr","slide":4,"bbox":[785,205,125,105]}
+{"kind":"shape","id":"sh/ne5s7q9c","slide":4,"bbox":[785,205,7,105]}
+{"kind":"textbox","id":"sh/76lo3ids","slide":4,"text":"Simulate","textPreview":"Simulate","textChars":8,"textLines":1,"bbox":[803,214,99,26]}
+{"kind":"textbox","id":"sh/m5cnadw7","slide":4,"text":"Compare to baseline","textPreview":"Compare to baseline","textChars":19,"textLines":1,"bbox":[803,243,99,60]}
+{"kind":"textbox","id":"sh/98365svi","slide":4,"text":"Only positive, constraint-valid improvements are ranked for the operator.","textPreview":"Only positive, constraint-valid improvements are ranked for the operator.","textChars":73,"textLines":1,"bbox":[460,340,445,88]}
+{"kind":"textbox","id":"sh/87u5cned","slide":4,"text":"BUSINESS IMPACT","textPreview":"BUSINESS IMPACT","textChars":15,"textLines":1,"bbox":[955,145,240,30]}
+{"kind":"shape","id":"sh/zi14zidg","slide":4,"bbox":[955,195,230,112]}
+{"kind":"textbox","id":"sh/yhsn6dwv","slide":4,"text":"EARLIER","textPreview":"EARLIER","textChars":7,"textLines":1,"bbox":[965,208,210,48]}
+{"kind":"textbox","id":"sh/l43m18vm","slide":4,"text":"risk detection","textPreview":"risk detection","textChars":14,"textLines":1,"bbox":[965,259,210,33]}
+{"kind":"shape","id":"sh/0ju583e1","slide":4,"bbox":[955,325,230,112]}
+{"kind":"textbox","id":"sh/je5ob2d0","slide":4,"text":"SAFER","textPreview":"SAFER","textChars":5,"textLines":1,"bbox":[965,338,210,48]}
+{"kind":"textbox","id":"sh/idwnixcf","slide":4,"text":"set-point guidance","textPreview":"set-point guidance","textChars":18,"textLines":1,"bbox":[965,389,210,33]}
+{"kind":"shape","id":"sh/g76tgfql","slide":4,"bbox":[955,455,230,112]}
+{"kind":"textbox","id":"sh/h8fup076","slide":4,"text":"TRACEABLE","textPreview":"TRACEABLE","textChars":9,"textLines":1,"bbox":[965,468,210,48]}
+{"kind":"textbox","id":"sh/u54be58f","slide":4,"text":"decision-to-outcome loop","textPreview":"decision-to-outcome loop","textChars":24,"textLines":1,"bbox":[965,519,210,33]}
+{"kind":"textbox","id":"sh/f6xcnap0","slide":4,"text":"Advisory by design: the operator remains in control.","textPreview":"Advisory by design: the operator remains in control.","textChars":52,"textLines":1,"bbox":[70,530,840,42]}
+{"kind":"notes","id":"nt/jyx0ra1s","slide":4,"text":"[Sources]\nInternal source: backend/app/services/explainability.py, recommendation.py, intervention.py\nBusiness-impact wording is directional; no unvalidated ROI figures are claimed."}
+{"kind":"slide","id":"sl/i107q5of","slide":5,"title":"VALIDATED ANALYTICS + WORKING PRODUCT","textShapes":20}
+{"kind":"textbox","id":"sh/y1g7ylcj","slide":5,"name":"Title 1","placeholder":"title","text":"VALIDATED ANALYTICS + WORKING PRODUCT","textPreview":"VALIDATED ANALYTICS + WORKING PRODUCT","textChars":37,"textLines":1,"bbox":[19.21,12,1152,92]}
+{"kind":"shape","id":"sh/g7alsnu1","slide":5,"name":"TextBox 8","bbox":[64,266,985.33,235.88]}
+{"kind":"textbox","id":"sh/l4bupwny","slide":5,"name":"Slide Number Placeholder 5","placeholder":"slideNumber","text":"5","textPreview":"5","textChars":1,"textLines":1,"bbox":[0,0,0,0]}
+{"kind":"textbox","id":"sh/032tgr6d","slide":5,"name":"Footer Placeholder 6","placeholder":"footer","text":"GradeSense | Honeywell Hackathon Final Submission","textPreview":"GradeSense | Honeywell Hackathon Final Submission","textChars":49,"textLines":1,"bbox":[488,667.33,336.38,38.33]}
+{"kind":"shape","id":"sh/h8jm1sbm","slide":5,"bbox":[55,112,1170,5]}
+{"kind":"textbox","id":"sh/i9s3uxc7","slide":5,"text":"LIVE OPERATIONS","textPreview":"LIVE OPERATIONS","textChars":15,"textLines":1,"bbox":[74,318,240,28]}
+{"kind":"textbox","id":"sh/3a1432ts","slide":5,"text":"EXPLAINABLE PREDICTION","textPreview":"EXPLAINABLE PREDICTION","textChars":22,"textLines":1,"bbox":[680,318,300,28]}
+{"kind":"textbox","id":"sh/szu507a9","slide":5,"text":"CONSTRAINT-AWARE ACTION","textPreview":"CONSTRAINT-AWARE ACTION","textChars":23,"textLines":1,"bbox":[74,543,320,28]}
+{"kind":"textbox","id":"sh/d03m9cbu","slide":5,"text":"ANALYTICS + GOVERNANCE","textPreview":"ANALYTICS + GOVERNANCE","textChars":22,"textLines":1,"bbox":[680,543,320,28]}
+{"kind":"shape","id":"sh/p8ze1szy","slide":5,"bbox":[42,125,1195,475]}
+{"kind":"shape","id":"sh/o7qd8nyd","slide":5,"bbox":[55,145,210,108]}
+{"kind":"textbox","id":"sh/n6hczihs","slide":5,"text":"0.920","textPreview":"0.920","textChars":5,"textLines":1,"bbox":[63,156,194,48]}
+{"kind":"textbox","id":"sh/25ov6dg7","slide":5,"text":"Crossing ROC-AUC","textPreview":"Crossing ROC-AUC","textChars":16,"textLines":1,"bbox":[63,207,194,30]}
+{"kind":"shape","id":"sh/5cvupozu","slide":5,"bbox":[280,145,210,108]}
+{"kind":"textbox","id":"sh/4bmdwji9","slide":5,"text":"1.388","textPreview":"1.388","textChars":5,"textLines":1,"bbox":[288,156,194,48]}
+{"kind":"textbox","id":"sh/uhkr6pwr","slide":5,"text":"Trajectory MAE","textPreview":"Trajectory MAE","textChars":14,"textLines":1,"bbox":[288,207,194,30]}
+{"kind":"shape","id":"sh/vitszuxc","slide":5,"bbox":[505,145,210,108]}
+{"kind":"textbox","id":"sh/gj29szex","slide":5,"text":"0.962","textPreview":"0.962","textChars":5,"textLines":1,"bbox":[513,156,194,48]}
+{"kind":"textbox","id":"sh/hkba14fi","slide":5,"text":"Stabilization R²","textPreview":"Stabilization R²","textChars":16,"textLines":1,"bbox":[513,207,194,30]}
+{"kind":"shape","id":"sh/ilkbu9w3","slide":5,"bbox":[730,145,210,108]}
+{"kind":"textbox","id":"sh/3mds3uxo","slide":5,"text":"20,000","textPreview":"20,000","textChars":6,"textLines":1,"bbox":[738,156,194,48]}
+{"kind":"textbox","id":"sh/4nmtwze9","slide":5,"text":"Snapshot records","textPreview":"Snapshot records","textChars":16,"textLines":1,"bbox":[738,207,194,30]}
+{"kind":"shape","id":"sh/5ova54fe","slide":5,"bbox":[955,145,210,108]}
+{"kind":"textbox","id":"sh/yp0ry5gz","slide":5,"text":"2,544","textPreview":"2,544","textChars":5,"textLines":1,"bbox":[963,156,194,48]}
+{"kind":"textbox","id":"sh/jq9srax4","slide":5,"text":"Held-out windows","textPreview":"Held-out windows","textChars":16,"textLines":1,"bbox":[963,207,194,30]}
+{"kind":"textbox","id":"sh/zm18v6p8","slide":5,"text":"Validation is grouped by complete transitions: 192 train / 48 held out. Windows never cross transition boundaries.","textPreview":"Validation is grouped by complete transitions: 192 train / 48 held out. Windows never cross transition boundaries.","textChars":114,"textLines":1,"bbox":[70,266,1090,42]}
+{"kind":"textbox","id":"sh/0napobqt","slide":5,"text":"REAL-TIME RISK + DRIFT","textPreview":"REAL-TIME RISK + DRIFT","textChars":22,"textLines":1,"bbox":[75,538,300,28]}
+{"kind":"textbox","id":"sh/na18z6p4","slide":5,"text":"RANKED, EXPLAINED ACTIONS","textPreview":"RANKED, EXPLAINED ACTIONS","textChars":25,"textLines":1,"bbox":[655,538,330,28]}
+{"kind":"image","id":"im/cjexsryt","slide":5,"name":"","geometry":"roundRect","bbox":[271.06,140,132.88,200]}
+{"kind":"image","id":"im/dkne1wfe","slide":5,"name":"","geometry":"roundRect","bbox":[793.56,140,297.89,200]}
+{"kind":"image","id":"im/qhcfq1gn","slide":5,"name":"","geometry":"roundRect","bbox":[223.18,365,228.65,200]}
+{"kind":"image","id":"im/bilwz6x8","slide":5,"name":"","geometry":"roundRect","bbox":[764.72,365,355.56,200]}
+{"kind":"image","id":"im/zad83ut8","slide":5,"name":"","geometry":"roundRect","alt":"GradeSense transition command center","bbox":[55,330,545,210]}
+{"kind":"image","id":"im/kbm9wzut","slide":5,"name":"","geometry":"roundRect","alt":"GradeSense ranked recommendation workflow","bbox":[635,330,545,210]}
+{"kind":"notes","id":"nt/i107q5of","slide":5,"text":"[Sources]\nInternal source: models/grade_transition_model.joblib and models/basis_weight_forecast.joblib.\nMetrics: crossing ROC-AUC 0.920313; mean trajectory MAE 1.388263; stabilization R2 0.9622; 20,000 snapshot records; 2,544 validation windows; 192/48 transition split.\nScreenshots: Submission/screenshots/Home.png and Recommendation.png."}
+{"kind":"slide","id":"sl/x8f69ofe","slide":6,"title":"TRY IT, REVIEW IT, BUILD ON IT","textShapes":27}
+{"kind":"textbox","id":"sh/1kj2p0ve","slide":6,"name":"Title 1","placeholder":"title","text":"TRY IT, REVIEW IT, BUILD ON IT","textPreview":"TRY IT, REVIEW IT, BUILD ON IT","textChars":30,"textLines":1,"bbox":[19.21,12,1152,92]}
+{"kind":"shape","id":"sh/vq5cve1s","slide":6,"name":"TextBox 8","bbox":[64,293.47,985.33,54.93]}
+{"kind":"textbox","id":"sh/ml07i9sv","slide":6,"name":"Slide Number Placeholder 5","placeholder":"slideNumber","text":"6","textPreview":"6","textChars":1,"textLines":1,"bbox":[0,0,0,0]}
+{"kind":"textbox","id":"sh/7m98ru9g","slide":6,"name":"Footer Placeholder 6","placeholder":"footer","text":"GradeSense | Honeywell Hackathon Final Submission","textPreview":"GradeSense | Honeywell Hackathon Final Submission","textChars":49,"textLines":1,"bbox":[488,667.33,336.38,38.33]}
+{"kind":"shape","id":"sh/apwv2tk7","slide":6,"bbox":[55,112,1170,5]}
+{"kind":"textbox","id":"sh/xsnuxoji","slide":6,"text":"DEPLOYMENT ARCHITECTURE","textPreview":"DEPLOYMENT ARCHITECTURE","textChars":23,"textLines":1,"bbox":[70,142,500,30]}
+{"kind":"shape","id":"sh/wred4j2x","slide":6,"bbox":[280,243.5,70,3]}
+{"kind":"shape","id":"sh/nmlcre1g","slide":6,"bbox":[342,238,12,14]}
+{"kind":"shape","id":"sh/mlcby9kv","slide":6,"bbox":[560,243.5,70,3]}
+{"kind":"shape","id":"sh/9onutojm","slide":6,"bbox":[622,238,12,14]}
+{"kind":"shape","id":"sh/oned0j21","slide":6,"bbox":[840,243.5,70,3]}
+{"kind":"shape","id":"sh/7ipc3i1k","slide":6,"bbox":[902,238,12,14]}
+{"kind":"shape","id":"sh/6hgvadkf","slide":6,"bbox":[70,190,210,110]}
+{"kind":"shape","id":"sh/2d0f2h4n","slide":6,"bbox":[70,190,7,110]}
+{"kind":"textbox","id":"sh/3etgv2ls","slide":6,"text":"Mill browser","textPreview":"Mill browser","textChars":12,"textLines":1,"bbox":[88,199,184,26]}
+{"kind":"textbox","id":"sh/4f2x47md","slide":6,"text":"Operator experience","textPreview":"Operator experience","textChars":19,"textLines":1,"bbox":[88,228,184,65]}
+{"kind":"shape","id":"sh/pgbyxc3y","slide":6,"bbox":[350,190,210,110]}
+{"kind":"shape","id":"sh/qhkf6h4j","slide":6,"bbox":[350,190,7,110]}
+{"kind":"textbox","id":"sh/ritgzml4","slide":6,"text":"TLS gateway","textPreview":"TLS gateway","textChars":11,"textLines":1,"bbox":[368,199,184,26]}
+{"kind":"textbox","id":"sh/cj2x8rmp","slide":6,"text":"Identity + routing","textPreview":"Identity + routing","textChars":18,"textLines":1,"bbox":[368,228,184,65]}
+{"kind":"shape","id":"sh/dkby1w3a","slide":6,"bbox":[630,190,210,110]}
+{"kind":"shape","id":"sh/6lgfux4f","slide":6,"bbox":[630,190,7,110]}
+{"kind":"textbox","id":"sh/7m9wnil0","slide":6,"text":"React + FastAPI","textPreview":"React + FastAPI","textChars":15,"textLines":1,"bbox":[648,199,184,26]}
+{"kind":"textbox","id":"sh/90fit0ni","slide":6,"text":"Nginx, REST, WebSocket","textPreview":"Nginx, REST, WebSocket","textChars":22,"textLines":1,"bbox":[648,228,184,65]}
+{"kind":"shape","id":"sh/oz610v6x","slide":6,"bbox":[910,190,230,110]}
+{"kind":"shape","id":"sh/nex0rq5c","slide":6,"bbox":[910,190,7,110]}
+{"kind":"textbox","id":"sh/mdojylor","slide":6,"text":"PostgreSQL","textPreview":"PostgreSQL","textChars":10,"textLines":1,"bbox":[928,199,204,26]}
+{"kind":"textbox","id":"sh/x4zix0ne","slide":6,"text":"Durable history + audit","textPreview":"Durable history + audit","textChars":23,"textLines":1,"bbox":[928,228,204,65]}
+{"kind":"shape","id":"sh/w3614vmt","slide":6,"bbox":[70,340,1070,2]}
+{"kind":"textbox","id":"sh/b2x0vq58","slide":6,"text":"REFERENCE DELIVERY","textPreview":"REFERENCE DELIVERY","textChars":18,"textLines":1,"bbox":[70,365,320,28]}
+{"kind":"textbox","id":"sh/a1oj2lo3","slide":6,"text":"Docker Compose • Render blueprint • Alembic migrations • health checks • read-only model mounts","textPreview":"Docker Compose • Render blueprint • Alembic migrations • health checks • read-only model mounts","textChars":95,"textLines":1,"bbox":[70,405,480,92]}
+{"kind":"textbox","id":"sh/d8vilgna","slide":6,"text":"PILOT NEXT","textPreview":"PILOT NEXT","textChars":10,"textLines":1,"bbox":[650,365,260,28]}
+{"kind":"textbox","id":"sh/c7mhsb6p","slide":6,"text":"Connect PLC/SCADA data\nCalibrate on plant history\nEnable SSO and governed roles\nMeasure off-spec and stabilization outcomes","textPreview":"Connect PLC/SCADA data | Calibrate on plant history | Enable SSO and governed roles | Measure off-spec and stabilization outcomes","textChars":123,"textLines":4,"bbox":[650,405,490,120]}
+{"kind":"shape","id":"sh/g3al0j6d","slide":6,"bbox":[70,535,1070,42]}
+{"kind":"textbox","id":"sh/ho3m9o7y","slide":6,"text":"GradeSense turns model output into safe, explainable, measurable operator action.","textPreview":"GradeSense turns model output into safe, explainable, measurable operator action.","textChars":81,"textLines":1,"bbox":[88,539,1034,34]}
+{"kind":"shape","id":"sh/u1s3y987","slide":6,"bbox":[42,125,1195,475]}
+{"kind":"textbox","id":"sh/f2147eps","slide":6,"text":"GradeSense turns model output into safe, explainable, measurable operator action.","textPreview":"GradeSense turns model output into safe, explainable, measurable operator action.","textChars":81,"textLines":1,"bbox":[75,145,1080,55]}
+{"kind":"shape","id":"sh/szalwzq1","slide":6,"bbox":[115,225,1025,56]}
+{"kind":"textbox","id":"sh/t0jm547m","slide":6,"text":"LIVE PRODUCT","textPreview":"LIVE PRODUCT","textChars":12,"textLines":1,"bbox":[140,232,235,42]}
+{"kind":"textbox","id":"sh/6xs3up8b","slide":6,"text":"https://gradesense-4weh.onrender.com/","textPreview":"https://gradesense-4weh.onrender.com/","textChars":37,"textLines":1,"bbox":[385,232,725,42]}
+{"kind":"shape","id":"sh/7y1k3upg","slide":6,"bbox":[115,297,1025,56]}
+{"kind":"textbox","id":"sh/kvqlszq5","slide":6,"text":"SOURCE CODE","textPreview":"SOURCE CODE","textChars":11,"textLines":1,"bbox":[140,304,235,42]}
+{"kind":"textbox","id":"sh/5wj2147q","slide":6,"text":"https://github.com/bhavukm007/GradeSense","textPreview":"https://github.com/bhavukm007/GradeSense","textChars":40,"textLines":1,"bbox":[385,304,725,42]}
+{"kind":"shape","id":"sh/n6h4bu9c","slide":6,"bbox":[115,369,1025,56]}
+{"kind":"textbox","id":"sh/m5832psr","slide":6,"text":"API DOCUMENTATION","textPreview":"API DOCUMENTATION","textChars":17,"textLines":1,"bbox":[140,376,235,42]}
+{"kind":"textbox","id":"sh/9szmdkri","slide":6,"text":"https://gradesense-api.onrender.com/docs","textPreview":"https://gradesense-api.onrender.com/docs","textChars":40,"textLines":1,"bbox":[385,376,725,42]}
+{"kind":"shape","id":"sh/orq54fax","slide":6,"bbox":[115,441,1025,56]}
+{"kind":"textbox","id":"sh/buh4fu9o","slide":6,"text":"DEMO VIDEO","textPreview":"DEMO VIDEO","textChars":10,"textLines":1,"bbox":[140,448,235,42]}
+{"kind":"textbox","id":"sh/at8n6ps3","slide":6,"text":"https://drive.google.com/file/d/1rCr3CzuCit0O029VzyxIhHoR1lv9E93E/view?usp=sharing","textPreview":"https://drive.google.com/file/d/1rCr3CzuCit0O029VzyxIhHoR1lv9E93E/view?usp=sharing","textChars":82,"textLines":1,"bbox":[385,448,725,42]}
+{"kind":"textbox","id":"sh/xwjmh4re","slide":6,"text":"Pilot next: historian integration, mill-specific calibration, identity controls, and measured avoided off-spec production.","textPreview":"Pilot next: historian integration, mill-specific calibration, identity controls, and measured avoided off-spec production.","textChars":122,"textLines":1,"bbox":[105,530,1050,42]}
+{"kind":"notes","id":"nt/x8f69ofe","slide":6,"text":"[Sources]\nLIVE PRODUCT: https://gradesense-4weh.onrender.com/\nSOURCE CODE: https://github.com/bhavukm007/GradeSense\nAPI DOCUMENTATION: https://gradesense-api.onrender.com/docs\nDEMO VIDEO: https://drive.google.com/file/d/1rCr3CzuCit0O029VzyxIhHoR1lv9E93E/view?usp=sharing"}

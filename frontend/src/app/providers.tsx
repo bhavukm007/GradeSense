@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { type PropsWithChildren, useState } from 'react'
 import { BrowserRouter } from 'react-router'
 
+import { ApiError } from '../api/client'
 import { useThemeStore } from '../stores/themeStore'
 
 function ThemeProvider({ children }: PropsWithChildren) {
@@ -22,7 +23,10 @@ export function AppProviders({ children }: PropsWithChildren) {
         defaultOptions: {
           queries: {
             staleTime: 30_000,
-            retry: 1,
+            retry: (failureCount, error) =>
+              failureCount < 2 &&
+              (!(error instanceof ApiError) || !error.status || error.status >= 500),
+            retryDelay: (attempt) => Math.min(1_500 * 2 ** attempt, 5_000),
             refetchOnWindowFocus: false,
           },
         },

@@ -28,8 +28,10 @@ export function DashboardPage() {
     queryFn: () => api.recommendationHistory(1, 5),
     refetchInterval: 30_000,
   })
-  const loading = [model, dataset, predictions].some((query) => query.isLoading)
-  const failed = [model, dataset, predictions].find((query) => query.error)
+  // Model readiness is the only critical dependency. Slow analytics and history
+  // requests must not turn a partially healthy production dashboard into an outage.
+  const criticalLoading = model.isLoading
+  const criticalFailure = model.error
   const rows = predictions.data?.items ?? []
   const average = (selector: (row: (typeof rows)[number]) => number) =>
     rows.length ? rows.reduce((sum, row) => sum + selector(row), 0) / rows.length : 0
@@ -42,15 +44,15 @@ export function DashboardPage() {
         description="A real-time view of model readiness, transition predictions, and model-evaluated operator guidance."
       />
       <LiveMonitoring />
-      {loading ? (
+      {criticalLoading ? (
         <div className="mt-8">
           <SkeletonGrid count={6} />
         </div>
-      ) : failed ? (
+      ) : criticalFailure ? (
         <div className="mt-8">
           <ErrorState
-            message={(failed.error as Error).message}
-            onRetry={() => void failed.refetch()}
+            message={(criticalFailure as Error).message}
+            onRetry={() => void model.refetch()}
           />
         </div>
       ) : (
@@ -65,8 +67,12 @@ export function DashboardPage() {
             <MetricCard
               icon={Database}
               label="Dataset Size"
-              value={formatNumber(dataset.data!.record_count, 0)}
-              detail={`Generated ${formatDate(dataset.data!.generated_at)}`}
+              value={dataset.data ? formatNumber(dataset.data.record_count, 0) : 'Unavailable'}
+              detail={
+                dataset.data
+                  ? `Generated ${formatDate(dataset.data.generated_at)}`
+                  : 'Dataset analytics can be retried independently'
+              }
             />
             <MetricCard
               icon={Activity}

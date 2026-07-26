@@ -42,7 +42,6 @@
       }
     },
     "typefaces": [
-      "Arial",
       "Calibri",
       "Times New Roman",
       "TradeGothic"
@@ -562,11 +561,9 @@
         64,
         266,
         985.33,
-        323.2
+        145.41
       ],
       "geometry": "rect",
-      "text": "Dashboard: live trends, off-spec risk, alerts, recommendations, analytics, history, and system health\nAI pipeline: validate -> engineer features -> predict/forecast -> explain -> constrain -> simulate -> rank\nWebSocket events keep sensor updates, predictions, drift, alerts, and recommendations synchronized",
-      "textPreview": "Dashboard: live trends, off-spec risk, alerts, recommendations, analytics, history, and system health | AI pipeline: validate -> engineer...",
       "resolvedFontSize": 24,
       "resolvedTextStyle": {
         "fontSize": 24,
@@ -583,89 +580,18 @@
         }
       },
       "textLayout": {
-        "lineCount": 7,
+        "lineCount": 2,
         "lines": [
           {
             "index": 1,
-            "text": "• Dashboard: live trends, off-spec risk, alerts,"
+            "text": "• "
           },
           {
             "index": 2,
-            "text": "recommendations, analytics, history, and system health"
-          },
-          {
-            "index": 3,
-            "text": "• AI pipeline: validate -> engineer features ->"
-          },
-          {
-            "index": 4,
-            "text": "predict/forecast -> explain -> constrain -> simulate ->"
-          },
-          {
-            "index": 5,
-            "text": "rank"
-          },
-          {
-            "index": 6,
-            "text": "• WebSocket events keep sensor updates, predictions,"
-          },
-          {
-            "index": 7,
-            "text": "drift, alerts, and recommendations synchronized"
+            "text": "• "
           }
         ]
       },
-      "paragraphs": [
-        {
-          "index": 1,
-          "text": "Dashboard: live trends, off-spec risk, alerts, recommendations, analytics, history, and system health",
-          "lineSpacingPercent": 100000,
-          "runs": [
-            {
-              "index": 1,
-              "text": "Dashboard: live trends, off-spec risk, alerts, recommendations, analytics, history, and system health",
-              "fontSize": 37.33,
-              "typeface": "Arial",
-              "color": "#000000"
-            }
-          ],
-          "bulletCharacter": "",
-          "marginLeft": 0
-        },
-        {
-          "index": 2,
-          "text": "AI pipeline: validate -> engineer features -> predict/forecast -> explain -> constrain -> simulate -> rank",
-          "lineSpacingPercent": 100000,
-          "runs": [
-            {
-              "index": 1,
-              "text": "AI pipeline: validate -> engineer features -> predict/forecast -> explain -> constrain -> simulate -> rank",
-              "fontSize": 37.33,
-              "typeface": "Arial",
-              "color": "#000000"
-            }
-          ],
-          "bulletCharacter": "",
-          "marginLeft": 0
-        },
-        {
-          "index": 3,
-          "text": "WebSocket events keep sensor updates, predictions, drift, alerts, and recommendations synchronized",
-          "lineSpacingPercent": 100000,
-          "runs": [
-            {
-              "index": 1,
-              "text": "WebSocket events keep sensor updates, predictions, drift, alerts, and recommendations synchronized",
-              "fontSize": 37.33,
-              "typeface": "Arial",
-              "color": "#000000",
-              "textTransform": "none"
-            }
-          ],
-          "bulletCharacter": "",
-          "marginLeft": 0
-        }
-      ],
       "lineWidth": 1
     },
     {
@@ -801,6 +727,27 @@
           "marginLeft": 0
         }
       ]
+    },
+    {
+      "order": 5,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/43m1wbqd",
+      "id": "17411",
+      "bbox": [
+        64,
+        266,
+        985.33,
+        145.41
+      ],
+      "alt": "Seven deployed GradeSense application views",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "ac18470a-7b71-403e-9069-8d705ddb2560",
+        "contentType": "image/png",
+        "byteLength": 127855
+      }
     }
   ],
   "composeRuns": []

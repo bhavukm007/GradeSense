@@ -3,14 +3,19 @@ services:
     name: gradesense-api
     runtime: python
     plan: free
-    buildCommand: pip install --upgrade pip && pip install ./backend
+    buildCommand: >
+      pip install --upgrade pip &&
+      pip install ./backend &&
+      cd backend &&
+      export GRADESENSE_DATABASE_URL="$DATABASE_URL" &&
+      alembic upgrade head
     startCommand: >
       cd backend &&
       export GRADESENSE_DATABASE_URL="$DATABASE_URL" &&
-      export GRADESENSE_CORS_ORIGINS="[\"https://gradesense-4weh.onrender.com\",\"$FRONTEND_URL\"]" &&
-      alembic upgrade head &&
+      export GRADESENSE_CORS_ORIGINS="[\"https://gradesense-4weh.onrender.com\"]" &&
       exec uvicorn app.main:app --host 0.0.0.0 --port "$PORT"
     healthCheckPath: /health
+    maxShutdownDelaySeconds: 30
     autoDeployTrigger: commit
     envVars:
       - key: PYTHON_VERSION
@@ -20,8 +25,6 @@ services:
       - key: GRADESENSE_LOG_LEVEL
         value: INFO
       - key: DATABASE_URL
-        sync: false
-      - key: FRONTEND_URL
         sync: false
 
   - type: web
@@ -33,7 +36,7 @@ services:
 
     envVars:
       - key: VITE_API_URL
-        sync: false
+        value: https://gradesense-api.onrender.com
 
     routes:
       - type: rewrite

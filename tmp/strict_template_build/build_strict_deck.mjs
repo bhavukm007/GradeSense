@@ -75,12 +75,26 @@ function notes(slide, sources) {
 {
   const slide = presentation.slides.getItem(3);
   find(slide, "Title 1").text = "DASHBOARD + AI PIPELINE";
-  find(slide, "TextBox 8").text =
-    "Dashboard: live trends, off-spec risk, alerts, recommendations, analytics, history, and system health\n" +
-    "AI pipeline: validate -> engineer features -> predict/forecast -> explain -> constrain -> simulate -> rank\n" +
-    "WebSocket events keep sensor updates, predictions, drift, alerts, and recommendations synchronized";
+  find(slide, "TextBox 8").text = "\n";
+  const screenshotStrip = await fs.readFile(
+    "Q:/Programs/GradeSense/Submission/deployed_screenshots/Presentation_Screenshot_Strip.png"
+  );
+  slide.images.add({
+    blob: screenshotStrip.buffer.slice(
+      screenshotStrip.byteOffset,
+      screenshotStrip.byteOffset + screenshotStrip.byteLength
+    ),
+    contentType: "image/png",
+    alt: "Seven deployed GradeSense application views",
+    fit: "contain",
+    position: { left: 64, top: 266, width: 985.33, height: 145.41 },
+  });
   chrome(slide, 4);
-  notes(slide, ["Internal source: frontend/src/pages, frontend/src/components/live, backend/app/services/streaming.py", "No external assets or claims."]);
+  notes(slide, [
+    "Production deployment: https://gradesense-4weh.onrender.com",
+    "Captured routes: /dashboard, /prediction, /recommendations, /analytics, /history/predictions, /admin/config",
+    "Captured 2026-07-26.",
+  ]);
 }
 
 // Slide 5 - Business Impact + Innovation

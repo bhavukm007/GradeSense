@@ -1,0 +1,207 @@
+{"kind":"deck","id":"pr/5fsqic","name":"Deck"}
+{"kind":"layout","layoutId":"a851b603-6cdd-4180-97a0-cc31b68a7cc7","name":"Master","type":"master"}
+{"kind":"layout","layoutId":"82d0210f-b976-4562-bbb5-446e1d9d3f24","name":"Title Slide","type":"title"}
+{"kind":"slide","id":"sl/agpt08","slide":1,"title":"GRADESENSE","textShapes":16}
+{"kind":"textbox","id":"sh/2pona14b","slide":1,"text":"GRADESENSE","textPreview":"GRADESENSE","textChars":10,"textLines":1,"bbox":[54,24,180,22]}
+{"kind":"textbox","id":"sh/psfm5w32","slide":1,"text":"INDUSTRIAL AI / SMART MANUFACTURING","textPreview":"INDUSTRIAL AI / SMART MANUFACTURING","textChars":35,"textLines":1,"bbox":[580,24,280,22]}
+{"kind":"textbox","id":"sh/or65crmh","slide":1,"text":"HONEYWELL HACKATHON  ·  01","textPreview":"HONEYWELL HACKATHON  ·  01","textChars":26,"textLines":1,"bbox":[1135,24,250,22]}
+{"kind":"textbox","id":"sh/buh476l8","slide":1,"text":"AI-POWERED INTELLIGENT PROCESS OPTIMIZATION","textPreview":"AI-POWERED INTELLIGENT PROCESS OPTIMIZATION","textChars":43,"textLines":1,"bbox":[70,70,730,34]}
+{"kind":"textbox","id":"sh/qtone14n","slide":1,"text":"GRADE\nSENSE","textPreview":"GRADE | SENSE","textChars":11,"textLines":2,"bbox":[70,125,700,225]}
+{"kind":"textbox","id":"sh/dgzm9g3y","slide":1,"text":"Predict quality. Explain risk. Recommend action.","textPreview":"Predict quality. Explain risk. Recommend action.","textChars":48,"textLines":1,"bbox":[76,370,650,50]}
+{"kind":"textbox","id":"sh/cvq5gbmd","slide":1,"text":"An AI-assisted manufacturing intelligence platform that predicts product quality in real time and recommends safe process adjustments before defects occur.","textPreview":"An AI-assisted manufacturing intelligence platform that predicts product quality in real time and recommends safe process adjustments bef...","textChars":155,"textLines":1,"bbox":[76,430,620,105]}
+{"kind":"shape","id":"sh/zih4bql4","slide":1,"bbox":[855,96,475,535]}
+{"kind":"textbox","id":"sh/yh8nil4j","slide":1,"text":"PREDICT","textPreview":"PREDICT","textChars":7,"textLines":1,"bbox":[930,155,320,60]}
+{"kind":"textbox","id":"sh/kretkbm1","slide":1,"text":"↓","textPreview":"↓","textChars":1,"textLines":1,"bbox":[980,225,220,52]}
+{"kind":"textbox","id":"sh/lsnatg3m","slide":1,"text":"EXPLAIN","textPreview":"EXPLAIN","textChars":7,"textLines":1,"bbox":[930,285,320,60]}
+{"kind":"textbox","id":"sh/ypwbi14b","slide":1,"text":"↓","textPreview":"↓","textChars":1,"textLines":1,"bbox":[980,355,220,52]}
+{"kind":"textbox","id":"sh/zq5sr6lg","slide":1,"text":"RECOMMEND","textPreview":"RECOMMEND","textChars":9,"textLines":1,"bbox":[900,415,380,60]}
+{"kind":"textbox","id":"sh/8vytobmd","slide":1,"text":"HUMAN-IN-THE-LOOP · REAL-TIME · TRACEABLE","textPreview":"HUMAN-IN-THE-LOOP · REAL-TIME · TRACEABLE","textChars":41,"textLines":1,"bbox":[895,530,395,30]}
+{"kind":"shape","id":"sh/9w7axg3y","slide":1,"bbox":[76,580,620,2]}
+{"kind":"textbox","id":"sh/mtgbml47","slide":1,"text":"BHAVUK MAHAJAN","textPreview":"BHAVUK MAHAJAN","textChars":14,"textLines":1,"bbox":[76,605,300,32]}
+{"kind":"textbox","id":"sh/7upsv6ls","slide":1,"text":"Candidate ID 20484629  ·  Category: Software","textPreview":"Candidate ID 20484629  ·  Category: Software","textChars":44,"textLines":1,"bbox":[76,640,520,28]}
+{"kind":"textbox","id":"sh/wzytsvm9","slide":1,"text":"Honeywell Hackathon · Industrial AI / Smart Manufacturing","textPreview":"Honeywell Hackathon · Industrial AI / Smart Manufacturing","textChars":57,"textLines":1,"bbox":[76,684,680,25]}
+{"kind":"notes","id":"nt/agpt08","slide":1,"text":"[Sources]\nInternal source: README.md.\nThe official Honeywell problem-statement ID and exact title were not present in the supplied files; the slide flags this rather than inventing them."}
+{"kind":"slide","id":"sl/6o56qa","slide":2,"title":"GRADESENSE","textShapes":28}
+{"kind":"textbox","id":"sh/gf6lcnyd","slide":2,"text":"GRADESENSE","textPreview":"GRADESENSE","textChars":10,"textLines":1,"bbox":[54,24,180,22]}
+{"kind":"textbox","id":"sh/vexk3ixs","slide":2,"text":"PROBLEM + IDEA","textPreview":"PROBLEM + IDEA","textChars":14,"textLines":1,"bbox":[580,24,280,22]}
+{"kind":"textbox","id":"sh/udo3adg7","slide":2,"text":"HONEYWELL HACKATHON  ·  02","textPreview":"HONEYWELL HACKATHON  ·  02","textChars":26,"textLines":1,"bbox":[1135,24,250,22]}
+{"kind":"textbox","id":"sh/54z29sfu","slide":2,"text":"Quality decisions arrive too late","textPreview":"Quality decisions arrive too late","textChars":33,"textLines":1,"bbox":[62,68,1120,100]}
+{"kind":"textbox","id":"sh/4jqlg7yp","slide":2,"text":"CURRENT WORKFLOW","textPreview":"CURRENT WORKFLOW","textChars":16,"textLines":1,"bbox":[66,190,300,30]}
+{"kind":"shape","id":"sh/3ihk72x4","slide":2,"bbox":[65,230,550,310]}
+{"kind":"textbox","id":"sh/ih83exgj","slide":2,"text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[88,257,40,38]}
+{"kind":"textbox","id":"sh/lof2x8fq","slide":2,"text":"Watch hundreds of changing sensor values","textPreview":"Watch hundreds of changing sensor values","textChars":40,"textLines":1,"bbox":[140,257,430,38]}
+{"kind":"textbox","id":"sh/knm143y5","slide":2,"text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[88,323,40,38]}
+{"kind":"textbox","id":"sh/ydcnetwj","slide":2,"text":"Detect drift after quality moves off target","textPreview":"Detect drift after quality moves off target","textChars":43,"textLines":1,"bbox":[140,323,430,38]}
+{"kind":"textbox","id":"sh/zelo7yd4","slide":2,"text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[88,389,40,38]}
+{"kind":"textbox","id":"sh/0fu5g3ep","slide":2,"text":"Rely on experience to choose an adjustment","textPreview":"Rely on experience to choose an adjustment","textChars":42,"textLines":1,"bbox":[140,389,430,38]}
+{"kind":"textbox","id":"sh/lg3698va","slide":2,"text":"4","textPreview":"4","textChars":1,"textLines":1,"bbox":[88,455,40,38]}
+{"kind":"textbox","id":"sh/mhcnidwv","slide":2,"text":"Inspect output and absorb waste or rework","textPreview":"Inspect output and absorb waste or rework","textChars":41,"textLines":1,"bbox":[140,455,430,38]}
+{"kind":"textbox","id":"sh/nilobidg","slide":2,"text":"GRADESENSE WORKFLOW","textPreview":"GRADESENSE WORKFLOW","textChars":19,"textLines":1,"bbox":[755,190,360,30]}
+{"kind":"shape","id":"sh/8je5kne1","slide":2,"bbox":[750,230,625,310]}
+{"kind":"textbox","id":"sh/9kn6dsv6","slide":2,"text":"SENSE","textPreview":"SENSE","textChars":5,"textLines":1,"bbox":[785,252,175,38]}
+{"kind":"textbox","id":"sh/alwnmxwr","slide":2,"text":"Continuous process stream","textPreview":"Continuous process stream","textChars":25,"textLines":1,"bbox":[970,252,350,38]}
+{"kind":"textbox","id":"sh/v65ofidc","slide":2,"text":"PREDICT","textPreview":"PREDICT","textChars":7,"textLines":1,"bbox":[785,318,175,38]}
+{"kind":"textbox","id":"sh/7ap432tk","slide":2,"text":"Quality, risk, stabilization","textPreview":"Quality, risk, stabilization","textChars":28,"textLines":1,"bbox":[970,318,350,38]}
+{"kind":"textbox","id":"sh/69wnaxsz","slide":2,"text":"EXPLAIN","textPreview":"EXPLAIN","textChars":7,"textLines":1,"bbox":[785,384,175,38]}
+{"kind":"textbox","id":"sh/tc7m5sbq","slide":2,"text":"Drivers, confidence, drift","textPreview":"Drivers, confidence, drift","textChars":26,"textLines":1,"bbox":[970,384,350,38]}
+{"kind":"textbox","id":"sh/sby5cna5","slide":2,"text":"RECOMMEND","textPreview":"RECOMMEND","textChars":9,"textLines":1,"bbox":[785,450,175,38]}
+{"kind":"textbox","id":"sh/jm54zit8","slide":2,"text":"Safe set-point changes","textPreview":"Safe set-point changes","textChars":22,"textLines":1,"bbox":[970,450,350,38]}
+{"kind":"textbox","id":"sh/ilwn6ds3","slide":2,"text":"WHY IT MATTERS","textPreview":"WHY IT MATTERS","textChars":14,"textLines":1,"bbox":[65,590,250,30]}
+{"kind":"shape","id":"sh/58nm1sbe","slide":2,"bbox":[65,640,220,36]}
+{"kind":"textbox","id":"sh/kne58nat","slide":2,"text":"BEFORE DEFECTS","textPreview":"BEFORE DEFECTS","textChars":14,"textLines":1,"bbox":[71,642,208,30]}
+{"kind":"shape","id":"sh/vil4vitc","slide":2,"bbox":[300,640,240,36]}
+{"kind":"textbox","id":"sh/ahc32dsr","slide":2,"text":"ACTION, NOT ALERTS","textPreview":"ACTION, NOT ALERTS","textChars":18,"textLines":1,"bbox":[306,642,228,30]}
+{"kind":"shape","id":"sh/0na1wzqp","slide":2,"bbox":[555,640,260,36]}
+{"kind":"textbox","id":"sh/loj254ra","slide":2,"text":"EXPLAINED DECISIONS","textPreview":"EXPLAINED DECISIONS","textChars":19,"textLines":1,"bbox":[561,642,248,30]}
+{"kind":"shape","id":"sh/ylsju98j","slide":2,"bbox":[830,640,260,36]}
+{"kind":"textbox","id":"sh/zm1k3e94","slide":2,"text":"CONTINUOUS LEARNING","textPreview":"CONTINUOUS LEARNING","textChars":19,"textLines":1,"bbox":[836,642,248,30]}
+{"kind":"shape","id":"sh/8ru10jql","slide":2,"bbox":[1105,640,220,36]}
+{"kind":"textbox","id":"sh/9s329or6","slide":2,"text":"OPERATOR CONTROL","textPreview":"OPERATOR CONTROL","textChars":16,"textLines":1,"bbox":[1111,642,208,30]}
+{"kind":"notes","id":"nt/6o56qa","slide":2,"text":"[Sources]\nInternal source: README.md and docs/DEMO_GUIDE.md.\nBenefits are capability statements, not quantified plant ROI claims."}
+{"kind":"slide","id":"sl/e0p54i","slide":3,"title":"GRADESENSE","textShapes":38}
+{"kind":"textbox","id":"sh/d8bypw3m","slide":3,"text":"GRADESENSE","textPreview":"GRADESENSE","textChars":10,"textLines":1,"bbox":[54,24,180,22]}
+{"kind":"textbox","id":"sh/qlkfuh4v","slide":3,"text":"TECHNICAL APPROACH","textPreview":"TECHNICAL APPROACH","textChars":18,"textLines":1,"bbox":[580,24,280,22]}
+{"kind":"textbox","id":"sh/bmtwnmlg","slide":3,"text":"HONEYWELL HACKATHON  ·  03","textPreview":"HONEYWELL HACKATHON  ·  03","textChars":26,"textLines":1,"bbox":[1135,24,250,22]}
+{"kind":"textbox","id":"sh/0b2xkrmx","slide":3,"text":"One governed path from sensor to action","textPreview":"One governed path from sensor to action","textChars":39,"textLines":1,"bbox":[62,68,1120,100]}
+{"kind":"shape","id":"sh/lcbytw3i","slide":3,"bbox":[255,315,40,2]}
+{"kind":"shape","id":"sh/y9kfy147","slide":3,"bbox":[292,309,13,13]}
+{"kind":"shape","id":"sh/zatgr6ls","slide":3,"bbox":[470,315,40,2]}
+{"kind":"shape","id":"sh/8fmxobm9","slide":3,"bbox":[507,309,13,13]}
+{"kind":"shape","id":"sh/9gvyxg3u","slide":3,"bbox":[685,315,40,2]}
+{"kind":"shape","id":"sh/54rypkf2","slide":3,"bbox":[722,309,13,13]}
+{"kind":"shape","id":"sh/k3ihgfeh","slide":3,"bbox":[900,315,40,2]}
+{"kind":"shape","id":"sh/j2pgnaxw","slide":3,"bbox":[937,309,13,13]}
+{"kind":"shape","id":"sh/ihgzepwb","slide":3,"bbox":[1115,315,40,2]}
+{"kind":"shape","id":"sh/t8rid4fy","slide":3,"bbox":[1152,309,13,13]}
+{"kind":"shape","id":"sh/s7ihkzed","slide":3,"bbox":[65,245,185,140]}
+{"kind":"textbox","id":"sh/769gbuxs","slide":3,"text":"01","textPreview":"01","textChars":2,"textLines":1,"bbox":[83,260,48,34]}
+{"kind":"textbox","id":"sh/650zipw7","slide":3,"text":"SENSORS","textPreview":"SENSORS","textChars":7,"textLines":1,"bbox":[83,300,150,34]}
+{"kind":"textbox","id":"sh/9c7yh0fu","slide":3,"text":"Live process data","textPreview":"Live process data","textChars":17,"textLines":1,"bbox":[83,340,150,30]}
+{"kind":"shape","id":"sh/8byh8ve9","slide":3,"bbox":[280,245,185,140]}
+{"kind":"textbox","id":"sh/0vihov65","slide":3,"text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[298,260,48,34]}
+{"kind":"textbox","id":"sh/1wbyx0nq","slide":3,"text":"PIPELINE","textPreview":"PIPELINE","textChars":8,"textLines":1,"bbox":[298,300,150,34]}
+{"kind":"textbox","id":"sh/et0zm5oz","slide":3,"text":"Validate + engineer","textPreview":"Validate + engineer","textChars":19,"textLines":1,"bbox":[298,340,150,30]}
+{"kind":"shape","id":"sh/zu9gva5k","slide":3,"bbox":[495,245,185,140]}
+{"kind":"textbox","id":"sh/oj2hsfm1","slide":3,"text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[513,260,48,34]}
+{"kind":"textbox","id":"sh/9kbi1knm","slide":3,"text":"PREDICT","textPreview":"PREDICT","textChars":7,"textLines":1,"bbox":[513,300,150,34]}
+{"kind":"textbox","id":"sh/mhkzq5ov","slide":3,"text":"Snapshot + forecast","textPreview":"Snapshot + forecast","textChars":19,"textLines":1,"bbox":[513,340,150,30]}
+{"kind":"shape","id":"sh/nit0za5g","slide":3,"bbox":[710,245,185,140]}
+{"kind":"textbox","id":"sh/wn2hwzmd","slide":3,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[728,260,48,34]}
+{"kind":"textbox","id":"sh/xovi5kni","slide":3,"text":"EXPLAIN","textPreview":"EXPLAIN","textChars":7,"textLines":1,"bbox":[728,300,150,34]}
+{"kind":"textbox","id":"sh/7ixkvyp0","slide":3,"text":"Drivers + confidence","textPreview":"Drivers + confidence","textChars":20,"textLines":1,"bbox":[728,340,150,30]}
+{"kind":"shape","id":"sh/6hojmtof","slide":3,"bbox":[925,245,185,140]}
+{"kind":"textbox","id":"sh/tkf2xo7q","slide":3,"text":"05","textPreview":"05","textChars":2,"textLines":1,"bbox":[943,260,48,34]}
+{"kind":"textbox","id":"sh/8j61oj6l","slide":3,"text":"RECOMMEND","textPreview":"RECOMMEND","textChars":9,"textLines":1,"bbox":[943,300,150,34]}
+{"kind":"textbox","id":"sh/jedkrepo","slide":3,"text":"Constrain + simulate","textPreview":"Constrain + simulate","textChars":20,"textLines":1,"bbox":[943,340,150,30]}
+{"kind":"shape","id":"sh/yd4ji983","slide":3,"bbox":[1140,245,185,140]}
+{"kind":"textbox","id":"sh/lgf2to7u","slide":3,"text":"06","textPreview":"06","textChars":2,"textLines":1,"bbox":[1158,260,48,34]}
+{"kind":"textbox","id":"sh/kfm1kjq9","slide":3,"text":"DASHBOARD","textPreview":"DASHBOARD","textChars":9,"textLines":1,"bbox":[1158,300,150,34]}
+{"kind":"textbox","id":"sh/3ahk3ip8","slide":3,"text":"Decide + learn","textPreview":"Decide + learn","textChars":14,"textLines":1,"bbox":[1158,340,150,30]}
+{"kind":"textbox","id":"sh/2983udon","slide":3,"text":"TECHNOLOGY STACK","textPreview":"TECHNOLOGY STACK","textChars":16,"textLines":1,"bbox":[65,455,300,30]}
+{"kind":"textbox","id":"sh/qxonyx4r","slide":3,"text":"FRONTEND","textPreview":"FRONTEND","textChars":8,"textLines":1,"bbox":[65,505,230,28]}
+{"kind":"textbox","id":"sh/byxor2lc","slide":3,"text":"React · TypeScript · Vite","textPreview":"React · TypeScript · Vite","textChars":25,"textLines":1,"bbox":[65,538,230,48]}
+{"kind":"textbox","id":"sh/cj6507mx","slide":3,"text":"BACKEND","textPreview":"BACKEND","textChars":7,"textLines":1,"bbox":[325,505,230,28]}
+{"kind":"textbox","id":"sh/dkf6tc3i","slide":3,"text":"FastAPI · Python · SQLAlchemy","textPreview":"FastAPI · Python · SQLAlchemy","textChars":29,"textLines":1,"bbox":[325,538,230,48]}
+{"kind":"textbox","id":"sh/2t4nux4v","slide":3,"text":"ML","textPreview":"ML","textChars":2,"textLines":1,"bbox":[585,505,230,28]}
+{"kind":"textbox","id":"sh/3uxon2lg","slide":3,"text":"Scikit-learn · Pandas · NumPy","textPreview":"Scikit-learn · Pandas · NumPy","textChars":29,"textLines":1,"bbox":[585,538,230,48]}
+{"kind":"textbox","id":"sh/ov65wnml","slide":3,"text":"REAL TIME","textPreview":"REAL TIME","textChars":9,"textLines":1,"bbox":[845,505,230,28]}
+{"kind":"textbox","id":"sh/pwf6ps36","slide":3,"text":"REST APIs · WebSockets","textPreview":"REST APIs · WebSockets","textChars":22,"textLines":1,"bbox":[845,538,230,48]}
+{"kind":"textbox","id":"sh/mp876h4z","slide":3,"text":"DEPLOY","textPreview":"DEPLOY","textChars":6,"textLines":1,"bbox":[1105,505,230,28]}
+{"kind":"textbox","id":"sh/nqhozmlk","slide":3,"text":"Docker · Render · PostgreSQL","textPreview":"Docker · Render · PostgreSQL","textChars":28,"textLines":1,"bbox":[1105,538,230,48]}
+{"kind":"shape","id":"sh/hw3ilkry","slide":3,"bbox":[65,615,1270,2]}
+{"kind":"textbox","id":"sh/wvuhcfad","slide":3,"text":"LIVE MONITORING","textPreview":"LIVE MONITORING","textChars":15,"textLines":1,"bbox":[65,635,220,32]}
+{"kind":"textbox","id":"sh/vul0ja9s","slide":3,"text":"PREDICTIVE ANALYTICS","textPreview":"PREDICTIVE ANALYTICS","textChars":20,"textLines":1,"bbox":[320,635,250,32]}
+{"kind":"textbox","id":"sh/utcza5s7","slide":3,"text":"EXPLAINABLE AI","textPreview":"EXPLAINABLE AI","textChars":14,"textLines":1,"bbox":[605,635,220,32]}
+{"kind":"textbox","id":"sh/9s3ih0rm","slide":3,"text":"RANKED ACTIONS","textPreview":"RANKED ACTIONS","textChars":14,"textLines":1,"bbox":[860,635,220,32]}
+{"kind":"textbox","id":"sh/8ruh8vah","slide":3,"text":"AUDIT + HISTORY","textPreview":"AUDIT + HISTORY","textChars":15,"textLines":1,"bbox":[1115,635,220,32]}
+{"kind":"notes","id":"nt/e0p54i","slide":3,"text":"[Sources]\nInternal source: docs/SYSTEM_ARCHITECTURE.md, docs/MODEL_OVERVIEW.md, backend/app, and frontend/src."}
+{"kind":"slide","id":"sl/4wnwe6","slide":4,"title":"GRADESENSE","textShapes":8}
+{"kind":"textbox","id":"sh/5crahk7e","slide":4,"text":"GRADESENSE","textPreview":"GRADESENSE","textChars":10,"textLines":1,"bbox":[54,24,180,22]}
+{"kind":"textbox","id":"sh/i90r6p8n","slide":4,"text":"SOLUTION DEMONSTRATION","textPreview":"SOLUTION DEMONSTRATION","textChars":22,"textLines":1,"bbox":[580,24,280,22]}
+{"kind":"textbox","id":"sh/ja98fup8","slide":4,"text":"HONEYWELL HACKATHON  ·  04","textPreview":"HONEYWELL HACKATHON  ·  04","textChars":26,"textLines":1,"bbox":[1135,24,250,22]}
+{"kind":"textbox","id":"sh/sf29czq5","slide":4,"text":"The closed loop is already working","textPreview":"The closed loop is already working","textChars":34,"textLines":1,"bbox":[62,68,1120,100]}
+{"kind":"textbox","id":"sh/1kbap47m","slide":4,"text":"LIVE SIGNALS + EARLY RISK","textPreview":"LIVE SIGNALS + EARLY RISK","textChars":25,"textLines":1,"bbox":[80,425,300,30]}
+{"kind":"textbox","id":"sh/l4fq9036","slide":4,"text":"EXPLAINED, RANKED ACTIONS","textPreview":"EXPLAINED, RANKED ACTIONS","textChars":25,"textLines":1,"bbox":[770,425,340,30]}
+{"kind":"textbox","id":"sh/k36pgv2l","slide":4,"text":"WHAT-IF BEFORE APPLYING","textPreview":"WHAT-IF BEFORE APPLYING","textChars":23,"textLines":1,"bbox":[80,682,300,30]}
+{"kind":"textbox","id":"sh/z2do7ql0","slide":4,"text":"VERSIONED + AUDITABLE","textPreview":"VERSIONED + AUDITABLE","textChars":21,"textLines":1,"bbox":[770,682,300,30]}
+{"kind":"image","id":"im/83mlkj2d","slide":4,"name":"","geometry":"roundRect","alt":"GradeSense live transition command center","bbox":[65,175,620,255]}
+{"kind":"image","id":"im/7idkre18","slide":4,"name":"","geometry":"roundRect","alt":"GradeSense ranked recommendations","bbox":[755,175,620,255]}
+{"kind":"image","id":"im/mhk3i9kn","slide":4,"name":"","geometry":"roundRect","alt":"GradeSense what-if simulator","bbox":[65,475,620,210]}
+{"kind":"image","id":"im/h8vmxoja","slide":4,"name":"","geometry":"roundRect","alt":"GradeSense governed model registry","bbox":[755,475,620,210]}
+{"kind":"notes","id":"nt/4wnwe6","slide":4,"text":"[Sources]\nInternal assets: user-supplied GradeSense screenshots and docs/screenshots/simulator.png, docs/screenshots/model-registry.png.\nNo external assets."}
+{"kind":"slide","id":"sl/3bq3c4","slide":5,"title":"GRADESENSE","textShapes":37}
+{"kind":"textbox","id":"sh/gzu5ofa9","slide":5,"text":"GRADESENSE","textPreview":"GRADESENSE","textChars":10,"textLines":1,"bbox":[54,24,180,22]}
+{"kind":"textbox","id":"sh/fy14fa9o","slide":5,"text":"FEASIBILITY + IMPACT","textPreview":"FEASIBILITY + IMPACT","textChars":20,"textLines":1,"bbox":[580,24,280,22]}
+{"kind":"textbox","id":"sh/uxs3m5s3","slide":5,"text":"HONEYWELL HACKATHON  ·  05","textPreview":"HONEYWELL HACKATHON  ·  05","textChars":26,"textLines":1,"bbox":[1135,24,250,22]}
+{"kind":"textbox","id":"sh/po3mlkrq","slide":5,"text":"Built to deploy - designed to earn trust","textPreview":"Built to deploy - designed to earn trust","textChars":40,"textLines":1,"bbox":[62,68,1120,100]}
+{"kind":"textbox","id":"sh/4nu5szql","slide":5,"text":"0.920","textPreview":"0.920","textChars":5,"textLines":1,"bbox":[65,185,275,70]}
+{"kind":"textbox","id":"sh/3ml4ju90","slide":5,"text":"Crossing ROC-AUC","textPreview":"Crossing ROC-AUC","textChars":16,"textLines":1,"bbox":[65,250,275,34]}
+{"kind":"shape","id":"sh/21cnqpsf","slide":5,"bbox":[65,292,275,2]}
+{"kind":"textbox","id":"sh/5sjm90rm","slide":5,"text":"1.388","textPreview":"1.388","textChars":5,"textLines":1,"bbox":[395,185,275,70]}
+{"kind":"textbox","id":"sh/krqlgva1","slide":5,"text":"Trajectory MAE","textPreview":"Trajectory MAE","textChars":14,"textLines":1,"bbox":[395,250,275,34]}
+{"kind":"shape","id":"sh/ed8bml0n","slide":5,"bbox":[395,292,275,2]}
+{"kind":"textbox","id":"sh/fehcvq18","slide":5,"text":"0.962","textPreview":"0.962","textChars":5,"textLines":1,"bbox":[725,185,275,70]}
+{"kind":"textbox","id":"sh/gfqtobit","slide":5,"text":"Stabilization R²","textPreview":"Stabilization R²","textChars":16,"textLines":1,"bbox":[725,250,275,34]}
+{"kind":"shape","id":"sh/1gzuxgje","slide":5,"bbox":[725,292,275,2]}
+{"kind":"textbox","id":"sh/2h8bql0z","slide":5,"text":"2,544","textPreview":"2,544","textChars":5,"textLines":1,"bbox":[1055,185,275,70]}
+{"kind":"textbox","id":"sh/3i1czqhk","slide":5,"text":"Held-out windows","textPreview":"Held-out windows","textChars":16,"textLines":1,"bbox":[1055,250,275,34]}
+{"kind":"shape","id":"sh/o3atsvi5","slide":5,"bbox":[1055,292,275,2]}
+{"kind":"textbox","id":"sh/p4ju10zq","slide":5,"text":"TECHNICALLY FEASIBLE","textPreview":"TECHNICALLY FEASIBLE","textChars":20,"textLines":1,"bbox":[65,350,330,34]}
+{"kind":"textbox","id":"sh/q5sbu50v","slide":5,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[65,400,20,28]}
+{"kind":"textbox","id":"sh/b61c3ahg","slide":5,"text":"Cloud deployed","textPreview":"Cloud deployed","textChars":14,"textLines":1,"bbox":[89,400,366,34]}
+{"kind":"textbox","id":"sh/nalsbaxo","slide":5,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[65,442,20,28]}
+{"kind":"textbox","id":"sh/m9sbi5g3","slide":5,"text":"API-driven modules","textPreview":"API-driven modules","textChars":18,"textLines":1,"bbox":[89,442,366,34]}
+{"kind":"textbox","id":"sh/9c3adkfu","slide":5,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[65,484,20,28]}
+{"kind":"textbox","id":"sh/8butkfy9","slide":5,"text":"Real-time WebSockets","textPreview":"Real-time WebSockets","textChars":20,"textLines":1,"bbox":[89,484,366,34]}
+{"kind":"textbox","id":"sh/z61s7qxs","slide":5,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[65,526,20,28]}
+{"kind":"textbox","id":"sh/y5sbelg7","slide":5,"text":"Dockerized services","textPreview":"Dockerized services","textChars":19,"textLines":1,"bbox":[89,526,366,34]}
+{"kind":"textbox","id":"sh/l8ja90fi","slide":5,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[65,568,20,28]}
+{"kind":"textbox","id":"sh/07atgvyx","slide":5,"text":"Versioned model registry","textPreview":"Versioned model registry","textChars":24,"textLines":1,"bbox":[89,568,366,34]}
+{"kind":"textbox","id":"sh/bi1s3qxg","slide":5,"text":"BUSINESS VALUE","textPreview":"BUSINESS VALUE","textChars":14,"textLines":1,"bbox":[520,350,300,34]}
+{"kind":"textbox","id":"sh/qh8ralgv","slide":5,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[520,400,20,28]}
+{"kind":"textbox","id":"sh/gn6pkret","slide":5,"text":"Earlier intervention","textPreview":"Earlier intervention","textChars":20,"textLines":1,"bbox":[544,400,326,34]}
+{"kind":"textbox","id":"sh/1ofqdwve","slide":5,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[520,442,20,28]}
+{"kind":"textbox","id":"sh/elo7ihwn","slide":5,"text":"Faster operator decisions","textPreview":"Faster operator decisions","textChars":25,"textLines":1,"bbox":[544,442,326,34]}
+{"kind":"textbox","id":"sh/fmx8bmd8","slide":5,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[520,484,20,28]}
+{"kind":"textbox","id":"sh/obqporep","slide":5,"text":"Lower rejection opportunity","textPreview":"Lower rejection opportunity","textChars":27,"textLines":1,"bbox":[544,484,326,34]}
+{"kind":"textbox","id":"sh/pczqhwva","slide":5,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[520,526,20,28]}
+{"kind":"textbox","id":"sh/2po7mhwz","slide":5,"text":"Improved process stability","textPreview":"Improved process stability","textChars":26,"textLines":1,"bbox":[544,526,326,34]}
+{"kind":"textbox","id":"sh/3ah8fmdk","slide":5,"text":"•","textPreview":"•","textChars":1,"textLines":1,"bbox":[520,568,20,28]}
+{"kind":"textbox","id":"sh/kfmpc7el","slide":5,"text":"Higher trust through XAI","textPreview":"Higher trust through XAI","textChars":24,"textLines":1,"bbox":[544,568,326,34]}
+{"kind":"shape","id":"sh/5gvq5cv6","slide":5,"bbox":[930,345,400,265]}
+{"kind":"textbox","id":"sh/xc7ilcva","slide":5,"text":"WHY GRADESENSE?","textPreview":"WHY GRADESENSE?","textChars":15,"textLines":1,"bbox":[965,375,325,38]}
+{"kind":"textbox","id":"sh/cbyhc7e5","slide":5,"text":"PREDICT\n↓\nEXPLAIN\n↓\nRECOMMEND\n↓\nOPTIMIZE","textPreview":"PREDICT | ↓ | EXPLAIN | ↓ | RECOMMEND | ↓ | OPTIMIZE","textChars":40,"textLines":7,"bbox":[965,425,325,155]}
+{"kind":"textbox","id":"sh/bap0j2dk","slide":5,"text":"One unified industrial decision-support platform.","textPreview":"One unified industrial decision-support platform.","textChars":49,"textLines":1,"bbox":[945,625,380,48]}
+{"kind":"notes","id":"nt/3bq3c4","slide":5,"text":"[Sources]\nInternal source: models/grade_transition_model.joblib and models/basis_weight_forecast.joblib.\nValidated metrics: crossing ROC-AUC 0.920313; mean trajectory MAE 1.388263; stabilization R2 0.9622; 2,544 validation windows.\nBusiness benefits are directional opportunities; no plant ROI has been claimed."}
+{"kind":"slide","id":"sl/q5o6eq","slide":6,"title":"GRADESENSE","textShapes":20}
+{"kind":"textbox","id":"sh/tcny1gzq","slide":6,"text":"GRADESENSE","textPreview":"GRADESENSE","textChars":10,"textLines":1,"bbox":[54,24,180,22]}
+{"kind":"textbox","id":"sh/69czq1gf","slide":6,"text":"REFERENCES","textPreview":"REFERENCES","textChars":10,"textLines":1,"bbox":[580,24,280,22]}
+{"kind":"textbox","id":"sh/ralgz6hk","slide":6,"text":"HONEYWELL HACKATHON  ·  06","textPreview":"HONEYWELL HACKATHON  ·  06","textChars":26,"textLines":1,"bbox":[1135,24,250,22]}
+{"kind":"textbox","id":"sh/47uxory9","slide":6,"text":"Explore the working submission","textPreview":"Explore the working submission","textChars":30,"textLines":1,"bbox":[62,68,1120,100]}
+{"kind":"shape","id":"sh/583yxwzu","slide":6,"bbox":[65,190,915,80]}
+{"kind":"textbox","id":"sh/i5cfmhg3","slide":6,"text":"GITHUB REPOSITORY","textPreview":"GITHUB REPOSITORY","textChars":17,"textLines":1,"bbox":[90,202,260,52]}
+{"kind":"textbox","id":"sh/j6lgvmho","slide":6,"text":"https://github.com/bhavukm007/GradeSense","textPreview":"https://github.com/bhavukm007/GradeSense","textChars":40,"textLines":1,"bbox":[360,202,590,52]}
+{"kind":"shape","id":"sh/wjaxkryx","slide":6,"bbox":[65,295,915,80]}
+{"kind":"textbox","id":"sh/h43ytwzi","slide":6,"text":"LIVE DEPLOYMENT","textPreview":"LIVE DEPLOYMENT","textChars":15,"textLines":1,"bbox":[90,307,260,52]}
+{"kind":"textbox","id":"sh/h0bux4fu","slide":6,"text":"https://gradesense-4weh.onrender.com/","textPreview":"https://gradesense-4weh.onrender.com/","textChars":37,"textLines":1,"bbox":[360,307,590,52]}
+{"kind":"shape","id":"sh/gz2t4zyp","slide":6,"bbox":[65,400,915,80]}
+{"kind":"textbox","id":"sh/fytcvux4","slide":6,"text":"DEMO VIDEO","textPreview":"DEMO VIDEO","textChars":10,"textLines":1,"bbox":[90,412,260,52]}
+{"kind":"textbox","id":"sh/udkb2pgj","slide":6,"text":"https://drive.google.com/file/d/1rCr3CzuCit0O029VzyxIhHoR1lv9E93E/view?usp=sharing","textPreview":"https://drive.google.com/file/d/1rCr3CzuCit0O029VzyxIhHoR1lv9E93E/view?usp=sharing","textChars":82,"textLines":1,"bbox":[360,412,590,52]}
+{"kind":"textbox","id":"sh/tcrut4fy","slide":6,"text":"TECHNOLOGY REFERENCES","textPreview":"TECHNOLOGY REFERENCES","textChars":21,"textLines":1,"bbox":[1040,190,310,34]}
+{"kind":"shape","id":"sh/sbit0zyd","slide":6,"bbox":[1040,245,265,36]}
+{"kind":"textbox","id":"sh/7a9cruhs","slide":6,"text":"React","textPreview":"React","textChars":5,"textLines":1,"bbox":[1046,247,253,30]}
+{"kind":"shape","id":"sh/690bypg7","slide":6,"bbox":[1040,293,265,36]}
+{"kind":"textbox","id":"sh/58rupkz2","slide":6,"text":"FastAPI","textPreview":"FastAPI","textChars":7,"textLines":1,"bbox":[1046,295,253,30]}
+{"kind":"shape","id":"sh/k7itwfyh","slide":6,"bbox":[1040,341,265,36]}
+{"kind":"textbox","id":"sh/wrmtcf6d","slide":6,"text":"Scikit-learn","textPreview":"Scikit-learn","textChars":12,"textLines":1,"bbox":[1046,343,253,30]}
+{"kind":"shape","id":"sh/xsvulk7i","slide":6,"bbox":[1040,389,265,36]}
+{"kind":"textbox","id":"sh/apkbapo7","slide":6,"text":"Docker","textPreview":"Docker","textChars":6,"textLines":1,"bbox":[1046,391,253,30]}
+{"kind":"shape","id":"sh/bqtcjups","slide":6,"bbox":[1040,437,265,36]}
+{"kind":"textbox","id":"sh/on2t8f61","slide":6,"text":"Render","textPreview":"Render","textChars":6,"textLines":1,"bbox":[1046,439,253,30]}
+{"kind":"shape","id":"sh/9obuhk7m","slide":6,"bbox":[1040,485,265,36]}
+{"kind":"textbox","id":"sh/mlkb65ov","slide":6,"text":"Pandas + NumPy","textPreview":"Pandas + NumPy","textChars":14,"textLines":1,"bbox":[1046,487,253,30]}
+{"kind":"shape","id":"sh/nmtcfapg","slide":6,"bbox":[65,555,1265,105]}
+{"kind":"textbox","id":"sh/8j6dkz65","slide":6,"text":"GRADESENSE","textPreview":"GRADESENSE","textChars":10,"textLines":1,"bbox":[95,575,330,55]}
+{"kind":"textbox","id":"sh/tkfut4nq","slide":6,"text":"AI-powered intelligent process optimization platform","textPreview":"AI-powered intelligent process optimization platform","textChars":52,"textLines":1,"bbox":[435,575,820,55]}
+{"kind":"textbox","id":"sh/3q1oz2d4","slide":6,"text":"Honeywell Hackathon Submission  ·  Bhavuk Mahajan  ·  Candidate ID 20484629","textPreview":"Honeywell Hackathon Submission  ·  Bhavuk Mahajan  ·  Candidate ID 20484629","textChars":75,"textLines":1,"bbox":[65,690,1265,34]}
+{"kind":"notes","id":"nt/q5o6eq","slide":6,"text":"[Sources]\nGITHUB REPOSITORY: https://github.com/bhavukm007/GradeSense\nLIVE DEPLOYMENT: https://gradesense-4weh.onrender.com/\nDEMO VIDEO: https://drive.google.com/file/d/1rCr3CzuCit0O029VzyxIhHoR1lv9E93E/view?usp=sharing\nTechnology references are the official project names used in the repository."}

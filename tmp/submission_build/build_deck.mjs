@@ -4,7 +4,7 @@ import { FileBlob, PresentationFile } from "@oai/artifact-tool";
 
 const workspace = "Q:/Programs/GradeSense/tmp/submission_build";
 const starter = `${workspace}/template-starter.pptx`;
-const finalPptx = "Q:/Programs/GradeSense/Submission/GradeSense_Presentation.pptx";
+const finalPptx = "Q:/Programs/GradeSense/Submission/GradeSense_Final_Presentation.pptx";
 const screenshots = "Q:/Programs/GradeSense/Submission/screenshots";
 const previewDir = `${workspace}/final-preview`;
 const layoutDir = `${workspace}/final-layout`;
@@ -118,7 +118,7 @@ function rewriteChrome(slide, titleValue, page) {
   const slide = presentation.slides.getItem(0);
   inherited(slide, "Subtitle 3").text = "\nGRADESENSE";
   const body = inherited(slide, "TextBox 6");
-  body.text = "Explainable AI for safer, faster paper grade transitions\n\nHoneywell Hackathon Final Submission\nIndustrial AI | Software Prototype\nGradeSense Team";
+  body.text = "Explainable AI for safer, faster paper grade transitions\n\nHoneywell Hackathon Final Submission\nIndustrial AI | Software Prototype\nBhavuk Mahajan | GradeSense";
   const footer = slide.shapes.items.find((item) => item.name?.startsWith("Footer Placeholder"));
   if (footer) footer.text = "GradeSense | Honeywell Hackathon Final Submission";
   const number = slide.shapes.items.find((item) => item.name?.startsWith("Slide Number Placeholder"));

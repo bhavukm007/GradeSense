@@ -1,0 +1,115 @@
+S SENTINELGRAPH AI
+
+HONEYWELL HACKATHON · THEME: CYBERSECURITY
+
+SentinelGraph AI
+
+Explainable Behavioral Anomaly Detection for Cybersecurity
+
+Three AI Models. One Explainable Decision.
+
+PROBLEM STATEMENT ID                    4                                                           Autoencoder
+PROBLEM STATEMENT TITLE                 AI-Powered Behavioral Anomaly Detection for Cybersecurity    Transformer
+THEME                                   Cybersecurity                                              Random Forest
+CATEGORY                                Software                                                   Explainable AI
+STUDENT NAME                            Disha Malik
+STUDENT ID                              20475897                                                                                                     1
+
+Honeywell Hackathon · SentinelGraph AI
+ S SENTINELGRAPH AI
+
+PROPOSED SOLUTION
+
+Proposed Solution
+
+Detailed explanation of the idea, how it solves the problem, and why it is novel.
+
+CURRENT CHALLENGES                       HYBRID AI PIPELINE                                  WHY SENTINELGRAPH?
+     Signature-based IDS misses novel                                                         Hybrid AI (3 models fused)
+     attacks                                   Behavior Profile + Autoencoder + Transformer   Fully explainable decisions
+     High false-positive alert fatigue                              Calibrated Fusion         Real-time detection
+                                                                                              Attack type classification
+     Manual analyst overload                                  Random Forest Classifier        Cold-start entity handling
+                                                                         Risk Score           Automatic drift adaptation
+     No handling for cold-start users
+                                                                Explainable Dashboard
+     Concept drift breaks static models
+
+                                         Detect Unknown Threats -- Without Signatures
+
+Honeywell Hackathon · SentinelGraph AI                                                                                     2
+S SENTINELGRAPH AI
+
+TECHNICAL ARCHITECTURE
+
+System Architecture & Technology Stack
+
+ARCHITECTURE FLOW                                                               TECHNOLOGY STACK
+
+                                        Synthetic Logs                          Python    PyTorch              Scikit-Learn
+                                                                                                                  Next.js
+                                        Feature Engineering                     Pandas    React
+
+                                        Behavior Profiles                       Tailwind  Vercel
+
+Profile                                               Autoencoder  Transformer  KEY FEATURES
+                                                                                 Explainable AI decisions
+                                        Fusion Engine                            Ensemble Learning (3 models)
+                                        Random Forest                            Streaming Analytics
+                                                                                 Real-time Detection
+                                          Threat Type
+
+                                        Dashboard
+
+Honeywell Hackathon · SentinelGraph AI                                                                                       3
+ S SENTINELGRAPH AI
+
+FEASIBILITY & RESULTS
+
+Feasibility, Results & Roadmap
+
+88.3%                                    88.7%                 25,900         0.2%              420                   100
+
+    Precision                           Attack Classification   Events / sec  False Positives  Entities Modeled     Risk Score Range
+
+CHALLENGES                                                                    MITIGATION STRATEGY
+    Detecting lateral movement across entities                                 Adaptive retraining on live signals
+    Data exfiltration over legitimate channels                                 Adversarial robustness testing
+    Reliance on synthetic training data                                        Shadow deployment before go-live
+                                                                               Continuous analyst feedback loop
+
+       Prototype                        Validation                            Deployment                            Enterprise Scale
+
+Honeywell Hackathon · SentinelGraph AI                                                                                                                                   4
+ S SENTINELGRAPH AI
+
+ARTIFACTS
+
+Live Product -- Dashboard & Screenshots
+
+  SentinelGraph Live Dashboard -- held-out stream evaluation                                                                    Resource Access Path -- cold-start entity graph
+
+   Live Deployment: sentinelgraph-runnable-1.vercel.app                                                                               Behavioral Drift -- 24-hour risk velocity
+                                                              Live Dashboard Explainable Alerts Threat Queue Resource Graph Behavioral Drift
+Honeywell Hackathon · SentinelGraph AI
+                                                                                                                                                                                                                       5
+ S SENTINELGRAPH AI
+
+RESEARCH & REFERENCES
+
+Foundations, Contributions & Roadmap
+
+RESEARCH FOUNDATIONS                    NOVEL CONTRIBUTIONS                  FUTURE ROADMAP
+     Transformer sequence models             Hybrid multi-model detection         LLM-powered security analyst
+     Autoencoder anomaly detection           Fully explainable AI decisions       Native SIEM integration
+     UEBA (User & Entity Behavior)           Cold-start entity learning           Cloud-native deployment
+     Kafka streaming architecture            Automated drift detection            Full containerization
+     Random Forest ensembles                 Multi-model calibrated fusion        Kubernetes orchestration
+     MITRE ATT&CK framework                  Analyst-facing risk dashboard        End-to-end SOC automation
+     NIST Cybersecurity Framework
+
+SentinelGraph AI transforms behavioral data into explainable, real-time cyber defense -- empowering analysts to detect
+                          unknown threats faster, reduce false positives, and build trust in AI-driven security.
+
+Honeywell Hackathon · SentinelGraph AI                                                                                  6
+

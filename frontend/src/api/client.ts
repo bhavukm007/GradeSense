@@ -48,7 +48,7 @@ export class ApiError extends Error {
 async function request<T>(
   path: string,
   options?: RequestInit,
-  timeoutMs = 12_000,
+  timeoutMs = 30_000,
 ): Promise<T> {
   const controller = new AbortController()
   const timeout = window.setTimeout(() => controller.abort(), timeoutMs)
@@ -70,8 +70,14 @@ async function request<T>(
     return payload as T
   } catch (error) {
     if (error instanceof ApiError) throw error
-    if (error instanceof DOMException && error.name === 'AbortError') {
-      throw new ApiError('The backend took too long to respond. Please try again.')
+    if (
+      (error instanceof DOMException && error.name === 'AbortError') ||
+      (error instanceof Error && error.name === 'AbortError')
+    ) {
+      throw new ApiError(
+        'This request timed out while the production service was starting. Please retry.',
+        408,
+      )
     }
     throw new ApiError('Unable to connect to the GradeSense backend.')
   } finally {
@@ -175,19 +181,26 @@ export const api = {
   exportCatalog: () =>
     request<{ resource: string; formats: string[]; row_count: number }[]>('/admin/exports'),
   createExport: async (resource: string, format: 'json' | 'csv') => {
-    const response = await fetch(`${API_URL}/admin/export`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ resource, format }),
-    })
-    if (!response.ok) throw new ApiError(`Export failed (${response.status})`)
-    const blob = await response.blob()
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = `gradesense-${resource}.${format}`
-    link.click()
-    URL.revokeObjectURL(url)
+    const controller = new AbortController()
+    const timeout = window.setTimeout(() => controller.abort(), 60_000)
+    try {
+      const response = await fetch(`${API_URL}/admin/export`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ resource, format }),
+        signal: controller.signal,
+      })
+      if (!response.ok) throw new ApiError(`Export failed (${response.status})`)
+      const blob = await response.blob()
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `gradesense-${resource}.${format}`
+      link.click()
+      URL.revokeObjectURL(url)
+    } finally {
+      window.clearTimeout(timeout)
+    }
   },
 }
 

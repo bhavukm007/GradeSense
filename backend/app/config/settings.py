@@ -19,6 +19,11 @@ class Settings(BaseSettings):
     environment: Literal["development", "test", "staging", "production"] = "development"
     log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] = "INFO"
     database_url: str = "sqlite:///./gradesense.db"
+    database_pool_size: int = Field(default=5, ge=1, le=20)
+    database_max_overflow: int = Field(default=5, ge=0, le=20)
+    database_pool_timeout_seconds: int = Field(default=10, ge=1, le=60)
+    database_pool_recycle_seconds: int = Field(default=300, ge=30, le=3600)
+    database_connect_timeout_seconds: int = Field(default=10, ge=1, le=60)
     cors_origins: list[str] = Field(default_factory=lambda: ["http://localhost:5173"])
     dataset_path: Path = Path("../data/generated/paper_mill_transitions.csv")
     model_path: Path = Path("../models/grade_transition_model.joblib")

@@ -43,11 +43,13 @@ export function useLiveStream() {
     let active = true
     let socket: WebSocket | undefined
     const hydrate = async () => {
-      const [metrics, stream] = await Promise.all([api.liveMetrics(), api.streamStatus()])
+      const [metrics, stream] = await Promise.allSettled([api.liveMetrics(), api.streamStatus()])
       if (active) {
-        setLive(metrics)
-        setStatus(stream)
-        sensor.current = metrics.sensor
+        if (metrics.status === 'fulfilled') {
+          setLive(metrics.value)
+          sensor.current = metrics.value.sensor
+        }
+        if (stream.status === 'fulfilled') setStatus(stream.value)
       }
     }
     void hydrate().catch(() => undefined)

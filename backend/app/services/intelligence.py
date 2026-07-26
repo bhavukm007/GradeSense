@@ -32,6 +32,9 @@ from app.services.recommendation import RecommendationService
 
 class IntelligenceService:
     _training_lock = RLock()
+    _dataset_lock = RLock()
+    _dataset_cache: tuple[Path, int, pd.DataFrame] | None = None
+    _statistics_cache: tuple[Path, int, DatasetStatisticsResponse] | None = None
 
     def __init__(self, settings: Settings, session: Session) -> None:
         self.settings = settings
@@ -150,13 +153,18 @@ class IntelligenceService:
         )
 
     def dataset_statistics(self) -> DatasetStatisticsResponse:
+        path = self.settings.dataset_path.resolve()
+        modified_ns = path.stat().st_mtime_ns
+        with self._dataset_lock:
+            cached = type(self)._statistics_cache
+            if cached is not None and cached[:2] == (path, modified_ns):
+                return cached[2]
         frame = self._load_dataset()
         numeric = frame.select_dtypes(include="number")
         descriptions = numeric.describe().loc[["mean", "50%", "std", "min", "max"]]
-        generated_at = datetime.fromtimestamp(self.settings.dataset_path.stat().st_mtime, tz=UTC)
-        return DatasetStatisticsResponse(
+        response = DatasetStatisticsResponse(
             record_count=len(frame),
-            generated_at=generated_at,
+            generated_at=datetime.fromtimestamp(path.stat().st_mtime, tz=UTC),
             columns=list(frame.columns),
             missing_values={column: int(value) for column, value in frame.isna().sum().items()},
             numeric_summary={
@@ -171,6 +179,9 @@ class IntelligenceService:
                 for grade, count in frame["target_grade"].value_counts().items()
             },
         )
+        with self._dataset_lock:
+            type(self)._statistics_cache = (path, modified_ns, response)
+        return response
 
     def model_info(self) -> ModelInfoResponse:
         artifact = self.model_service.load()
@@ -233,10 +244,17 @@ class IntelligenceService:
         )
 
     def _load_dataset(self) -> pd.DataFrame:
-        path = Path(self.settings.dataset_path)
+        path = Path(self.settings.dataset_path).resolve()
         if not path.exists():
             raise FileNotFoundError("The generated dataset is not available.")
-        return pd.read_csv(path)
+        modified_ns = path.stat().st_mtime_ns
+        with self._dataset_lock:
+            cached = type(self)._dataset_cache
+            if cached is not None and cached[:2] == (path, modified_ns):
+                return cached[2]
+            frame = pd.read_csv(path)
+            type(self)._dataset_cache = (path, modified_ns, frame)
+            return frame
 
     @staticmethod
     def _as_utc(value: datetime) -> datetime:

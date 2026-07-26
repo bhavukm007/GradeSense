@@ -1,3 +1,5 @@
+from functools import lru_cache
+from pathlib import Path
 from typing import Annotated
 from uuid import UUID
 
@@ -24,6 +26,34 @@ from app.services.forecasting.relationships import SequentialRelationshipService
 from app.services.forecasting.service import ForecastingService
 
 router = APIRouter(tags=["basis-weight forecasting"])
+
+
+@lru_cache(maxsize=2)
+def _sequential_dataset(path: str, modified_ns: int) -> pd.DataFrame:
+    del modified_ns  # The timestamp is part of the cache key.
+    return pd.read_csv(path)
+
+
+@lru_cache(maxsize=64)
+def _relationship_result(
+    path: str,
+    modified_ns: int,
+    max_lag: int,
+    grade_pair: str | None,
+    stage: str | None,
+    method: str | None,
+    min_strength: float,
+    limit: int,
+) -> dict:
+    return SequentialRelationshipService().discover(
+        _sequential_dataset(path, modified_ns),
+        max_lag=max_lag,
+        grade_pair=grade_pair,
+        stage=stage,
+        method=method,
+        min_strength=min_strength,
+        limit=limit,
+    )
 
 
 def response_from_row(row: ForecastHistory) -> ForecastResponse:
@@ -159,11 +189,12 @@ def relationship_discovery(
     limit: Annotated[int, Query(ge=1, le=100)] = 30,
 ) -> dict:
     settings = get_settings()
-    if not settings.sequential_dataset_path.exists():
+    path = Path(settings.sequential_dataset_path).resolve()
+    if not path.exists():
         raise HTTPException(status_code=503, detail="Sequential dataset is not available.")
-    frame = pd.read_csv(settings.sequential_dataset_path)
-    return SequentialRelationshipService().discover(
-        frame,
+    return _relationship_result(
+        str(path),
+        path.stat().st_mtime_ns,
         max_lag=max_lag,
         grade_pair=grade_pair,
         stage=stage,
