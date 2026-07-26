@@ -11,8 +11,6 @@ __pycache__/
 .venv/
 *.egg-info/
 backend/gradesense.db
-data/generated/
-models/*.joblib
 backend/tests/.artifacts/
 
 # Node
