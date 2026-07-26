@@ -1,6 +1,33 @@
+# Environment and secrets
+.env
+.env.local
+!.env.example
+
+# Python
 __pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
 .venv/
+*.egg-info/
+backend/gradesense.db
+data/generated/
+models/*.joblib
+backend/tests/.artifacts/
+
+# Node
 node_modules/
 dist/
-.env
-*.db
+*.tsbuildinfo
+npm-debug.log*
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Generated coverage
+.coverage
+htmlcov/
+coverage/

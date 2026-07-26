@@ -1,6 +1,66 @@
-version: '3.9'
+name: gradesense
+
 services:
+  database:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: gradesense
+      POSTGRES_USER: gradesense
+      POSTGRES_PASSWORD: gradesense_dev
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gradesense -d gradesense"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+    environment:
+      GRADESENSE_ENVIRONMENT: development
+      GRADESENSE_DATABASE_URL: postgresql+psycopg://gradesense:gradesense_dev@database:5432/gradesense
+      GRADESENSE_CORS_ORIGINS: '["http://localhost:5173","http://localhost:3000"]'
+      GRADESENSE_DATASET_PATH: /app/data/generated/paper_mill_transitions.csv
+      GRADESENSE_MODEL_PATH: /app/models/grade_transition_model.joblib
+      GRADESENSE_SEQUENTIAL_DATASET_PATH: /app/data/sequential/paper_mill_transition_sequences.csv
+      GRADESENSE_FORECAST_MODEL_PATH: /app/models/basis_weight_forecast.joblib
+      GRADESENSE_DATASET_RECORDS: 20000
+    volumes:
+      - ./data:/app/data:ro
+      - ./models:/app/models:ro
+    ports:
+      - "8000:8000"
+    depends_on:
+      database:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health')",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: http://localhost:8000
+    ports:
+      - "5173:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
