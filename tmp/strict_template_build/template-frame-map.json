@@ -1,0 +1,79 @@
+{
+  "outputSlides": [
+    {
+      "outputSlide": 1,
+      "sourceSlide": 2,
+      "narrativeRole": "title",
+      "reuseMode": "duplicate-slide",
+      "editTargets": [
+        {"shapeId":"sh/x4r21kru","action":"rewrite"},
+        {"shapeId":"sh/w3i1sfa9","action":"rewrite"},
+        {"shapeId":"sh/b29kza94","action":"rewrite"},
+        {"shapeId":"sh/a10jqpsj","action":"rewrite"}
+      ]
+    },
+    {
+      "outputSlide": 2,
+      "sourceSlide": 3,
+      "narrativeRole": "problem statement",
+      "reuseMode": "duplicate-slide",
+      "editTargets": [
+        {"shapeId":"sh/c3ut0bud","action":"rewrite"},
+        {"shapeId":"sh/b2ls76ds","action":"rewrite"},
+        {"shapeId":"sh/obq90bml","action":"rewrite"},
+        {"shapeId":"sh/pcjqtg36","action":"rewrite"}
+      ]
+    },
+    {
+      "outputSlide": 3,
+      "sourceSlide": 4,
+      "narrativeRole": "technical architecture",
+      "reuseMode": "duplicate-slide",
+      "editTargets": [
+        {"shapeId":"sh/ud8fyt4z","action":"rewrite"},
+        {"shapeId":"sh/sjad83id","action":"rewrite"},
+        {"shapeId":"sh/doj29oba","action":"rewrite"},
+        {"shapeId":"sh/sna103ap","action":"rewrite"}
+      ]
+    },
+    {
+      "outputSlide": 4,
+      "sourceSlide": 5,
+      "narrativeRole": "dashboard and AI pipeline",
+      "reuseMode": "duplicate-slide",
+      "editTargets": [
+        {"shapeId":"sh/y1g7ylcj","action":"rewrite"},
+        {"shapeId":"sh/g7alsnu1","action":"rewrite"},
+        {"shapeId":"sh/l4bupwny","action":"rewrite"},
+        {"shapeId":"sh/032tgr6d","action":"rewrite"}
+      ]
+    },
+    {
+      "outputSlide": 5,
+      "sourceSlide": 6,
+      "narrativeRole": "business impact and innovation",
+      "reuseMode": "duplicate-slide",
+      "editTargets": [
+        {"shapeId":"sh/1kj2p0ve","action":"rewrite"},
+        {"shapeId":"sh/vq5cve1s","action":"rewrite"},
+        {"shapeId":"sh/ml07i9sv","action":"rewrite"},
+        {"shapeId":"sh/7m98ru9g","action":"rewrite"}
+      ]
+    },
+    {
+      "outputSlide": 6,
+      "sourceSlide": 7,
+      "narrativeRole": "research and references",
+      "reuseMode": "duplicate-slide",
+      "editTargets": [
+        {"shapeId":"sh/3i18ru10","action":"rewrite"},
+        {"shapeId":"sh/5c7uxs3y","action":"rewrite"},
+        {"shapeId":"sh/kzmdova1","action":"rewrite"},
+        {"shapeId":"sh/l0vuh0rm","action":"rewrite"}
+      ]
+    }
+  ],
+  "omittedSourceSlides": [
+    {"sourceSlide":1,"reason":"Template instruction slide is explicitly removable and is not part of the six-slide submission."}
+  ]
+}

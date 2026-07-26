@@ -1,0 +1,78 @@
+{
+  "sourcePptx": "C:\\Users\\ASUS\\Downloads\\IDEA_Presentation_Format.pptx",
+  "mapPath": "Q:\\Programs\\GradeSense\\tmp\\strict_template_build\\template-frame-map.json",
+  "output": "Q:\\Programs\\GradeSense\\tmp\\strict_template_build\\template-starter.pptx",
+  "outputBytes": 46604,
+  "sourceSlideCount": 7,
+  "slideCount": 6,
+  "previewDir": "Q:\\Programs\\GradeSense\\tmp\\strict_template_build\\template-starter-preview",
+  "layoutDir": "Q:\\Programs\\GradeSense\\tmp\\strict_template_build\\template-starter-layout",
+  "slides": [
+    {
+      "outputSlide": 1,
+      "sourceSlide": 2,
+      "narrativeRole": "title",
+      "reuseMode": "duplicate-slide",
+      "editTargetCount": 4,
+      "previewPath": "Q:\\Programs\\GradeSense\\tmp\\strict_template_build\\template-starter-preview\\starter-slide-01.png",
+      "previewRelativePath": "template-starter-preview/starter-slide-01.png",
+      "layoutPath": "Q:\\Programs\\GradeSense\\tmp\\strict_template_build\\template-starter-layout\\starter-slide-01.layout.json",
+      "layoutRelativePath": "template-starter-layout/starter-slide-01.layout.json"
+    },
+    {
+      "outputSlide": 2,
+      "sourceSlide": 3,
+      "narrativeRole": "problem statement",
+      "reuseMode": "duplicate-slide",
+      "editTargetCount": 4,
+      "previewPath": "Q:\\Programs\\GradeSense\\tmp\\strict_template_build\\template-starter-preview\\starter-slide-02.png",
+      "previewRelativePath": "template-starter-preview/starter-slide-02.png",
+      "layoutPath": "Q:\\Programs\\GradeSense\\tmp\\strict_template_build\\template-starter-layout\\starter-slide-02.layout.json",
+      "layoutRelativePath": "template-starter-layout/starter-slide-02.layout.json"
+    },
+    {
+      "outputSlide": 3,
+      "sourceSlide": 4,
+      "narrativeRole": "technical architecture",
+      "reuseMode": "duplicate-slide",
+      "editTargetCount": 4,
+      "previewPath": "Q:\\Programs\\GradeSense\\tmp\\strict_template_build\\template-starter-preview\\starter-slide-03.png",
+      "previewRelativePath": "template-starter-preview/starter-slide-03.png",
+      "layoutPath": "Q:\\Programs\\GradeSense\\tmp\\strict_template_build\\template-starter-layout\\starter-slide-03.layout.json",
+      "layoutRelativePath": "template-starter-layout/starter-slide-03.layout.json"
+    },
+    {
+      "outputSlide": 4,
+      "sourceSlide": 5,
+      "narrativeRole": "dashboard and AI pipeline",
+      "reuseMode": "duplicate-slide",
+      "editTargetCount": 4,
+      "previewPath": "Q:\\Programs\\GradeSense\\tmp\\strict_template_build\\template-starter-preview\\starter-slide-04.png",
+      "previewRelativePath": "template-starter-preview/starter-slide-04.png",
+      "layoutPath": "Q:\\Programs\\GradeSense\\tmp\\strict_template_build\\template-starter-layout\\starter-slide-04.layout.json",
+      "layoutRelativePath": "template-starter-layout/starter-slide-04.layout.json"
+    },
+    {
+      "outputSlide": 5,
+      "sourceSlide": 6,
+      "narrativeRole": "business impact and innovation",
+      "reuseMode": "duplicate-slide",
+      "editTargetCount": 4,
+      "previewPath": "Q:\\Programs\\GradeSense\\tmp\\strict_template_build\\template-starter-preview\\starter-slide-05.png",
+      "previewRelativePath": "template-starter-preview/starter-slide-05.png",
+      "layoutPath": "Q:\\Programs\\GradeSense\\tmp\\strict_template_build\\template-starter-layout\\starter-slide-05.layout.json",
+      "layoutRelativePath": "template-starter-layout/starter-slide-05.layout.json"
+    },
+    {
+      "outputSlide": 6,
+      "sourceSlide": 7,
+      "narrativeRole": "research and references",
+      "reuseMode": "duplicate-slide",
+      "editTargetCount": 4,
+      "previewPath": "Q:\\Programs\\GradeSense\\tmp\\strict_template_build\\template-starter-preview\\starter-slide-06.png",
+      "previewRelativePath": "template-starter-preview/starter-slide-06.png",
+      "layoutPath": "Q:\\Programs\\GradeSense\\tmp\\strict_template_build\\template-starter-layout\\starter-slide-06.layout.json",
+      "layoutRelativePath": "template-starter-layout/starter-slide-06.layout.json"
+    }
+  ]
+}

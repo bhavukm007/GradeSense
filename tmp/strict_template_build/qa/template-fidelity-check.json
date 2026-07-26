@@ -1,0 +1,13 @@
+{
+  "status": "pass",
+  "checkedAt": "2026-07-26T15:18:38.300Z",
+  "workspace": "Q:\\Programs\\GradeSense\\tmp\\strict_template_build",
+  "finalPptx": "Q:\\Programs\\GradeSense\\Submission\\Presentation.pptx",
+  "starterPptx": "Q:\\Programs\\GradeSense\\tmp\\strict_template_build\\template-starter.pptx",
+  "mapPath": "Q:\\Programs\\GradeSense\\tmp\\strict_template_build\\template-frame-map.json",
+  "starterLayoutDir": "Q:\\Programs\\GradeSense\\tmp\\strict_template_build\\template-starter-layout",
+  "finalLayoutDir": "Q:\\Programs\\GradeSense\\tmp\\strict_template_build\\final-layout",
+  "editDir": "Q:\\Programs\\GradeSense\\tmp\\strict_template_build",
+  "issueCount": 0,
+  "issues": []
+}

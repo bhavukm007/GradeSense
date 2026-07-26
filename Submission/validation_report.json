@@ -1,0 +1,157 @@
+{
+  "pdfs": [
+    {
+      "file": "GradeSense_API_Documentation.pdf",
+      "pages": 28,
+      "bytes": 145443,
+      "text_chars": 26647,
+      "rendered_pages": 28,
+      "render_dimensions": [
+        827,
+        1170
+      ],
+      "status": "validated"
+    },
+    {
+      "file": "GradeSense_Deployment_Guide.pdf",
+      "pages": 4,
+      "bytes": 104732,
+      "text_chars": 4962,
+      "rendered_pages": 4,
+      "render_dimensions": [
+        827,
+        1170
+      ],
+      "status": "validated"
+    },
+    {
+      "file": "GradeSense_Presentation.pdf",
+      "pages": 6,
+      "bytes": 450164,
+      "text_chars": 2686,
+      "rendered_pages": 6,
+      "render_dimensions": [
+        1334,
+        750
+      ],
+      "status": "validated"
+    },
+    {
+      "file": "GradeSense_Source_Code_Documentation.pdf",
+      "pages": 4,
+      "bytes": 104933,
+      "text_chars": 7086,
+      "rendered_pages": 4,
+      "render_dimensions": [
+        827,
+        1170
+      ],
+      "status": "validated"
+    },
+    {
+      "file": "GradeSense_System_Architecture.pdf",
+      "pages": 8,
+      "bytes": 94472,
+      "text_chars": 3527,
+      "rendered_pages": 8,
+      "render_dimensions": [
+        827,
+        1170
+      ],
+      "status": "validated"
+    },
+    {
+      "file": "GradeSense_Technical_Documentation.pdf",
+      "pages": 7,
+      "bytes": 779999,
+      "text_chars": 8157,
+      "rendered_pages": 7,
+      "render_dimensions": [
+        827,
+        1170
+      ],
+      "status": "validated"
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "Home.png",
+      "bytes": 141334,
+      "dimensions": [
+        1269,
+        1910
+      ],
+      "status": "validated"
+    },
+    {
+      "file": "Live_Dashboard.png",
+      "bytes": 268754,
+      "dimensions": [
+        1269,
+        2984
+      ],
+      "status": "validated"
+    },
+    {
+      "file": "Prediction.png",
+      "bytes": 77928,
+      "dimensions": [
+        1269,
+        852
+      ],
+      "status": "validated"
+    },
+    {
+      "file": "Recommendation.png",
+      "bytes": 93537,
+      "dimensions": [
+        1269,
+        1110
+      ],
+      "status": "validated"
+    },
+    {
+      "file": "Alerts.png",
+      "bytes": 141339,
+      "dimensions": [
+        1269,
+        1910
+      ],
+      "status": "validated"
+    },
+    {
+      "file": "Analytics.png",
+      "bytes": 51465,
+      "dimensions": [
+        1280,
+        720
+      ],
+      "status": "validated"
+    },
+    {
+      "file": "History.png",
+      "bytes": 56643,
+      "dimensions": [
+        1280,
+        720
+      ],
+      "status": "validated"
+    },
+    {
+      "file": "Settings.png",
+      "bytes": 48914,
+      "dimensions": [
+        1280,
+        720
+      ],
+      "status": "validated"
+    }
+  ],
+  "presentation": {
+    "file": "GradeSense_Presentation.pptx",
+    "bytes": 348073,
+    "slides": 6,
+    "template_fidelity": "pass",
+    "overflow_test": "pass"
+  }
+}

@@ -1,10 +1,11 @@
-import { useQueries, useQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useMemo, useState } from 'react'
 
 import { api } from '../api/client'
 import { PageHeader } from '../components/ui/PageHeader'
 import { Panel } from '../components/ui/Panel'
 import { ErrorState, SkeletonGrid } from '../components/ui/QueryState'
+import { useRelationshipDiscoveries } from '../hooks/useRelationshipDiscoveries'
 import { formatNumber, labelize } from '../lib/format'
 
 export function CorrelationsPage() {
@@ -15,13 +16,7 @@ export function CorrelationsPage() {
     queryFn: () => api.correlations(50),
     staleTime: 300_000,
   })
-  const discoveryQueries = useQueries({
-    queries: (['early', 'middle', 'late'] as const).map((stage) => ({
-      queryKey: ['relationship-discovery', stage],
-      queryFn: () => api.relationshipDiscovery(stage, 10),
-      staleTime: 300_000,
-    })),
-  })
+  const discoveryQueries = useRelationshipDiscoveries(10)
   const discoveries = discoveryQueries
     .flatMap((item) => item.data?.relationships ?? [])
     .sort((first, second) => second.strength - first.strength)

@@ -1,0 +1,85 @@
+{
+  "outputSlides": [
+    {
+      "outputSlide": 1,
+      "sourceSlide": 2,
+      "narrativeRole": "opening thesis",
+      "reuseMode": "duplicate-slide",
+      "editTargets": [
+        {"shapeId":"sh/x4r21kru","action":"rewrite"},
+        {"shapeId":"sh/w3i1sfa9","action":"rewrite"},
+        {"shapeId":"sh/b29kza94","action":"rewrite"},
+        {"shapeId":"sh/a10jqpsj","action":"rewrite"},
+        {"action":"add","newPrimitiveAllowed":true,"zone":{"left":700,"top":170,"width":500,"height":370},"reason":"Place branded submission thesis visual in unused title-page region.","mustNotOverlapInherited":true}
+      ]
+    },
+    {
+      "outputSlide": 2,
+      "sourceSlide": 3,
+      "narrativeRole": "problem and proposed solution",
+      "reuseMode": "duplicate-slide",
+      "editTargets": [
+        {"shapeId":"sh/c3ut0bud","action":"rewrite-and-reposition"},
+        {"shapeId":"sh/b2ls76ds","action":"delete"},
+        {"shapeId":"sh/obq90bml","action":"rewrite"},
+        {"shapeId":"sh/pcjqtg36","action":"rewrite"},
+        {"action":"add","newPrimitiveAllowed":true,"zone":{"left":55,"top":135,"width":1170,"height":470},"reason":"Replace deleted instructional textbox with problem-solution architecture.","mustNotOverlapInherited":true}
+      ]
+    },
+    {
+      "outputSlide": 3,
+      "sourceSlide": 4,
+      "narrativeRole": "technical architecture and AI workflow",
+      "reuseMode": "duplicate-slide",
+      "editTargets": [
+        {"shapeId":"sh/ud8fyt4z","action":"rewrite-and-reposition"},
+        {"shapeId":"sh/sjad83id","action":"delete"},
+        {"shapeId":"sh/doj29oba","action":"rewrite"},
+        {"shapeId":"sh/sna103ap","action":"rewrite"},
+        {"action":"add","newPrimitiveAllowed":true,"zone":{"left":55,"top":130,"width":1170,"height":475},"reason":"Add editable system and AI workflow diagram.","mustNotOverlapInherited":true}
+      ]
+    },
+    {
+      "outputSlide": 4,
+      "sourceSlide": 5,
+      "narrativeRole": "recommendation explainability and business impact",
+      "reuseMode": "duplicate-slide",
+      "editTargets": [
+        {"shapeId":"sh/y1g7ylcj","action":"rewrite-and-reposition"},
+        {"shapeId":"sh/g7alsnu1","action":"delete"},
+        {"shapeId":"sh/l4bupwny","action":"rewrite"},
+        {"shapeId":"sh/032tgr6d","action":"rewrite"},
+        {"action":"add","newPrimitiveAllowed":true,"zone":{"left":55,"top":130,"width":1170,"height":475},"reason":"Add explainability, recommendation, and impact visuals.","mustNotOverlapInherited":true}
+      ]
+    },
+    {
+      "outputSlide": 5,
+      "sourceSlide": 6,
+      "narrativeRole": "dashboard evidence",
+      "reuseMode": "duplicate-slide",
+      "editTargets": [
+        {"shapeId":"sh/1kj2p0ve","action":"rewrite-and-reposition"},
+        {"shapeId":"sh/vq5cve1s","action":"delete"},
+        {"shapeId":"sh/ml07i9sv","action":"rewrite"},
+        {"shapeId":"sh/7m98ru9g","action":"rewrite"},
+        {"action":"add","newPrimitiveAllowed":true,"zone":{"left":45,"top":125,"width":1190,"height":490},"reason":"Insert authentic GradeSense dashboard screenshots.","mustNotOverlapInherited":true}
+      ]
+    },
+    {
+      "outputSlide": 6,
+      "sourceSlide": 7,
+      "narrativeRole": "deployment architecture and close",
+      "reuseMode": "duplicate-slide",
+      "editTargets": [
+        {"shapeId":"sh/3i18ru10","action":"rewrite-and-reposition"},
+        {"shapeId":"sh/5c7uxs3y","action":"delete"},
+        {"shapeId":"sh/kzmdova1","action":"rewrite"},
+        {"shapeId":"sh/l0vuh0rm","action":"rewrite"},
+        {"action":"add","newPrimitiveAllowed":true,"zone":{"left":55,"top":130,"width":1170,"height":475},"reason":"Add deployment architecture and validated next-step close.","mustNotOverlapInherited":true}
+      ]
+    }
+  ],
+  "omittedSourceSlides": [
+    {"sourceSlide":1,"reason":"Template instruction slide explicitly marked for deletion before submission."}
+  ]
+}

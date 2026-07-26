@@ -1,0 +1,9 @@
+Source deck: C:\Users\ASUS\Downloads\IDEA_Presentation_Format.pptx
+Selected slides: source slides 2 through 7, in their original order.
+Omitted slide: source slide 1, because it is the template instruction page.
+Layout contract:
+- Preserve all masters, layouts, slide dimensions, object positions, typography, text insets, and inherited formatting.
+- Replace content only inside existing source text elements.
+- Replace footer and slide-number placeholders on every selected slide.
+- Add no shapes, images, lines, charts, tables, or overlays.
+- Reposition no inherited element.

@@ -1,0 +1,3 @@
+No layout deviations.
+All edits are text-only replacements inside inherited source elements.
+Source slide 1 is omitted as explicitly permitted by its instruction text.

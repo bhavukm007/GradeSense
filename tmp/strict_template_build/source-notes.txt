@@ -1,0 +1,9 @@
+All visible claims and architectural descriptions are derived from the GradeSense repository:
+- README.md
+- docs/SYSTEM_ARCHITECTURE.md
+- docs/MODEL_OVERVIEW.md
+- docs/DEPLOYMENT.md
+- docs/API_REFERENCE.md
+- backend/app/
+- frontend/src/
+No external imagery, research, or numerical business claims are used.

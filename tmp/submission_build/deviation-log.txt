@@ -1,0 +1,6 @@
+Slides 1-6: Added Honeywell-red accent rules and compact visual compositions inside the inherited content zone.
+Slide 1: Reused the title-page structure and replaced the template metadata list with GradeSense submission identity.
+Slides 2-5: Replaced instructional body copy with editable architecture, workflow, impact, and dashboard content.
+Slide 6: Replaced reference-work copy with the deployment architecture and validation/next-step close.
+Slides 2-6: Moved inherited title boxes 12 px down and reduced their height to 92 px to eliminate the source template's top-canvas overflow while preserving typography.
+All deviations preserve the supplied slide dimensions, inherited title/footer/page-number structure, and central whitespace.

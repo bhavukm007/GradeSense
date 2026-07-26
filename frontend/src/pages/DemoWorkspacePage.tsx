@@ -1,4 +1,4 @@
-import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   CheckCircle2,
   ChevronDown,
@@ -28,6 +28,7 @@ import { api } from '../api/client'
 import type { ForecastRecommendation, RecommendationState } from '../api/types'
 import { PageHeader } from '../components/ui/PageHeader'
 import { Panel } from '../components/ui/Panel'
+import { useRelationshipDiscoveries } from '../hooks/useRelationshipDiscoveries'
 import { formatNumber, formatPercent, labelize } from '../lib/format'
 
 const requirements = [
@@ -71,12 +72,7 @@ export function DemoWorkspacePage() {
     queryFn: api.interventionEffectiveness,
   })
   const live = useQuery({ queryKey: ['live-metrics'], queryFn: api.liveMetrics })
-  const discoveries = useQueries({
-    queries: (['early', 'middle', 'late'] as const).map((stage) => ({
-      queryKey: ['relationship-discovery', stage],
-      queryFn: () => api.relationshipDiscovery(stage, 5),
-    })),
-  })
+  const discoveries = useRelationshipDiscoveries(5)
   const topDiscoveries = useMemo(
     () =>
       discoveries

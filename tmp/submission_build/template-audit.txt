@@ -1,0 +1,12 @@
+Source: IDEA_Presentation_Format.pptx
+Slides: 7 total; slide 1 is instructions and is intentionally omitted.
+Reusable patterns:
+- Slide 2: title page with inherited subtitle, body field, footer, and slide-number placeholders.
+- Slides 3-7: large uppercase inherited title, open central content region, footer, and slide-number placeholders.
+Typography: TradeGothic/Arial/Calibri family evidence; uppercase black title, white background, restrained SIH footer.
+Insertion contract:
+- Preserve inherited title/footer/page-number elements.
+- Rewrite or delete every inherited content placeholder explicitly.
+- New visuals are allowed only inside the central content region vacated by the inherited body textbox.
+- No new visual may overlap inherited title, footer, or page number.
+- Authentic product screenshots are sourced from the running local GradeSense application.
