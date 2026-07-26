@@ -42,9 +42,13 @@ export class ApiError extends Error {
   }
 }
 
-async function request<T>(path: string, options?: RequestInit): Promise<T> {
+async function request<T>(
+  path: string,
+  options?: RequestInit,
+  timeoutMs = 12_000,
+): Promise<T> {
   const controller = new AbortController()
-  const timeout = window.setTimeout(() => controller.abort(), 12_000)
+  const timeout = window.setTimeout(() => controller.abort(), timeoutMs)
   try {
     const response = await fetch(`${API_URL}${path}`, {
       ...options,
@@ -83,8 +87,10 @@ export const api = {
   relationshipDiscovery: (stage: 'early' | 'middle' | 'late', limit = 10) =>
     request<RelationshipDiscovery>(
       `/relationships/discovery?stage=${stage}&min_strength=0.1&limit=${limit}`,
+      undefined,
+      60_000,
     ),
-  seedDemo: () => request<DemoSeedResult>('/demo/seed', { method: 'POST' }),
+  seedDemo: () => request<DemoSeedResult>('/demo/seed', { method: 'POST' }, 180_000),
   predict: (values: ProcessInput) => post<Prediction>('/predict', values),
   recommend: (values: ProcessInput) => post<RecommendationResponse>('/recommend', values),
   predictionHistory: (page: number, pageSize = 20) =>

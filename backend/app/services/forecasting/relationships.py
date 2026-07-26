@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 from sklearn.feature_selection import mutual_info_regression
 
@@ -5,10 +6,61 @@ from sklearn.feature_selection import mutual_info_regression
 class SequentialRelationshipService:
     @staticmethod
     def _correlation(first: pd.Series, second: pd.Series) -> float:
-        paired = pd.concat([first, second], axis=1).dropna()
-        if len(paired) < 2 or paired.iloc[:, 0].nunique() < 2 or paired.iloc[:, 1].nunique() < 2:
+        first_values = first.to_numpy(dtype=float, copy=False)
+        second_values = second.to_numpy(dtype=float, copy=False)
+        valid = np.isfinite(first_values) & np.isfinite(second_values)
+        first_values = first_values[valid]
+        second_values = second_values[valid]
+        if (
+            len(first_values) < 2
+            or np.ptp(first_values) == 0
+            or np.ptp(second_values) == 0
+        ):
             return 0.0
-        return float(paired.iloc[:, 0].corr(paired.iloc[:, 1]))
+        return float(np.corrcoef(first_values, second_values)[0, 1])
+
+    @staticmethod
+    def _group_correlations(
+        group_ids: pd.Series,
+        first: pd.Series,
+        second: pd.Series,
+    ) -> pd.Series:
+        values = pd.DataFrame(
+            {
+                "group": group_ids,
+                "first": first,
+                "second": second,
+            }
+        ).dropna()
+        values["first_squared"] = values["first"] ** 2
+        values["second_squared"] = values["second"] ** 2
+        values["product"] = values["first"] * values["second"]
+        totals = values.groupby("group", sort=False).agg(
+            count=("first", "count"),
+            first_sum=("first", "sum"),
+            second_sum=("second", "sum"),
+            first_squared_sum=("first_squared", "sum"),
+            second_squared_sum=("second_squared", "sum"),
+            product_sum=("product", "sum"),
+        )
+        numerator = (
+            totals["count"] * totals["product_sum"]
+            - totals["first_sum"] * totals["second_sum"]
+        )
+        denominator = np.sqrt(
+            (
+                totals["count"] * totals["first_squared_sum"]
+                - totals["first_sum"] ** 2
+            )
+            * (
+                totals["count"] * totals["second_squared_sum"]
+                - totals["second_sum"] ** 2
+            )
+        )
+        return (numerator / denominator).where(
+            (totals["count"] >= 2) & (denominator > 0),
+            0.0,
+        )
 
     def discover(
         self,
@@ -45,32 +97,38 @@ class SequentialRelationshipService:
             "caliper",
             "reel_tension",
         ]
+        data = data.sort_values(["transition_id", "timestep"])
+        grouped = data.groupby("transition_id", sort=False)
         relationships = []
         for variable in variables:
             best = {"lag": 0, "correlation": 0.0}
-            rolling_values = []
-            for _transition_id, group in data.groupby("transition_id", sort=False):
-                ordered = group.sort_values("timestep")
-                rolling_values.append(
-                    self._correlation(
-                        ordered[variable].rolling(5, min_periods=2).mean(),
-                        ordered["basis_weight"],
-                    )
+            rolling = grouped[variable].transform(
+                lambda values: values.rolling(5, min_periods=2).mean()
+            )
+            rolling_correlations = self._group_correlations(
+                data["transition_id"],
+                rolling,
+                data["basis_weight"],
+            )
+            for lag in range(max_lag + 1):
+                lag_correlations = self._group_correlations(
+                    data["transition_id"],
+                    grouped[variable].shift(lag),
+                    data["basis_deviation_pct"],
                 )
-                for lag in range(max_lag + 1):
-                    correlation = self._correlation(
-                        ordered[variable].shift(lag),
-                        ordered["basis_deviation_pct"],
-                    )
-                    if abs(correlation) > abs(best["correlation"]):
-                        best = {"lag": lag, "correlation": float(correlation)}
+                if lag_correlations.empty:
+                    continue
+                strongest = lag_correlations.abs().idxmax()
+                correlation = float(lag_correlations.loc[strongest])
+                if abs(correlation) > abs(best["correlation"]):
+                    best = {"lag": lag, "correlation": correlation}
             relationships.append(
                 {
                     "relationship_type": "lag",
                     "variable": variable,
                     "best_lag": best["lag"],
                     "lag_correlation": round(best["correlation"], 5),
-                    "rolling_correlation": round(float(pd.Series(rolling_values).mean()), 5),
+                    "rolling_correlation": round(float(rolling_correlations.mean()), 5),
                     "grade_pair": grade_pair,
                     "stage": stage,
                     "transition_count": int(data["transition_id"].nunique()),
