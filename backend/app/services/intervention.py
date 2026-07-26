@@ -8,12 +8,14 @@ from sqlalchemy.orm import Session
 from app.models.intelligence import (
     ForecastHistory,
     ForecastRecommendation,
+    RecommendationDecision,
     RecommendationOutcome,
 )
 from app.schemas.forecasting import ForecastRequest, InterventionChange
 from app.schemas.intervention import (
     EffectivenessResponse,
     ForecastRecommendationResponse,
+    HistoricalRecommendationEvidence,
     RecommendationExplanation,
     RecommendationMetrics,
 )
@@ -22,19 +24,42 @@ from app.services.forecasting.service import ForecastingService
 
 
 def recommendation_response(row: ForecastRecommendation) -> ForecastRecommendationResponse:
+    explanation = dict(row.explanation)
+    public_explanation = {
+        key: explanation[key]
+        for key in (
+            "selection_reason",
+            "forecast_causes",
+            "trajectory_effect",
+            "expected_risks",
+            "remaining_uncertainty",
+            "recipe_attribution",
+        )
+        if key in explanation
+    }
     return ForecastRecommendationResponse(
         recommendation_id=row.id,
         forecast_id=row.forecast_id,
         state=row.state,
         rank=row.rank,
         affected_variables=row.affected_variables,
+        current_values=explanation.get("current_values", {}),
         changes=row.changes,
         baseline_trajectory=row.baseline_trajectory,
         intervention_trajectory=row.intervention_trajectory,
         metrics=row.metrics,
         confidence=row.confidence,
         constraint_validation=row.constraint_validation,
-        explanation=row.explanation,
+        explanation=public_explanation,
+        inference_sources=explanation.get("inference_sources", ["Forecast", "Historical Trend"]),
+        historical_evidence=explanation.get(
+            "historical_evidence",
+            {
+                "similar_transition_count": 0,
+                "historical_acceptance_rate": 0,
+                "historical_effectiveness": 0,
+            },
+        ),
         created_at=row.created_at,
         updated_at=row.updated_at,
         expires_at=row.expires_at,
@@ -114,6 +139,17 @@ class InterventionEngine:
         rows = []
         for rank, (_score, simulation, details) in enumerate(candidates[:max_results], start=1):
             validation, metrics = details
+            historical_evidence = self._historical_evidence(
+                session,
+                request.current_grade,
+                request.target_grade,
+                [change.variable for change in simulation.changes],
+            )
+            inference_sources = ["Forecast", "Historical Trend", "Correlation Analysis"]
+            if validation.recipe_rules:
+                inference_sources.append("Recipe Constraint")
+            if historical_evidence.historical_effectiveness > 0:
+                inference_sources.append("Historical Successful Transition")
             causes = [
                 name.replace("_", " ")
                 for name, _importance in baseline.top_influencing_variables[:3]
@@ -139,25 +175,34 @@ class InterventionEngine:
                 metrics=metrics.model_dump(mode="json"),
                 confidence=simulation.confidence,
                 constraint_validation=validation.model_dump(mode="json"),
-                explanation=RecommendationExplanation(
-                    selection_reason=(
-                        f"Ranked {rank} by forecast-derived crossing-risk (60%), peak-deviation "
-                        "(30%), and stabilization (10%) improvement."
-                    ),
-                    forecast_causes=causes,
-                    trajectory_effect=(
-                        f"Changing {changed} reduces crossing probability from "
-                        f"{metrics.crossing_probability_before:.1%} to "
-                        f"{metrics.crossing_probability_after:.1%} and peak deviation from "
-                        f"{metrics.predicted_peak_deviation_before:.2f}% to "
-                        f"{metrics.predicted_peak_deviation_after:.2f}%."
-                    ),
-                    expected_risks=risks,
-                    remaining_uncertainty=(
-                        f"Joint forecast confidence is {simulation.confidence:.1%}; uncertainty "
-                        "is represented by the intervention confidence interval."
-                    ),
-                ).model_dump(mode="json"),
+                explanation={
+                    **RecommendationExplanation(
+                        selection_reason=(
+                            f"Ranked {rank} by forecast-derived crossing-risk (60%), "
+                            "peak-deviation (30%), and stabilization (10%) improvement."
+                        ),
+                        forecast_causes=causes,
+                        trajectory_effect=(
+                            f"Changing {changed} reduces crossing probability from "
+                            f"{metrics.crossing_probability_before:.1%} to "
+                            f"{metrics.crossing_probability_after:.1%} and peak deviation from "
+                            f"{metrics.predicted_peak_deviation_before:.2f}% to "
+                            f"{metrics.predicted_peak_deviation_after:.2f}%."
+                        ),
+                        expected_risks=risks,
+                        remaining_uncertainty=(
+                            f"Joint forecast confidence is {simulation.confidence:.1%}; "
+                            "uncertainty is represented by the intervention confidence interval."
+                        ),
+                        recipe_attribution=validation.recipe_rules,
+                    ).model_dump(mode="json"),
+                    "inference_sources": inference_sources,
+                    "historical_evidence": historical_evidence.model_dump(mode="json"),
+                    "current_values": {
+                        change.variable: float(getattr(request.history[-1], change.variable))
+                        for change in simulation.changes
+                    },
+                },
                 expires_at=datetime.now(UTC) + timedelta(minutes=15),
             )
             session.add(row)
@@ -166,6 +211,70 @@ class InterventionEngine:
         for row in rows:
             session.refresh(row)
         return rows
+
+    @staticmethod
+    def _historical_evidence(
+        session: Session,
+        current_grade: str,
+        target_grade: str,
+        affected_variables: list[str],
+    ) -> HistoricalRecommendationEvidence:
+        recommendations = list(session.scalars(select(ForecastRecommendation)))
+        similar: list[ForecastRecommendation] = []
+        affected = set(affected_variables)
+        for recommendation in recommendations:
+            forecast = session.get(ForecastHistory, recommendation.forecast_id)
+            if forecast is None:
+                continue
+            request = forecast.request_data
+            if (
+                request.get("current_grade") == current_grade
+                and request.get("target_grade") == target_grade
+                and affected.intersection(recommendation.affected_variables)
+            ):
+                similar.append(recommendation)
+        if not similar:
+            return HistoricalRecommendationEvidence(
+                similar_transition_count=0,
+                historical_acceptance_rate=0,
+                historical_effectiveness=0,
+            )
+        ids = [item.id for item in similar]
+        decisions = list(
+            session.scalars(
+                select(RecommendationDecision).where(
+                    RecommendationDecision.recommendation_id.in_(ids)
+                )
+            )
+        )
+        accepted_ids = {
+            item.recommendation_id
+            for item in decisions
+            if item.operator_action in {"accepted", "applied"}
+        }
+        outcomes = list(
+            session.scalars(
+                select(RecommendationOutcome).where(
+                    RecommendationOutcome.recommendation_id.in_(ids)
+                )
+            )
+        )
+        evidence_ids = accepted_ids | {item.recommendation_id for item in outcomes}
+        decided_ids = {item.recommendation_id for item in decisions}
+        relevant_ids = decided_ids | {item.recommendation_id for item in outcomes}
+        effectiveness = (
+            sum(float(item.metrics.get("recommendation_accuracy", 0)) for item in outcomes)
+            / len(outcomes)
+            if outcomes
+            else 0
+        )
+        return HistoricalRecommendationEvidence(
+            similar_transition_count=len(evidence_ids),
+            historical_acceptance_rate=(
+                len(accepted_ids) / len(relevant_ids) if relevant_ids else 0
+            ),
+            historical_effectiveness=effectiveness,
+        )
 
     @staticmethod
     def _stabilization(trajectory: list) -> int | None:

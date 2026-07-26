@@ -82,6 +82,7 @@ class RecommendationService:
                     confidence=round(confidence, 4),
                     expected_improvement=round(expected_improvement, 3),
                     affected_variables=[intervention.variable],
+                    inference_sources=["Forecast", "Correlation Analysis"],
                 )
             )
             used_variables.add(intervention.variable)

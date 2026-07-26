@@ -26,6 +26,8 @@ import type {
   AdminHealth,
   RecommendationOutcome,
   TrajectoryPoint,
+  RelationshipDiscovery,
+  DemoSeedResult,
 } from './types'
 
 const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:8000').replace(/\/$/, '')
@@ -78,6 +80,11 @@ export const api = {
   modelInfo: () => request<ModelInfo>('/model/info'),
   datasetStatistics: () => request<DatasetStatistics>('/dataset/statistics'),
   correlations: (limit = 20) => request<Correlations>(`/correlations?limit=${limit}`),
+  relationshipDiscovery: (stage: 'early' | 'middle' | 'late', limit = 10) =>
+    request<RelationshipDiscovery>(
+      `/relationships/discovery?stage=${stage}&min_strength=0.1&limit=${limit}`,
+    ),
+  seedDemo: () => request<DemoSeedResult>('/demo/seed', { method: 'POST' }),
   predict: (values: ProcessInput) => post<Prediction>('/predict', values),
   recommend: (values: ProcessInput) => post<RecommendationResponse>('/recommend', values),
   predictionHistory: (page: number, pageSize = 20) =>

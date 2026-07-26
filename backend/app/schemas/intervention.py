@@ -27,6 +27,13 @@ class ConstraintValidation(InterventionModel):
     feasible: bool
     checks: list[str]
     violations: list[str]
+    recipe_rules: list[str] = Field(default_factory=list)
+
+
+class HistoricalRecommendationEvidence(InterventionModel):
+    similar_transition_count: int = Field(ge=0)
+    historical_acceptance_rate: float = Field(ge=0, le=1)
+    historical_effectiveness: float = Field(ge=0)
 
 
 class RecommendationMetrics(InterventionModel):
@@ -47,6 +54,7 @@ class RecommendationExplanation(InterventionModel):
     trajectory_effect: str
     expected_risks: list[str]
     remaining_uncertainty: str
+    recipe_attribution: list[str] = Field(default_factory=list)
 
 
 class ForecastRecommendationResponse(InterventionModel):
@@ -55,6 +63,7 @@ class ForecastRecommendationResponse(InterventionModel):
     state: RecommendationState
     rank: int
     affected_variables: list[str]
+    current_values: dict[str, float]
     changes: list[InterventionChange]
     baseline_trajectory: list[TrajectoryPoint]
     intervention_trajectory: list[TrajectoryPoint]
@@ -62,6 +71,8 @@ class ForecastRecommendationResponse(InterventionModel):
     confidence: float
     constraint_validation: ConstraintValidation
     explanation: RecommendationExplanation
+    inference_sources: list[str]
+    historical_evidence: HistoricalRecommendationEvidence
     created_at: datetime
     updated_at: datetime
     expires_at: datetime | None

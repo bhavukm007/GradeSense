@@ -33,6 +33,7 @@ class ConstraintEngine:
     ) -> ConstraintValidation:
         checks: list[str] = []
         violations: list[str] = []
+        recipe_rules: list[str] = []
         current = request.history[-1]
         seen: set[str] = set()
         for change in changes:
@@ -51,10 +52,12 @@ class ConstraintEngine:
                 )
             grade_limit = GRADE_LIMITS.get(request.target_grade, {}).get(change.variable)
             if grade_limit:
-                checks.append(
-                    f"{request.target_grade} {change.variable} range "
-                    f"{grade_limit[0]:g}..{grade_limit[1]:g}"
+                rule = (
+                    f"{request.target_grade} recipe: {change.variable} must remain "
+                    f"within {grade_limit[0]:g}..{grade_limit[1]:g}"
                 )
+                checks.append(rule)
+                recipe_rules.append(rule)
                 if not grade_limit[0] <= change.value <= grade_limit[1]:
                     violations.append(
                         f"{change.variable} violates {request.target_grade} grade limits."
@@ -66,4 +69,9 @@ class ConstraintEngine:
             violations.append("High dryer temperature cannot be combined with high steam pressure.")
         if values["machine_speed"] > 1200 and values["stock_flow"] < 2600:
             violations.append("Stock flow is insufficient for the requested machine speed.")
-        return ConstraintValidation(feasible=not violations, checks=checks, violations=violations)
+        return ConstraintValidation(
+            feasible=not violations,
+            checks=checks,
+            violations=violations,
+            recipe_rules=recipe_rules,
+        )

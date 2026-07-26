@@ -42,6 +42,8 @@ def test_recommendations_are_model_evaluated_and_persisted(client: TestClient) -
     assert payload["recommendations"]
     assert all(item["expected_improvement"] >= 0 for item in payload["recommendations"])
     assert all(item["affected_variables"] for item in payload["recommendations"])
+    assert all(item["inference_sources"] for item in payload["recommendations"])
+    assert all("Forecast" in item["inference_sources"] for item in payload["recommendations"])
     assert len({item["text"] for item in payload["recommendations"]}) == len(
         payload["recommendations"]
     )

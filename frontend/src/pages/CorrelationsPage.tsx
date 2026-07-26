@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQueries, useQuery } from '@tanstack/react-query'
 import { useMemo, useState } from 'react'
 
 import { api } from '../api/client'
@@ -15,6 +15,17 @@ export function CorrelationsPage() {
     queryFn: () => api.correlations(50),
     staleTime: 300_000,
   })
+  const discoveryQueries = useQueries({
+    queries: (['early', 'middle', 'late'] as const).map((stage) => ({
+      queryKey: ['relationship-discovery', stage],
+      queryFn: () => api.relationshipDiscovery(stage, 10),
+      staleTime: 300_000,
+    })),
+  })
+  const discoveries = discoveryQueries
+    .flatMap((item) => item.data?.relationships ?? [])
+    .sort((first, second) => second.strength - first.strength)
+    .slice(0, 10)
   const variables = useMemo(
     () =>
       query.data
@@ -61,6 +72,60 @@ export function CorrelationsPage() {
         </div>
       ) : (
         <>
+          <Panel className="mt-5" title="Top 10 discovered transition relationships">
+            <p className="mb-4 text-sm text-slate-500">
+              Lag, nonlinear, and interaction analysis against Basis Weight deviation, separated by
+              transition stage.
+            </p>
+            <div className="grid gap-3 lg:grid-cols-2">
+              {discoveries.map((item, index) => (
+                <div
+                  key={`${item.stage}-${item.relationship_type}-${item.variable}-${item.interacts_with ?? index}`}
+                  className="rounded-xl border border-slate-200 p-4 dark:border-white/10"
+                >
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <p className="font-semibold">
+                      {labelize(item.variable)}
+                      {item.interacts_with
+                        ? ` × ${labelize(item.interacts_with)}`
+                        : ' → Basis Weight'}
+                    </p>
+                    <span
+                      className={`rounded-full px-2.5 py-1 text-xs font-semibold ${
+                        item.severity === 'High'
+                          ? 'bg-rose-400/10 text-rose-500'
+                          : item.severity === 'Medium'
+                            ? 'bg-amber-400/10 text-amber-500'
+                            : 'bg-emerald-400/10 text-emerald-500'
+                      }`}
+                    >
+                      {item.severity} impact
+                    </span>
+                  </div>
+                  <p className="mt-2 text-sm text-slate-500">{item.summary}</p>
+                  <div className="mt-3 flex flex-wrap gap-2 text-xs">
+                    <span className="rounded-full bg-cyan-400/10 px-2 py-1 text-cyan-500">
+                      {item.relationship_type}
+                    </span>
+                    <span className="rounded-full bg-indigo-400/10 px-2 py-1 text-indigo-500">
+                      {item.stage}
+                    </span>
+                    <span className="rounded-full bg-slate-100 px-2 py-1 dark:bg-white/10">
+                      Strength {formatNumber(item.strength, 3)}
+                    </span>
+                    <span className="rounded-full bg-slate-100 px-2 py-1 dark:bg-white/10">
+                      {item.impact_direction}
+                    </span>
+                    {item.best_lag != null && (
+                      <span className="rounded-full bg-slate-100 px-2 py-1 dark:bg-white/10">
+                        Best lag {item.best_lag}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Panel>
           <Panel className="mt-5 overflow-hidden" title="Interactive correlation heatmap">
             <div className="max-h-[650px] overflow-auto">
               <div

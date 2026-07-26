@@ -59,12 +59,14 @@ describe('operator workflows', () => {
           confidence: 0.82,
           expected_improvement: 4.2,
           affected_variables: ['machine_speed'],
+          inference_sources: ['Forecast', 'Correlation Analysis'],
         },
         {
           text: 'Increase steam pressure.',
           confidence: 0.72,
           expected_improvement: 2.1,
           affected_variables: ['steam_pressure'],
+          inference_sources: ['Forecast', 'Correlation Analysis'],
         },
       ],
       created_at: prediction.created_at,
@@ -73,6 +75,7 @@ describe('operator workflows', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Generate recommendations' }))
     expect(await screen.findByText('Reduce machine speed.')).toBeInTheDocument()
     expect(screen.getByText('Increase steam pressure.')).toBeInTheDocument()
+    expect(screen.getAllByText('Forecast')).toHaveLength(2)
   })
 
   it('shows API connection errors', async () => {
@@ -104,6 +107,7 @@ describe('operator workflows', () => {
         state: 'accepted',
         rank: 1,
         affected_variables: ['machine_speed'],
+        current_values: { machine_speed: 940 },
         changes: [{ variable: 'machine_speed', value: 900 }],
         baseline_trajectory: trajectory,
         intervention_trajectory: trajectory,
@@ -119,13 +123,25 @@ describe('operator workflows', () => {
           crossing_delay_steps: null,
         },
         confidence: 0.82,
-        constraint_validation: { feasible: true, checks: [], violations: [] },
+        constraint_validation: {
+          feasible: true,
+          checks: [],
+          violations: [],
+          recipe_rules: [],
+        },
         explanation: {
           selection_reason: 'Best forecast improvement.',
           forecast_causes: ['machine speed'],
           trajectory_effect: 'Reduces peak deviation.',
           expected_risks: [],
           remaining_uncertainty: 'Model uncertainty remains.',
+          recipe_attribution: [],
+        },
+        inference_sources: ['Forecast', 'Historical Trend'],
+        historical_evidence: {
+          similar_transition_count: 3,
+          historical_acceptance_rate: 0.67,
+          historical_effectiveness: 0.81,
         },
         created_at: '2026-07-25T12:00:00Z',
         updated_at: '2026-07-25T12:05:00Z',
@@ -184,6 +200,10 @@ describe('operator workflows', () => {
     expect(screen.getByRole('link', { name: 'Prediction Center' })).toHaveAttribute(
       'href',
       '/prediction',
+    )
+    expect(screen.getByRole('link', { name: 'Honeywell Demo' })).toHaveAttribute(
+      'href',
+      '/honeywell-demo',
     )
     cleanup()
     renderApp(<NotFoundPage />)

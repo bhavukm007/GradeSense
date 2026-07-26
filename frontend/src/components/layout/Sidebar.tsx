@@ -10,12 +10,14 @@ import {
   Sparkles,
   Settings,
   ShieldCheck,
+  Presentation,
   Download,
   X,
 } from 'lucide-react'
 import { NavLink } from 'react-router'
 
 const navigation = [
+  { label: 'Honeywell Demo', to: '/honeywell-demo', icon: Presentation },
   { label: 'Dashboard', to: '/dashboard', icon: Gauge },
   { label: 'Prediction Center', to: '/prediction', icon: Activity },
   { label: 'Recommendations', to: '/recommendations', icon: Lightbulb },

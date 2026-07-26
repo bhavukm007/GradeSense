@@ -13,6 +13,11 @@ const CorrelationsPage = lazy(() =>
 const DashboardPage = lazy(() =>
   import('../pages/DashboardPage').then((module) => ({ default: module.DashboardPage })),
 )
+const HoneywellDemoPage = lazy(() =>
+  import('../pages/HoneywellDemoPage').then((module) => ({
+    default: module.HoneywellDemoPage,
+  })),
+)
 const HistoryPage = lazy(() =>
   import('../pages/HistoryPage').then((module) => ({ default: module.HistoryPage })),
 )
@@ -73,6 +78,7 @@ export function App() {
         <Route element={<AppLayout />}>
           <Route index element={<Navigate to="/dashboard" replace />} />
           <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/honeywell-demo" element={<HoneywellDemoPage />} />
           <Route path="/prediction" element={<PredictionPage />} />
           <Route path="/simulator" element={<SimulatorPage />} />
           <Route path="/analytics" element={<AnalyticsPage />} />

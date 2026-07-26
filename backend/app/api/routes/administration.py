@@ -33,6 +33,7 @@ from app.schemas.administration import (
     RegisteredModelResponse,
     RuntimeConfigResponse,
 )
+from app.services.demo import DemoSeedService
 from app.services.operations import (
     AuditService,
     RuntimeConfigService,
@@ -42,6 +43,11 @@ from app.services.registry import ModelRegistryService, ModelValidationError
 from app.services.streaming import get_streaming_service
 
 router = APIRouter(tags=["production administration"])
+
+
+@router.post("/demo/seed", status_code=201)
+def seed_honeywell_demo(session: DatabaseSession) -> dict[str, int]:
+    return DemoSeedService(get_settings()).seed(session)
 
 
 def model_response(row: RegisteredModel) -> RegisteredModelResponse:

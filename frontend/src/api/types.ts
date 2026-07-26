@@ -43,6 +43,7 @@ export interface Recommendation {
   confidence: number
   expected_improvement: number
   affected_variables: string[]
+  inference_sources: string[]
 }
 
 export interface RecommendationResponse {
@@ -63,6 +64,38 @@ export interface Correlations {
   correlation_matrix: Record<string, Record<string, number>>
   strongest_positive_correlations: CorrelationPair[]
   strongest_negative_correlations: CorrelationPair[]
+}
+
+export interface DiscoveredRelationship {
+  relationship_type: 'lag' | 'nonlinear' | 'interaction'
+  variable: string
+  interacts_with?: string
+  strength: number
+  best_lag?: number
+  lag_correlation?: number
+  rolling_correlation?: number
+  grade_pair: string | null
+  stage: 'early' | 'middle' | 'late' | null
+  transition_count: number
+  impact_direction: 'Positive' | 'Negative'
+  severity: 'High' | 'Medium' | 'Low'
+  summary: string
+}
+
+export interface RelationshipDiscovery {
+  relationships: DiscoveredRelationship[]
+  method: string
+  max_lag: number
+  record_count: number
+}
+
+export interface DemoSeedResult {
+  predictions: number
+  forecasts: number
+  recommendations: number
+  decisions: number
+  outcomes: number
+  audit_records: number
 }
 
 export interface DatasetStatistics {
@@ -244,6 +277,7 @@ export interface ForecastRecommendation {
   state: RecommendationState
   rank: number
   affected_variables: string[]
+  current_values: Record<string, number>
   changes: { variable: string; value: number }[]
   baseline_trajectory: TrajectoryPoint[]
   intervention_trajectory: TrajectoryPoint[]
@@ -259,13 +293,25 @@ export interface ForecastRecommendation {
     crossing_delay_steps: number | null
   }
   confidence: number
-  constraint_validation: { feasible: boolean; checks: string[]; violations: string[] }
+  constraint_validation: {
+    feasible: boolean
+    checks: string[]
+    violations: string[]
+    recipe_rules: string[]
+  }
   explanation: {
     selection_reason: string
     forecast_causes: string[]
     trajectory_effect: string
     expected_risks: string[]
     remaining_uncertainty: string
+    recipe_attribution: string[]
+  }
+  inference_sources: string[]
+  historical_evidence: {
+    similar_transition_count: number
+    historical_acceptance_rate: number
+    historical_effectiveness: number
   }
   created_at: string
   updated_at: string

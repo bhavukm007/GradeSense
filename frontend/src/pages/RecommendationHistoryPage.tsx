@@ -79,7 +79,12 @@ export function RecommendationHistoryPage() {
                 className="flex w-full items-center justify-between rounded-xl bg-slate-50 p-3 text-left text-sm transition hover:bg-slate-100 dark:bg-white/[0.04] dark:hover:bg-white/[0.08]"
               >
                 <span>
-                  #{item.rank} {item.affected_variables.join(', ')}
+                  <span>
+                    #{item.rank} {item.affected_variables.join(', ')}
+                  </span>
+                  <span className="mt-1 block text-xs text-indigo-500">
+                    {item.inference_sources.join(' · ')}
+                  </span>
                 </span>
                 <span className="flex items-center gap-3">
                   <span className="font-semibold uppercase text-cyan-500">{item.state}</span>
@@ -154,6 +159,16 @@ export function RecommendationHistoryPage() {
                     {formatPercent(item.confidence)} confidence · {item.expected_improvement}{' '}
                     expected improvement
                   </p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {item.inference_sources.map((source) => (
+                      <span
+                        key={source}
+                        className="rounded-full bg-indigo-400/10 px-2 py-1 text-xs font-semibold text-indigo-500"
+                      >
+                        {source}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               ))}
             </div>

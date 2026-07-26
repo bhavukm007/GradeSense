@@ -54,4 +54,16 @@ def test_openapi_exposes_phase_two_routes(client: TestClient) -> None:
         "/interventions/recommendations/{recommendation_id}/decisions",
         "/interventions/recommendations/{recommendation_id}/outcome",
         "/interventions/effectiveness",
+        "/demo/seed",
     }.issubset(paths)
+
+
+def test_demo_seed_populates_judge_workflow(client: TestClient) -> None:
+    response = client.post("/demo/seed")
+    assert response.status_code == 201, response.text
+    payload = response.json()
+    assert payload["predictions"] >= 3
+    assert payload["recommendations"] >= 3
+    assert payload["decisions"] >= 3
+    assert payload["outcomes"] >= 1
+    assert client.get("/interventions/effectiveness").json()["evaluated_count"] >= 1

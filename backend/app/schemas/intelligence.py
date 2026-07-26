@@ -55,6 +55,7 @@ class Recommendation(IntelligenceModel):
     confidence: float = Field(ge=0, le=1)
     expected_improvement: float = Field(ge=0)
     affected_variables: list[str]
+    inference_sources: list[str] = Field(default_factory=list)
 
 
 class RecommendationResponse(IntelligenceModel):

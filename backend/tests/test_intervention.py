@@ -38,6 +38,9 @@ def test_forecast_driven_generation_persistence_and_decision(client) -> None:
     assert all(item["baseline_trajectory"] for item in recommendations)
     assert all(item["intervention_trajectory"] for item in recommendations)
     assert all(item["metrics"]["estimated_improvement"] > 0 for item in recommendations)
+    assert all("Forecast" in item["inference_sources"] for item in recommendations)
+    assert all("Historical Trend" in item["inference_sources"] for item in recommendations)
+    assert all("historical_evidence" in item for item in recommendations)
     recommendation = recommendations[0]
     stored = client.get(f"/interventions/recommendations/{recommendation['recommendation_id']}")
     assert stored.status_code == 200
@@ -47,6 +50,46 @@ def test_forecast_driven_generation_persistence_and_decision(client) -> None:
     )
     assert decision.status_code == 201, decision.text
     assert decision.json()["state"] == "accepted"
+
+
+def test_historical_evidence_and_recipe_attribution(client) -> None:
+    forecast = create_forecast(client)
+    first = client.post(
+        "/interventions/recommendations",
+        json={"forecast_id": forecast["forecast_id"], "max_results": 3},
+    ).json()
+    recipe_recommendation = next(
+        (item for item in first if item["constraint_validation"]["recipe_rules"]),
+        first[0],
+    )
+    accepted = client.post(
+        f"/interventions/recommendations/{recipe_recommendation['recommendation_id']}/decisions",
+        json={"operator_action": "accepted", "reason": "Historical evidence fixture"},
+    )
+    assert accepted.status_code == 201
+    outcome = client.post(
+        f"/interventions/recommendations/{recipe_recommendation['recommendation_id']}/outcome",
+        json={"observations": recipe_recommendation["intervention_trajectory"]},
+    )
+    assert outcome.status_code == 201
+
+    later = client.post(
+        "/interventions/recommendations",
+        json={"forecast_id": forecast["forecast_id"], "max_results": 5},
+    ).json()
+    matched = [
+        item
+        for item in later
+        if set(item["affected_variables"]).intersection(recipe_recommendation["affected_variables"])
+    ]
+    assert matched
+    assert matched[0]["historical_evidence"]["similar_transition_count"] >= 1
+    assert matched[0]["historical_evidence"]["historical_acceptance_rate"] > 0
+    assert matched[0]["historical_evidence"]["historical_effectiveness"] > 0
+    assert "Historical Successful Transition" in matched[0]["inference_sources"]
+    if matched[0]["constraint_validation"]["recipe_rules"]:
+        assert "Recipe Constraint" in matched[0]["inference_sources"]
+        assert matched[0]["explanation"]["recipe_attribution"]
 
 
 def test_outcome_evaluation_and_effectiveness(client) -> None:
@@ -116,6 +159,9 @@ def test_relationship_filtering_and_ranking(client) -> None:
     rows = response.json()["relationships"]
     assert len(rows) <= 4
     assert all(row["relationship_type"] == "nonlinear" for row in rows)
+    assert all(row["impact_direction"] in {"Positive", "Negative"} for row in rows)
+    assert all(row["severity"] in {"High", "Medium", "Low"} for row in rows)
+    assert all("Basis Weight" in row["summary"] for row in rows)
     assert rows == sorted(rows, key=lambda row: row["strength"], reverse=True)
 
 

@@ -218,6 +218,15 @@ audit, configuration, exports, security middleware, and legacy regression paths.
 - Synthetic process data demonstrates architecture and decision flow; production use requires a
   validated mill historian/OPC adapter and site acceptance testing.
 - Recommendations are advisory and never write directly to a DCS or PLC.
+- Every recommendation carries structured inference sources. Forecast-backed actions identify
+  forecast, historical-trend, correlation, applicable recipe-constraint, and historical successful
+  transition evidence.
+- Historical recommendation evidence is advisory: recommendations with the same grade transition
+  and overlapping affected variables are summarized by similar-transition count, acceptance rate,
+  and mean evaluated recommendation accuracy. This evidence does not retrain the model or perform
+  reinforcement learning.
+- Recipe attribution names each grade-specific rule that validated a proposed setpoint and surfaces
+  those rules in the operator explanation.
 - The in-process WebSocket broadcaster, metrics buffer, and rate limiter are intended for a
   single API replica. Multi-replica deployment requires a shared broker and metrics backend.
 - SQLite is convenient for development but PostgreSQL is required for concurrent production use.

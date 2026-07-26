@@ -74,6 +74,7 @@ class SequentialRelationshipService:
                     "grade_pair": grade_pair,
                     "stage": stage,
                     "transition_count": int(data["transition_id"].nunique()),
+                    "impact_direction": ("Positive" if best["correlation"] >= 0 else "Negative"),
                 }
             )
         clean = data[variables + ["basis_deviation_pct"]].dropna()
@@ -90,6 +91,11 @@ class SequentialRelationshipService:
                     "grade_pair": grade_pair,
                     "stage": stage,
                     "transition_count": int(data["transition_id"].nunique()),
+                    "impact_direction": (
+                        "Positive"
+                        if self._correlation(clean[variable], clean["basis_deviation_pct"]) >= 0
+                        else "Negative"
+                    ),
                 }
                 for variable, value in zip(variables, nonlinear, strict=True)
             )
@@ -104,16 +110,19 @@ class SequentialRelationshipService:
             for first_index, first in enumerate(top_variables):
                 for second in top_variables[first_index + 1 :]:
                     interaction = clean[first] * clean[second]
-                    strength = abs(self._correlation(interaction, clean["basis_deviation_pct"]))
+                    signed_strength = self._correlation(interaction, clean["basis_deviation_pct"])
                     relationships.append(
                         {
                             "relationship_type": "interaction",
                             "variable": first,
                             "interacts_with": second,
-                            "strength": round(float(strength), 5),
+                            "strength": round(abs(float(signed_strength)), 5),
                             "grade_pair": grade_pair,
                             "stage": stage,
                             "transition_count": int(data["transition_id"].nunique()),
+                            "impact_direction": (
+                                "Positive" if signed_strength >= 0 else "Negative"
+                            ),
                         }
                     )
         for item in relationships:
@@ -126,6 +135,27 @@ class SequentialRelationshipService:
         ]
         relationships.sort(key=lambda item: item["strength"], reverse=True)
         relationships = relationships[:limit]
+        for item in relationships:
+            strength = float(item["strength"])
+            item["severity"] = "High" if strength >= 0.7 else "Medium" if strength >= 0.4 else "Low"
+            stage_text = f" during {stage} transition" if stage else ""
+            if item["relationship_type"] == "lag":
+                item["summary"] = (
+                    f"{item['variable'].replace('_', ' ').title()} leads Basis Weight by "
+                    f"approximately {item['best_lag']} timesteps{stage_text}."
+                )
+            elif item["relationship_type"] == "interaction":
+                item["summary"] = (
+                    f"{item['variable'].replace('_', ' ').title()} interacting with "
+                    f"{item['interacts_with'].replace('_', ' ')} has a "
+                    f"{item['impact_direction'].lower()} impact on Basis Weight{stage_text}."
+                )
+            else:
+                item["summary"] = (
+                    f"{item['variable'].replace('_', ' ').title()} has a nonlinear "
+                    f"{item['impact_direction'].lower()} relationship with Basis Weight"
+                    f"{stage_text}."
+                )
         return {
             "relationships": relationships,
             "method": (

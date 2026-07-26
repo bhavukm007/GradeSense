@@ -145,6 +145,40 @@ export function InterventionForecast() {
                 />
               </div>
               <p className="mt-3 text-sm text-slate-500">{item.explanation.trajectory_effect}</p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {item.inference_sources.map((source) => (
+                  <span
+                    key={source}
+                    className="rounded-full bg-indigo-400/10 px-2.5 py-1 text-xs font-semibold text-indigo-500"
+                  >
+                    {source}
+                  </span>
+                ))}
+              </div>
+              <div className="mt-3 grid gap-2 sm:grid-cols-3">
+                <Metric
+                  label="Similar transitions"
+                  value={String(item.historical_evidence.similar_transition_count)}
+                />
+                <Metric
+                  label="Historical acceptance"
+                  value={formatPercent(item.historical_evidence.historical_acceptance_rate)}
+                />
+                <Metric
+                  label="Historical effectiveness"
+                  value={formatPercent(item.historical_evidence.historical_effectiveness)}
+                />
+              </div>
+              {item.explanation.recipe_attribution.length > 0 && (
+                <div className="mt-3 rounded-xl bg-amber-400/10 p-3 text-sm text-amber-700 dark:text-amber-300">
+                  <p className="font-semibold">Recipe rules applied</p>
+                  {item.explanation.recipe_attribution.map((rule) => (
+                    <p key={rule} className="mt-1">
+                      {rule}
+                    </p>
+                  ))}
+                </div>
+              )}
             </div>
           ))}
           <form
