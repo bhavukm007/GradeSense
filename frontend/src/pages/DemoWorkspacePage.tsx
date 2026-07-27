@@ -90,11 +90,17 @@ export function DemoWorkspacePage() {
   const generate = useMutation({
     mutationFn: () =>
       api.generateInterventions({
-        forecast_id: forecasts.data!.items[0].forecast_id,
+        forecast_id: forecast!.forecast_id,
         max_results: 5,
         max_variables: 2,
       }),
-    onSuccess: refresh,
+    onSuccess: (created) => {
+      client.setQueryData<ForecastRecommendation[]>(['intervention-history'], (existing = []) => {
+        const createdIds = new Set(created.map((item) => item.recommendation_id))
+        return [...created, ...existing.filter((item) => !createdIds.has(item.recommendation_id))]
+      })
+      void client.invalidateQueries({ queryKey: ['intervention-effectiveness'] })
+    },
   })
   const decide = useMutation({
     mutationFn: ({
@@ -134,7 +140,18 @@ export function DemoWorkspacePage() {
       refresh()
     },
   })
-  const forecast = forecasts.data?.items[0]
+  const recommendationForecastIds = new Set(
+    (recommendations.data ?? []).map((item) => item.forecast_id),
+  )
+  const forecast =
+    forecasts.data?.items.find(
+      (item) =>
+        item.transition_id.startsWith('DEMO-') &&
+        recommendationForecastIds.has(item.forecast_id),
+    ) ??
+    forecasts.data?.items.find((item) => recommendationForecastIds.has(item.forecast_id)) ??
+    forecasts.data?.items.find((item) => item.transition_id.startsWith('DEMO-')) ??
+    forecasts.data?.items[0]
   const rows = useMemo(() => {
     const matching = (recommendations.data ?? []).filter(
       (item) => !forecast || item.forecast_id === forecast.forecast_id,
@@ -383,8 +400,23 @@ export function DemoWorkspacePage() {
           disabled={!forecast || generate.isPending}
           className="mb-4 rounded-xl bg-emerald-500 px-4 py-2.5 text-sm font-semibold text-ink-950 shadow-sm hover:bg-emerald-400"
         >
-          Generate ranked recommendations
+          {generate.isPending ? 'Generating recommendations…' : 'Generate ranked recommendations'}
         </button>
+        {generate.error && (
+          <p className="mb-4 text-sm text-rose-500" role="alert">
+            {generate.error.message}
+          </p>
+        )}
+        {recommendations.error && (
+          <p className="mb-4 text-sm text-rose-500" role="alert">
+            Unable to load existing recommendations: {recommendations.error.message}
+          </p>
+        )}
+        {generate.isSuccess && generate.data.length === 0 && (
+          <p className="mb-4 text-sm text-amber-600 dark:text-amber-400" role="status">
+            No feasible recommendation improved this forecast.
+          </p>
+        )}
         <div className="space-y-4">
           {rows.slice(0, 5).map((item) => (
             <RecommendationEvidence
@@ -402,7 +434,9 @@ export function DemoWorkspacePage() {
               onEvaluate={() => evaluate.mutate(item)}
             />
           ))}
-          {!rows.length && <Empty>No recommendations yet.</Empty>}
+          {!rows.length && !generate.error && !recommendations.error && (
+            <Empty>No recommendations yet.</Empty>
+          )}
         </div>
       </Step>
 
