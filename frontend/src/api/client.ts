@@ -148,11 +148,20 @@ export const api = {
     max_results?: number
     max_variables?: number
   }) =>
-    request<ForecastRecommendation[]>('/interventions/recommendations', {
-      method: 'POST',
-      body: JSON.stringify(body),
-    }),
-  interventionHistory: () => request<ForecastRecommendation[]>('/interventions/recommendations'),
+    request<ForecastRecommendation[]>(
+      '/interventions/recommendations',
+      {
+        method: 'POST',
+        body: JSON.stringify(body),
+      },
+      180_000,
+    ),
+  interventionHistory: () =>
+    request<ForecastRecommendation[]>(
+      '/interventions/recommendations?limit=200',
+      undefined,
+      120_000,
+    ),
   decideRecommendation: (
     id: string,
     body: {
