@@ -38,16 +38,22 @@ class ConnectionManager:
         self.clients.discard(websocket)
 
     async def broadcast(self, event: str, data: Any) -> None:
-        payload = {
-            "event": event,
-            "timestamp": datetime.now(UTC).isoformat(),
-            "data": (data.model_dump(mode="json") if hasattr(data, "model_dump") else data),
-        }
+        try:
+            payload = {
+                "event": event,
+                "timestamp": datetime.now(UTC).isoformat(),
+                "data": (data.model_dump(mode="json") if hasattr(data, "model_dump") else data),
+            }
+        except Exception:
+            # A malformed auxiliary event must never break an API request or the
+            # streaming worker that produced it.
+            metrics_service.observe("websocket", 0, True)
+            return
         stale: list[WebSocket] = []
         for client in tuple(self.clients):
             send_started = time.perf_counter()
             try:
-                await client.send_json(payload)
+                await asyncio.wait_for(client.send_json(payload), timeout=2)
                 metrics_service.observe("websocket", time.perf_counter() - send_started)
             except Exception:
                 metrics_service.observe("websocket", time.perf_counter() - send_started, True)

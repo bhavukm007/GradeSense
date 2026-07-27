@@ -1,6 +1,7 @@
 import asyncio
 
 from app.schemas.forecasting import ForecastRequest, InterventionChange
+from app.services import streaming
 from app.services.constraints import ConstraintEngine
 from app.services.streaming import ConnectionManager
 from tests.test_forecasting import request_payload
@@ -50,6 +51,36 @@ def test_forecast_driven_generation_persistence_and_decision(client) -> None:
     )
     assert decision.status_code == 201, decision.text
     assert decision.json()["state"] == "accepted"
+
+
+def test_repeated_decisions_remain_available_when_websocket_broadcast_fails(
+    client, monkeypatch
+) -> None:
+    forecast = create_forecast(client)
+    recommendation = client.post(
+        "/interventions/recommendations",
+        json={"forecast_id": forecast["forecast_id"], "max_results": 1},
+    ).json()[0]
+
+    async def failed_broadcast(*_args, **_kwargs) -> None:
+        raise RuntimeError("websocket unavailable")
+
+    monkeypatch.setattr(
+        streaming.get_streaming_service().connections, "broadcast", failed_broadcast
+    )
+    url = f"/interventions/recommendations/{recommendation['recommendation_id']}/decisions"
+    for _ in range(20):
+        response = client.post(
+            url,
+            json={"operator_action": "accepted", "reason": "Reliability regression test"},
+        )
+        assert response.status_code == 201, response.text
+        assert response.json()["state"] == "accepted"
+        assert client.get("/health").status_code == 200
+
+    stored = client.get(f"/interventions/recommendations/{recommendation['recommendation_id']}")
+    assert stored.status_code == 200
+    assert stored.json()["state"] == "accepted"
 
 
 def test_historical_evidence_and_recipe_attribution(client) -> None:

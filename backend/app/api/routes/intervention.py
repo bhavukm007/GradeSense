@@ -3,9 +3,11 @@ from uuid import UUID
 
 from fastapi import APIRouter, HTTPException, Query, status
 from sqlalchemy import select
+from sqlalchemy.exc import SQLAlchemyError
 
 from app.api.dependencies import DatabaseSession
 from app.config.settings import get_settings
+from app.core.logging import get_logger
 from app.models.intelligence import (
     ForecastHistory,
     ForecastRecommendation,
@@ -30,6 +32,39 @@ from app.services.intervention import (
 from app.services.streaming import get_streaming_service
 
 router = APIRouter(tags=["forecast interventions"])
+logger = get_logger(__name__)
+
+
+async def _broadcast_decision_events(
+    response: RecommendationDecisionResponse,
+    recommendation: ForecastRecommendation,
+) -> None:
+    """Publish decision updates without making a committed decision unavailable.
+
+    Websocket clients are an auxiliary notification channel.  A disconnected or
+    malformed client must not turn a successful operator decision into a failed
+    request (or leave the request waiting indefinitely).
+    """
+    try:
+        manager = get_streaming_service().connections
+        await manager.broadcast("recommendation_decision", response)
+        await manager.broadcast("recommendation_updated", recommendation_response(recommendation))
+    except Exception:
+        logger.exception(
+            "recommendation_decision_broadcast_failed",
+            extra={"recommendation_id": str(recommendation.id)},
+        )
+
+
+def _rollback_decision(session: DatabaseSession, recommendation_id: UUID) -> None:
+    """Rollback a failed decision transaction without masking its HTTP error."""
+    try:
+        session.rollback()
+    except Exception:
+        logger.exception(
+            "recommendation_decision_rollback_failed",
+            extra={"recommendation_id": str(recommendation_id)},
+        )
 
 
 @router.post(
@@ -120,10 +155,31 @@ async def decide(
     row.state = payload.operator_action
     if payload.operator_action == "delayed":
         row.expires_at = datetime.now(UTC) + timedelta(seconds=payload.delay_duration_seconds or 0)
-    session.add(decision)
-    session.commit()
-    session.refresh(decision)
-    session.refresh(row)
+    try:
+        session.add(decision)
+        session.commit()
+        session.refresh(decision)
+        session.refresh(row)
+    except SQLAlchemyError as exc:
+        _rollback_decision(session, recommendation_id)
+        logger.exception(
+            "recommendation_decision_persistence_failed",
+            extra={"recommendation_id": str(recommendation_id)},
+        )
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Recommendation decision could not be persisted. Please retry.",
+        ) from exc
+    except Exception as exc:
+        _rollback_decision(session, recommendation_id)
+        logger.exception(
+            "recommendation_decision_failed",
+            extra={"recommendation_id": str(recommendation_id)},
+        )
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Recommendation decision could not be completed.",
+        ) from exc
     response = RecommendationDecisionResponse(
         decision_id=decision.id,
         recommendation_id=row.id,
@@ -131,9 +187,7 @@ async def decide(
         state=row.state,
         **payload.model_dump(),
     )
-    manager = get_streaming_service().connections
-    await manager.broadcast("recommendation_decision", response)
-    await manager.broadcast("recommendation_updated", recommendation_response(row))
+    await _broadcast_decision_events(response, row)
     return response
 
 
