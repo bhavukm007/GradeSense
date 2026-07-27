@@ -94,7 +94,8 @@ export function DemoWorkspacePage() {
         max_results: 5,
         max_variables: 2,
       }),
-    onSuccess: (created) => {
+    onSuccess: async (created) => {
+      await client.cancelQueries({ queryKey: ['intervention-history'] })
       client.setQueryData<ForecastRecommendation[]>(['intervention-history'], (existing = []) => {
         const createdIds = new Set(created.map((item) => item.recommendation_id))
         return [...created, ...existing.filter((item) => !createdIds.has(item.recommendation_id))]
@@ -165,6 +166,10 @@ export function DemoWorkspacePage() {
     })
     return [...latestByRank.values()].sort((first, second) => first.rank - second.rank).slice(0, 5)
   }, [forecast, recommendations.data])
+  const hasRecommendations = rows.length > 0
+  const fatalGenerationError = generate.isError && !hasRecommendations
+  const auxiliaryRecommendationWarning =
+    recommendations.isError && !generate.isSuccess && !hasRecommendations
   const stabilization = rows
   const lifecycle = useMemo(() => {
     const accepted = rows.filter((item) =>
@@ -402,14 +407,20 @@ export function DemoWorkspacePage() {
         >
           {generate.isPending ? 'Generating recommendations…' : 'Generate ranked recommendations'}
         </button>
-        {generate.error && (
+        {fatalGenerationError && (
           <p className="mb-4 text-sm text-rose-500" role="alert">
-            {generate.error.message}
+            {generate.error?.message}
           </p>
         )}
-        {recommendations.error && (
-          <p className="mb-4 text-sm text-rose-500" role="alert">
-            Unable to load existing recommendations: {recommendations.error.message}
+        {generate.isError && hasRecommendations && (
+          <p className="mb-4 text-xs text-amber-600 dark:text-amber-400" role="status">
+            The recommendation refresh was delayed. Showing the available ranked recommendations.
+          </p>
+        )}
+        {auxiliaryRecommendationWarning && (
+          <p className="mb-4 text-xs text-amber-600 dark:text-amber-400" role="status">
+            Saved recommendation history is temporarily unavailable. You can still generate new
+            recommendations.
           </p>
         )}
         {generate.isSuccess && generate.data.length === 0 && (
@@ -434,7 +445,7 @@ export function DemoWorkspacePage() {
               onEvaluate={() => evaluate.mutate(item)}
             />
           ))}
-          {!rows.length && !generate.error && !recommendations.error && (
+          {!rows.length && !fatalGenerationError && !auxiliaryRecommendationWarning && (
             <Empty>No recommendations yet.</Empty>
           )}
         </div>

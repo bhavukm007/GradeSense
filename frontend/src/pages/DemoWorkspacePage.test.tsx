@@ -171,4 +171,38 @@ describe('Demo Workspace recommendations', () => {
     expect(await screen.findByText('Generated recommendation.')).toBeInTheDocument()
     expect(screen.queryByText('No recommendations yet.')).not.toBeInTheDocument()
   })
+
+  it('clears an auxiliary history error after recommendation generation succeeds', async () => {
+    vi.spyOn(api, 'forecastHistory').mockResolvedValue({
+      items: [forecast('demo-forecast', 'DEMO-1')],
+      total: 1,
+    })
+    vi.spyOn(api, 'interventionHistory').mockRejectedValue(
+      new Error('Unable to connect to the GradeSense backend.'),
+    )
+    vi.spyOn(api, 'generateInterventions').mockResolvedValue([
+      recommendation('generated-recommendation', 'demo-forecast', 'Recovered recommendation.'),
+    ])
+
+    renderApp(<DemoWorkspacePage />)
+
+    expect(
+      await screen.findByText(
+        'Saved recommendation history is temporarily unavailable. You can still generate new recommendations.',
+      ),
+    ).toBeInTheDocument()
+    expect(screen.queryByText('Unable to connect to the GradeSense backend.')).not.toBeInTheDocument()
+
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Generate ranked recommendations' }),
+    )
+
+    expect(await screen.findByText('Recovered recommendation.')).toBeInTheDocument()
+    expect(
+      screen.queryByText(
+        'Saved recommendation history is temporarily unavailable. You can still generate new recommendations.',
+      ),
+    ).not.toBeInTheDocument()
+    expect(screen.queryByText('Unable to connect to the GradeSense backend.')).not.toBeInTheDocument()
+  })
 })
