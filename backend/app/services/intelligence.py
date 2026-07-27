@@ -46,6 +46,9 @@ class IntelligenceService:
 
     def ensure_ready(self) -> None:
         if self.settings.model_path.exists() and self.settings.dataset_path.exists():
+            # Load the artifact before the service reports healthy. This keeps the first
+            # /model/info or inference request from paying the cold-start deserialization cost.
+            self.model_service.load()
             self.model_service.latest_metadata(self.session)
             return
         missing = [

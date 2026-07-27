@@ -67,3 +67,7 @@ def test_demo_seed_populates_judge_workflow(client: TestClient) -> None:
     assert payload["decisions"] >= 3
     assert payload["outcomes"] >= 1
     assert client.get("/interventions/effectiveness").json()["evaluated_count"] >= 1
+
+    repeated = client.post("/demo/seed")
+    assert repeated.status_code == 201
+    assert repeated.json() == payload

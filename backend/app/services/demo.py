@@ -1,6 +1,9 @@
 from datetime import UTC, datetime
+from threading import RLock
+from uuid import UUID
 
 import pandas as pd
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.config.settings import Settings
@@ -20,10 +23,39 @@ from app.services.intervention import InterventionEngine, OutcomeEvaluator
 class DemoSeedService:
     """Populate a judge-ready workflow using existing inference and lifecycle services."""
 
+    _seed_lock = RLock()
+
     def __init__(self, settings: Settings) -> None:
         self.settings = settings
 
     def seed(self, session: Session) -> dict[str, int]:
+        with self._seed_lock:
+            existing = self._existing_seed(session)
+            return existing if existing is not None else self._seed_once(session)
+
+    @staticmethod
+    def _existing_seed(session: Session) -> dict[str, int] | None:
+        audit = session.scalar(
+            select(AuditLog)
+            .where(AuditLog.action == "demo_outcome_seeded")
+            .order_by(AuditLog.timestamp.desc())
+            .limit(1)
+        )
+        if audit is None or session.get(ForecastHistory, UUID(audit.entity_id)) is None:
+            return None
+        keys = (
+            "predictions",
+            "forecasts",
+            "recommendations",
+            "decisions",
+            "outcomes",
+            "audit_records",
+        )
+        if not all(key in audit.details for key in keys):
+            return None
+        return {key: int(audit.details[key]) for key in keys}
+
+    def _seed_once(self, session: Session) -> dict[str, int]:
         predictions = self._seed_predictions(session)
         forecast_row, recommendations = self._seed_forecast_recommendations(session)
         decisions = 0
@@ -68,6 +100,14 @@ class DemoSeedService:
             ("demo_decisions_seeded", "recommendation_decision"),
             ("demo_outcome_seeded", "recommendation_outcome"),
         )
+        result = {
+            "predictions": predictions,
+            "forecasts": 1,
+            "recommendations": len(recommendations),
+            "decisions": decisions,
+            "outcomes": outcomes,
+            "audit_records": len(audit_actions),
+        }
         for action, entity in audit_actions:
             session.add(
                 AuditLog(
@@ -77,10 +117,7 @@ class DemoSeedService:
                     entity=entity,
                     entity_id=str(forecast_row.id),
                     details={
-                        "predictions": predictions,
-                        "recommendations": len(recommendations),
-                        "decisions": decisions,
-                        "outcomes": outcomes,
+                        **result,
                         "model_retrained": False,
                         "dataset_regenerated": False,
                     },
@@ -88,14 +125,7 @@ class DemoSeedService:
                 )
             )
         session.commit()
-        return {
-            "predictions": predictions,
-            "forecasts": 1,
-            "recommendations": len(recommendations),
-            "decisions": decisions,
-            "outcomes": outcomes,
-            "audit_records": len(audit_actions),
-        }
+        return result
 
     def _seed_predictions(self, session: Session) -> int:
         frame = pd.read_csv(self.settings.dataset_path).head(3)

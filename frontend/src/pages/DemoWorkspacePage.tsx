@@ -62,6 +62,7 @@ export function DemoWorkspacePage() {
     recommendationId: string
     message: string
   }>()
+  const health = useQuery({ queryKey: ['health'], queryFn: api.health })
   const forecasts = useQuery({ queryKey: ['forecast-history'], queryFn: api.forecastHistory })
   const recommendations = useQuery({
     queryKey: ['intervention-history'],
@@ -72,6 +73,7 @@ export function DemoWorkspacePage() {
     queryFn: api.interventionEffectiveness,
   })
   const live = useQuery({ queryKey: ['live-metrics'], queryFn: api.liveMetrics })
+  const allCriticalEndpointsFailed = health.isError && forecasts.isError && live.isError
   const discoveries = useRelationshipDiscoveries(5)
   const topDiscoveries = useMemo(
     () =>
@@ -275,7 +277,13 @@ export function DemoWorkspacePage() {
             recommendations, {seed.data.outcomes} evaluated outcome.
           </p>
         )}
-        {seed.error && <p className="self-center text-sm text-rose-500">{seed.error.message}</p>}
+        {seed.error && (
+          <p className="self-center text-sm text-amber-600 dark:text-amber-400">
+            {allCriticalEndpointsFailed
+              ? seed.error.message
+              : 'The scenario refresh was delayed. Available demo data remains loaded; retry when ready.'}
+          </p>
+        )}
       </div>
 
       <Step number={1} title="Current Process" icon={Radio}>

@@ -42,46 +42,61 @@ export class ApiError extends Error {
     public details?: unknown,
   ) {
     super(message)
+    this.name = 'ApiError'
   }
 }
+
+const transientStatuses = new Set([502, 503, 504])
+
+const retryDelay = (attempt: number) => Math.min(750 * 2 ** attempt, 3_000)
+
+const wait = (delayMs: number) =>
+  new Promise<void>((resolve) => window.setTimeout(resolve, delayMs))
 
 async function request<T>(
   path: string,
   options?: RequestInit,
   timeoutMs = 30_000,
+  maxRetries = options?.method && options.method !== 'GET' ? 0 : 2,
 ): Promise<T> {
-  const controller = new AbortController()
-  const timeout = window.setTimeout(() => controller.abort(), timeoutMs)
-  try {
-    const response = await fetch(`${API_URL}${path}`, {
-      ...options,
-      headers: { 'Content-Type': 'application/json', ...options?.headers },
-      signal: controller.signal,
-    })
-    const payload = await response.json().catch(() => null)
-    if (!response.ok) {
-      const message =
-        payload?.error?.message ||
-        (typeof payload?.detail === 'string' ? payload.detail : undefined) ||
-        payload?.detail?.[0]?.msg ||
-        `Request failed (${response.status})`
-      throw new ApiError(message, response.status, payload)
+  for (let attempt = 0; ; attempt += 1) {
+    const controller = new AbortController()
+    const timeout = window.setTimeout(() => controller.abort(), timeoutMs)
+    try {
+      const response = await fetch(`${API_URL}${path}`, {
+        ...options,
+        headers: { 'Content-Type': 'application/json', ...options?.headers },
+        signal: controller.signal,
+      })
+      const payload = await response.json().catch(() => null)
+      if (!response.ok) {
+        const message =
+          payload?.error?.message ||
+          (typeof payload?.detail === 'string' ? payload.detail : undefined) ||
+          payload?.detail?.[0]?.msg ||
+          `Request failed (${response.status})`
+        if (attempt < maxRetries && transientStatuses.has(response.status)) {
+          await wait(retryDelay(attempt))
+          continue
+        }
+        throw new ApiError(message, response.status, payload)
+      }
+      return payload as T
+    } catch (error) {
+      if (error instanceof ApiError) throw error
+      if (
+        (error instanceof DOMException && error.name === 'AbortError') ||
+        (error instanceof Error && error.name === 'AbortError')
+      ) {
+        throw new ApiError(
+          'This request timed out while the production service was starting. Please retry.',
+          408,
+        )
+      }
+      throw new ApiError('Unable to connect to the GradeSense backend.')
+    } finally {
+      window.clearTimeout(timeout)
     }
-    return payload as T
-  } catch (error) {
-    if (error instanceof ApiError) throw error
-    if (
-      (error instanceof DOMException && error.name === 'AbortError') ||
-      (error instanceof Error && error.name === 'AbortError')
-    ) {
-      throw new ApiError(
-        'This request timed out while the production service was starting. Please retry.',
-        408,
-      )
-    }
-    throw new ApiError('Unable to connect to the GradeSense backend.')
-  } finally {
-    window.clearTimeout(timeout)
   }
 }
 
@@ -99,7 +114,7 @@ export const api = {
       undefined,
       60_000,
     ),
-  seedDemo: () => request<DemoSeedResult>('/demo/seed', { method: 'POST' }, 180_000),
+  seedDemo: () => request<DemoSeedResult>('/demo/seed', { method: 'POST' }, 180_000, 2),
   predict: (values: ProcessInput) => post<Prediction>('/predict', values),
   recommend: (values: ProcessInput) => post<RecommendationResponse>('/recommend', values),
   predictionHistory: (page: number, pageSize = 20) =>
