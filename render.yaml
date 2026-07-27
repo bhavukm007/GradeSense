@@ -5,7 +5,8 @@ services:
     plan: free
     buildCommand: >
       pip install --upgrade pip &&
-      pip install ./backend &&
+      pip install ./backend
+    preDeployCommand: >
       cd backend &&
       export GRADESENSE_DATABASE_URL="$DATABASE_URL" &&
       alembic upgrade head
@@ -13,7 +14,12 @@ services:
       cd backend &&
       export GRADESENSE_DATABASE_URL="$DATABASE_URL" &&
       export GRADESENSE_CORS_ORIGINS="[\"https://gradesense-4weh.onrender.com\"]" &&
-      exec uvicorn app.main:app --host 0.0.0.0 --port "$PORT"
+      exec uvicorn app.main:app
+      --host 0.0.0.0
+      --port "$PORT"
+      --proxy-headers
+      --forwarded-allow-ips="*"
+      --timeout-keep-alive 30
     healthCheckPath: /health
     maxShutdownDelaySeconds: 30
     autoDeployTrigger: commit
