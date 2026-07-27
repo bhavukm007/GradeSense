@@ -43,17 +43,14 @@ class DemoSeedService:
         )
         if audit is None or session.get(ForecastHistory, UUID(audit.entity_id)) is None:
             return None
-        keys = (
-            "predictions",
-            "forecasts",
-            "recommendations",
-            "decisions",
-            "outcomes",
-            "audit_records",
-        )
+        keys = ("predictions", "recommendations", "decisions", "outcomes")
         if not all(key in audit.details for key in keys):
             return None
-        return {key: int(audit.details[key]) for key in keys}
+        return {
+            **{key: int(audit.details[key]) for key in keys},
+            "forecasts": int(audit.details.get("forecasts", 1)),
+            "audit_records": int(audit.details.get("audit_records", 5)),
+        }
 
     def _seed_once(self, session: Session) -> dict[str, int]:
         predictions = self._seed_predictions(session)
