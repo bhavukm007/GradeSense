@@ -1,4 +1,4 @@
-# Honeywell GradeSenseAI
+# GradeSenseAI
 
 GradeSenseAI is an industrial decision-support platform for paper-grade transitions. It combines
 live process monitoring, multi-horizon Basis Weight forecasting, constraint-safe intervention
