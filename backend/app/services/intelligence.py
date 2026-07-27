@@ -46,9 +46,6 @@ class IntelligenceService:
 
     def ensure_ready(self) -> None:
         if self.settings.model_path.exists() and self.settings.dataset_path.exists():
-            # Load the artifact before the service reports healthy. This keeps the first
-            # /model/info or inference request from paying the cold-start deserialization cost.
-            self.model_service.load()
             self.model_service.latest_metadata(self.session)
             return
         missing = [
@@ -187,17 +184,17 @@ class IntelligenceService:
         return response
 
     def model_info(self) -> ModelInfoResponse:
-        artifact = self.model_service.load()
+        metadata = self.model_service.latest_metadata(self.session)
         return ModelInfoResponse(
-            model_type=type(artifact["pipeline"].named_steps["model"]).__name__,
-            model_version=artifact["version"],
-            trained_at=self._as_utc(artifact["trained_at"]),
-            training_records=artifact["training_records"],
-            feature_count=len(artifact["baselines"]),
-            target_metrics=artifact["metrics"],
-            dataset_checksum=artifact["dataset_checksum"],
+            model_type=metadata.model_type,
+            model_version=metadata.version,
+            trained_at=self._as_utc(metadata.trained_at),
+            training_records=metadata.training_records,
+            feature_count=metadata.feature_count,
+            target_metrics=metadata.metrics,
+            dataset_checksum=metadata.dataset_checksum,
             supported_outputs=TARGET_FEATURES,
-            artifact_path=str(self.model_service.model_path),
+            artifact_path=metadata.artifact_path,
         )
 
     def prediction_history(self, page: int, page_size: int) -> PredictionHistoryResponse:
