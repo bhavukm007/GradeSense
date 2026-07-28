@@ -14,7 +14,7 @@ from app.core.logging import get_logger
 from app.database.session import SessionFactory
 from app.models.intelligence import RollingMetricSnapshot, StreamingSession
 from app.schemas.forecasting import ForecastRequest, SequencePoint
-from app.schemas.intelligence import ProcessInput
+from app.schemas.intelligence import ProcessInput, RecommendationResponse
 from app.schemas.realtime import (
     LiveMetricsResponse,
     RollingWindow,
@@ -91,6 +91,8 @@ class StreamingService:
         self._prediction_risks: deque[float] = deque(maxlen=120)
         self._training: pd.DataFrame | None = None
         self._cursor = 0
+        self._cached_recommendation: RecommendationResponse | None = None
+        self._cached_recommendation_at = 0.0
 
     async def start(self) -> None:
         if self._task and not self._task.done():
@@ -176,11 +178,19 @@ class StreamingService:
             self._sequence_history.append(row.to_dict())
         with SessionFactory() as session:
             intelligence = IntelligenceService(self.settings, session)
-            # The stream emits the same inference result as the operator API,
-            # but must not create two history transactions for every sample.
-            # Render Free can otherwise exhaust its database connection budget
-            # while an operator is accepting a recommendation.
-            result = intelligence.recommend(sample, persist_history=False)
+            # Counterfactual recommendation inference is CPU and memory heavy
+            # on Render Free.  Keep the live stream responsive while reusing a
+            # recent result; explicit workflow endpoints always compute fresh
+            # recommendations and are unaffected.
+            if (
+                self._cached_recommendation is None
+                or time.monotonic() - self._cached_recommendation_at >= 15
+            ):
+                result = intelligence.recommend(sample, persist_history=False)
+                self._cached_recommendation = result
+                self._cached_recommendation_at = time.monotonic()
+            else:
+                result = self._cached_recommendation
             alerts = AlertService().evaluate(session, sample, result.prediction, self.latest.sensor)
         self.sample_count += 1
         now = datetime.now(UTC)
