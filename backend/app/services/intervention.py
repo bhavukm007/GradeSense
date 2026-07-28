@@ -77,11 +77,12 @@ class InterventionEngine:
 
     def generate(
         self,
-        session: Session,
+        session: Session | None,
         forecast_row: ForecastHistory,
         max_results: int,
         max_variables: int,
         persist: bool = True,
+        attach: bool = True,
     ) -> list[ForecastRecommendation]:
         request = ForecastRequest.model_validate(forecast_row.request_data)
         from app.api.routes.forecasting import response_from_row
@@ -145,11 +146,19 @@ class InterventionEngine:
         for rank, (_score, simulation, details) in enumerate(candidates[:max_results], start=1):
             validation, metrics = details
             try:
-                historical_evidence = self._historical_evidence(
-                    session,
-                    request.current_grade,
-                    request.target_grade,
-                    [change.variable for change in simulation.changes],
+                historical_evidence = (
+                    self._historical_evidence(
+                        session,
+                        request.current_grade,
+                        request.target_grade,
+                        [change.variable for change in simulation.changes],
+                    )
+                    if session is not None
+                    else HistoricalRecommendationEvidence(
+                        similar_transition_count=0,
+                        historical_acceptance_rate=0,
+                        historical_effectiveness=0,
+                    )
                 )
             except Exception:
                 # Historical evidence enriches a recommendation but is never
@@ -223,9 +232,12 @@ class InterventionEngine:
                 },
                 expires_at=datetime.now(UTC) + timedelta(minutes=15),
             )
-            session.add(row)
+            if attach and session is not None:
+                session.add(row)
             rows.append(row)
         if persist:
+            if session is None:
+                raise RuntimeError("A database session is required for recommendation persistence.")
             session.commit()
             for row in rows:
                 session.refresh(row)

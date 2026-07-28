@@ -4,11 +4,15 @@ from threading import RLock
 from uuid import uuid4
 
 from fastapi import Request
+from fastapi.concurrency import run_in_threadpool
 from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 
+from app.core.logging import get_logger
 from app.database.session import SessionFactory
 from app.services.operations import AuditService, metrics_service
+
+logger = get_logger(__name__)
 
 
 class ProductionMiddleware(BaseHTTPMiddleware):
@@ -85,22 +89,28 @@ class ProductionMiddleware(BaseHTTPMiddleware):
         }:
             try:
                 with SessionFactory() as session:
-                    AuditService().record(
+                    await run_in_threadpool(
+                        AuditService().record,
                         session,
-                        action=self._audit_action(request.url.path, category),
-                        entity=category,
-                        details={
-                            "path": request.url.path,
-                            "status": response.status_code,
-                        },
-                        actor=request.headers.get("X-Actor", "operator"),
-                        request_id=request_id,
+                        self._audit_action(request.url.path, category),
+                        category,
+                        None,
+                        {"path": request.url.path, "status": response.status_code},
+                        request.headers.get("X-Actor", "operator"),
+                        request_id,
                     )
             except Exception:
                 # Audit persistence must not replace a successful API response.
-                from app.core.logging import get_logger
-
-                get_logger(__name__).exception("best_effort_audit_failed")
+                logger.exception("best_effort_audit_failed")
+        logger.info(
+            "endpoint_end",
+            extra={
+                "method": request.method,
+                "path": request.url.path,
+                "elapsed_ms": round(elapsed * 1000, 2),
+                "slow": elapsed > 2,
+            },
+        )
         return self._secured(response, request_id)
 
     @staticmethod

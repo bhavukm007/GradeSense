@@ -8,6 +8,7 @@ from uuid import UUID
 
 import pandas as pd
 from fastapi import WebSocket
+from fastapi.concurrency import run_in_threadpool
 
 from app.config.settings import Settings
 from app.core.logging import get_logger
@@ -186,12 +187,16 @@ class StreamingService:
                 self._cached_recommendation is None
                 or time.monotonic() - self._cached_recommendation_at >= 15
             ):
-                result = intelligence.recommend(sample, persist_history=False)
+                result = await run_in_threadpool(
+                    intelligence.recommend, sample, persist_history=False
+                )
                 self._cached_recommendation = result
                 self._cached_recommendation_at = time.monotonic()
             else:
                 result = self._cached_recommendation
-            alerts = AlertService().evaluate(session, sample, result.prediction, self.latest.sensor)
+            alerts = await run_in_threadpool(
+                AlertService().evaluate, session, sample, result.prediction, self.latest.sensor
+            )
         self.sample_count += 1
         now = datetime.now(UTC)
         self.latest_sample_at = now
@@ -244,7 +249,9 @@ class StreamingService:
                     for item in sequence
                 ],
             )
-            forecast = ForecastingService(self.settings).forecast(forecast_request)
+            forecast = await run_in_threadpool(
+                ForecastingService(self.settings).forecast, forecast_request
+            )
             await self.connections.broadcast("basis_forecast", forecast)
         if self.sample_count % 10 == 0:
             self._persist_snapshot()

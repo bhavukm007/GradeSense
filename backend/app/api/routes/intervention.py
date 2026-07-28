@@ -1,15 +1,18 @@
+import asyncio
 from datetime import UTC, datetime, timedelta
 from time import perf_counter
 from uuid import UUID
 
 import psutil
 from fastapi import APIRouter, HTTPException, Query, status
+from fastapi.concurrency import run_in_threadpool
 from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.api.dependencies import DatabaseSession
 from app.config.settings import get_settings
 from app.core.logging import get_logger
+from app.database.session import SessionFactory
 from app.models.intelligence import (
     ForecastHistory,
     ForecastRecommendation,
@@ -93,6 +96,14 @@ async def _broadcast_recommendation_event(event: str, data: object) -> None:
         logger.exception("recommendation_broadcast_failed", extra={"event": event})
 
 
+def _schedule_broadcast(event: str, data: object) -> None:
+    """Websocket delivery is auxiliary and must never extend an API response."""
+    task = asyncio.create_task(_broadcast_recommendation_event(event, data))
+    task.add_done_callback(
+        lambda completed: completed.exception() if not completed.cancelled() else None
+    )
+
+
 def _rollback_decision(session: DatabaseSession, recommendation_id: UUID) -> None:
     """Rollback a failed decision transaction without masking its HTTP error."""
     try:
@@ -116,6 +127,32 @@ def _persistence_unavailable_decision(
         history_persistence_message="history persistence unavailable",
         **payload.model_dump(),
     )
+
+
+def _enrich_historical_evidence(
+    rows: list[ForecastRecommendation], forecast: ForecastHistory
+) -> None:
+    """Populate optional evidence using a worker-owned read session."""
+    request = forecast.request_data
+    engine = InterventionEngine(ForecastingService(get_settings()))
+    with SessionFactory() as history_session:
+        for row in rows:
+            evidence = engine._historical_evidence(
+                history_session,
+                str(request["current_grade"]),
+                str(request["target_grade"]),
+                row.affected_variables,
+            )
+            explanation = dict(row.explanation)
+            explanation["historical_evidence"] = evidence.model_dump(mode="json")
+            sources = list(explanation.get("inference_sources", []))
+            if evidence.historical_effectiveness > 0:
+                if "Historical Successful Transition" not in sources:
+                    sources.append("Historical Successful Transition")
+            else:
+                sources = [item for item in sources if item != "Historical Successful Transition"]
+            explanation["inference_sources"] = sources
+            row.explanation = explanation
 
 
 @router.post(
@@ -142,8 +179,14 @@ async def generate_recommendations(
     if forecast is None:
         raise HTTPException(status_code=404, detail="Forecast not found.")
     try:
-        rows = InterventionEngine(ForecastingService(get_settings())).generate(
-            session, forecast, payload.max_results, payload.max_variables, persist=False
+        rows = await run_in_threadpool(
+            InterventionEngine(ForecastingService(get_settings())).generate,
+            None,
+            forecast,
+            payload.max_results,
+            payload.max_variables,
+            False,
+            False,
         )
     except Exception:
         logger.exception(
@@ -156,6 +199,10 @@ async def generate_recommendations(
         )
         return []
     try:
+        await run_in_threadpool(_enrich_historical_evidence, rows, forecast)
+    except Exception:
+        logger.exception("recommendation_historical_evidence_unavailable")
+    try:
         responses = [recommendation_response(row) for row in rows]
     except Exception:
         logger.exception("recommendation_response_serialization_failed")
@@ -165,6 +212,8 @@ async def generate_recommendations(
         )
         return []
     try:
+        for row in rows:
+            session.add(row)
         session.commit()
         for row in rows:
             session.refresh(row)
@@ -175,7 +224,7 @@ async def generate_recommendations(
             extra={"forecast_id": str(payload.forecast_id)},
         )
     for response in responses:
-        await _broadcast_recommendation_event("recommendation_created", response)
+        _schedule_broadcast("recommendation_created", response)
     _endpoint_finished("generate", started, memory_before, generated=len(responses))
     return responses
 
@@ -311,7 +360,8 @@ async def decide(
         state=row.state,
         **payload.model_dump(),
     )
-    await _broadcast_decision_events(response, row)
+    _schedule_broadcast("recommendation_decision", response)
+    _schedule_broadcast("recommendation_updated", recommendation_response(row))
     _endpoint_finished("decision", started, memory_before, persistence="available")
     return response
 
@@ -347,11 +397,12 @@ async def evaluate_outcome(
     if row is None:
         raise HTTPException(status_code=404, detail="Recommendation not found.")
     try:
-        if session.scalar(
+        existing = session.scalar(
             select(RecommendationOutcome).where(
                 RecommendationOutcome.recommendation_id == recommendation_id
             )
-        ):
+        )
+        if existing:
             raise HTTPException(status_code=409, detail="Outcome already evaluated.")
     except HTTPException:
         raise
@@ -365,7 +416,7 @@ async def evaluate_outcome(
                 f"current state is {row.state}."
             ),
         )
-    metrics = OutcomeEvaluator().evaluate(row, payload.observations)
+    metrics = await run_in_threadpool(OutcomeEvaluator().evaluate, row, payload.observations)
     outcome = RecommendationOutcome(
         recommendation_id=row.id,
         observations=[point.model_dump(mode="json") for point in payload.observations],
@@ -387,7 +438,7 @@ async def evaluate_outcome(
             evaluated_at=datetime.now(UTC), history_persistence_unavailable=True,
             history_persistence_message="history persistence unavailable",
         )
-        await _broadcast_recommendation_event("recommendation_outcome", response)
+        _schedule_broadcast("recommendation_outcome", response)
         _endpoint_finished("outcome", started, memory_before, persistence="unavailable")
         return response
     response = RecommendationOutcomeResponse(
@@ -396,7 +447,7 @@ async def evaluate_outcome(
         metrics=metrics,
         evaluated_at=outcome.created_at,
     )
-    await _broadcast_recommendation_event("recommendation_outcome", response)
+    _schedule_broadcast("recommendation_outcome", response)
     _endpoint_finished("outcome", started, memory_before, persistence="available")
     return response
 
