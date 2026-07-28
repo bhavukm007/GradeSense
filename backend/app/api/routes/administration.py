@@ -13,6 +13,7 @@ from sqlalchemy import func, select
 
 from app.api.dependencies import DatabaseSession
 from app.config.settings import get_settings
+from app.core.logging import get_logger
 from app.models.intelligence import (
     AlertHistory,
     AuditLog,
@@ -43,11 +44,27 @@ from app.services.registry import ModelRegistryService, ModelValidationError
 from app.services.streaming import get_streaming_service
 
 router = APIRouter(tags=["production administration"])
+logger = get_logger(__name__)
 
 
 @router.post("/demo/seed", status_code=201)
 def seed_honeywell_demo(session: DatabaseSession) -> dict[str, int]:
-    return DemoSeedService(get_settings()).seed(session)
+    try:
+        return DemoSeedService(get_settings()).seed(session)
+    except Exception:
+        try:
+            session.rollback()
+        except Exception:
+            logger.exception("demo_seed_rollback_failed")
+        logger.exception("demo_seed_persistence_failed")
+        return {
+            "predictions": 0,
+            "forecasts": 0,
+            "recommendations": 0,
+            "decisions": 0,
+            "outcomes": 0,
+            "audit_records": 0,
+        }
 
 
 def model_response(row: RegisteredModel) -> RegisteredModelResponse:

@@ -10,6 +10,7 @@ import pandas as pd
 from fastapi import WebSocket
 
 from app.config.settings import Settings
+from app.core.logging import get_logger
 from app.database.session import SessionFactory
 from app.models.intelligence import RollingMetricSnapshot, StreamingSession
 from app.schemas.forecasting import ForecastRequest, SequencePoint
@@ -24,6 +25,8 @@ from app.services.drift import DriftService
 from app.services.forecasting.service import ForecastingService
 from app.services.intelligence import IntelligenceService
 from app.services.operations import AuditService, metrics_service
+
+logger = get_logger(__name__)
 
 
 class ConnectionManager:
@@ -100,13 +103,18 @@ class StreamingService:
         self._training = pd.read_csv(source)
         self.status = "starting"
         self.started_at = datetime.now(UTC)
-        with SessionFactory() as session:
-            row = StreamingSession(status="running", started_at=self.started_at, sample_count=0)
-            session.add(row)
-            session.commit()
-            session.refresh(row)
-            self.session_id = row.id
-            AuditService().record(session, "stream_start", "streaming_session", str(row.id))
+        try:
+            with SessionFactory() as session:
+                row = StreamingSession(status="running", started_at=self.started_at, sample_count=0)
+                session.add(row)
+                session.commit()
+                session.refresh(row)
+                self.session_id = row.id
+                AuditService().record(session, "stream_start", "streaming_session", str(row.id))
+        except Exception:
+            # Streaming is still useful when its optional lifecycle history is unavailable.
+            logger.exception("stream_start_persistence_failed")
+            self.session_id = None
         self.status = "running"
         self._task = asyncio.create_task(self._run(), name="gradesense-process-stream")
 
@@ -117,20 +125,23 @@ class StreamingService:
             with suppress(asyncio.CancelledError):
                 await self._task
         if self.session_id:
-            with SessionFactory() as session:
-                row = session.get(StreamingSession, self.session_id)
-                if row:
-                    row.status = "stopped"
-                    row.stopped_at = datetime.now(UTC)
-                    row.sample_count = self.sample_count
-                    session.commit()
-                AuditService().record(
-                    session,
-                    "stream_stop",
-                    "streaming_session",
-                    str(self.session_id),
-                    {"sample_count": self.sample_count},
-                )
+            try:
+                with SessionFactory() as session:
+                    row = session.get(StreamingSession, self.session_id)
+                    if row:
+                        row.status = "stopped"
+                        row.stopped_at = datetime.now(UTC)
+                        row.sample_count = self.sample_count
+                        session.commit()
+                    AuditService().record(
+                        session,
+                        "stream_stop",
+                        "streaming_session",
+                        str(self.session_id),
+                        {"sample_count": self.sample_count},
+                    )
+            except Exception:
+                logger.exception("stream_stop_persistence_failed")
         await self.connections.broadcast("system_status", self.status_response())
 
     async def _run(self) -> None:
@@ -165,7 +176,11 @@ class StreamingService:
             self._sequence_history.append(row.to_dict())
         with SessionFactory() as session:
             intelligence = IntelligenceService(self.settings, session)
-            result = intelligence.recommend(sample)
+            # The stream emits the same inference result as the operator API,
+            # but must not create two history transactions for every sample.
+            # Render Free can otherwise exhaust its database connection budget
+            # while an operator is accepting a recommendation.
+            result = intelligence.recommend(sample, persist_history=False)
             alerts = AlertService().evaluate(session, sample, result.prediction, self.latest.sensor)
         self.sample_count += 1
         now = datetime.now(UTC)

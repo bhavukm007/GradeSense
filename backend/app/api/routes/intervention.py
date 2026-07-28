@@ -1,6 +1,8 @@
 from datetime import UTC, datetime, timedelta
+from time import perf_counter
 from uuid import UUID
 
+import psutil
 from fastapi import APIRouter, HTTPException, Query, status
 from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
@@ -35,6 +37,34 @@ router = APIRouter(tags=["forecast interventions"])
 logger = get_logger(__name__)
 
 
+def _endpoint_started(name: str) -> tuple[float, int]:
+    try:
+        memory = psutil.Process().memory_info().rss
+    except Exception:
+        logger.exception("recommendation_memory_probe_failed", extra={"endpoint": name})
+        memory = -1
+    logger.info("recommendation_endpoint_start", extra={"endpoint": name, "memory_before": memory})
+    return perf_counter(), memory
+
+
+def _endpoint_finished(name: str, started: float, memory_before: int, **details: object) -> None:
+    try:
+        memory_after = psutil.Process().memory_info().rss
+    except Exception:
+        logger.exception("recommendation_memory_probe_failed", extra={"endpoint": name})
+        memory_after = -1
+    logger.info(
+        "recommendation_endpoint_end",
+        extra={
+            "endpoint": name,
+            "elapsed_seconds": round(perf_counter() - started, 4),
+            "memory_before": memory_before,
+            "memory_after": memory_after,
+            **details,
+        },
+    )
+
+
 async def _broadcast_decision_events(
     response: RecommendationDecisionResponse,
     recommendation: ForecastRecommendation,
@@ -56,6 +86,13 @@ async def _broadcast_decision_events(
         )
 
 
+async def _broadcast_recommendation_event(event: str, data: object) -> None:
+    try:
+        await get_streaming_service().connections.broadcast(event, data)
+    except Exception:
+        logger.exception("recommendation_broadcast_failed", extra={"event": event})
+
+
 def _rollback_decision(session: DatabaseSession, recommendation_id: UUID) -> None:
     """Rollback a failed decision transaction without masking its HTTP error."""
     try:
@@ -67,6 +104,20 @@ def _rollback_decision(session: DatabaseSession, recommendation_id: UUID) -> Non
         )
 
 
+def _persistence_unavailable_decision(
+    recommendation_id: UUID, payload: RecommendationDecisionCreate
+) -> RecommendationDecisionResponse:
+    return RecommendationDecisionResponse(
+        decision_id=UUID(int=0),
+        recommendation_id=recommendation_id,
+        timestamp=datetime.now(UTC),
+        state=payload.operator_action,
+        history_persistence_unavailable=True,
+        history_persistence_message="history persistence unavailable",
+        **payload.model_dump(),
+    )
+
+
 @router.post(
     "/interventions/recommendations",
     response_model=list[ForecastRecommendationResponse],
@@ -75,15 +126,57 @@ def _rollback_decision(session: DatabaseSession, recommendation_id: UUID) -> Non
 async def generate_recommendations(
     payload: RecommendationGenerationRequest, session: DatabaseSession
 ) -> list[ForecastRecommendationResponse]:
-    forecast = session.get(ForecastHistory, payload.forecast_id)
+    started, memory_before = _endpoint_started("generate")
+    try:
+        forecast = session.get(ForecastHistory, payload.forecast_id)
+    except Exception:
+        logger.exception(
+            "recommendation_forecast_lookup_failed",
+            extra={"forecast_id": str(payload.forecast_id)},
+        )
+        _rollback_decision(session, payload.forecast_id)
+        _endpoint_finished(
+            "generate", started, memory_before, generated=0, persistence="unavailable"
+        )
+        return []
     if forecast is None:
         raise HTTPException(status_code=404, detail="Forecast not found.")
-    rows = InterventionEngine(ForecastingService(get_settings())).generate(
-        session, forecast, payload.max_results, payload.max_variables
-    )
-    responses = [recommendation_response(row) for row in rows]
+    try:
+        rows = InterventionEngine(ForecastingService(get_settings())).generate(
+            session, forecast, payload.max_results, payload.max_variables, persist=False
+        )
+    except Exception:
+        logger.exception(
+            "recommendation_generation_failed",
+            extra={"forecast_id": str(payload.forecast_id)},
+        )
+        _rollback_decision(session, payload.forecast_id)
+        _endpoint_finished(
+            "generate", started, memory_before, generated=0, persistence="unavailable"
+        )
+        return []
+    try:
+        responses = [recommendation_response(row) for row in rows]
+    except Exception:
+        logger.exception("recommendation_response_serialization_failed")
+        _rollback_decision(session, payload.forecast_id)
+        _endpoint_finished(
+            "generate", started, memory_before, generated=0, persistence="unavailable"
+        )
+        return []
+    try:
+        session.commit()
+        for row in rows:
+            session.refresh(row)
+    except Exception:
+        _rollback_decision(session, payload.forecast_id)
+        logger.exception(
+            "recommendation_persistence_failed",
+            extra={"forecast_id": str(payload.forecast_id)},
+        )
     for response in responses:
-        await get_streaming_service().connections.broadcast("recommendation_created", response)
+        await _broadcast_recommendation_event("recommendation_created", response)
+    _endpoint_finished("generate", started, memory_before, generated=len(responses))
     return responses
 
 
@@ -96,20 +189,33 @@ def recommendation_history(
     state: str | None = None,
     limit: int = Query(default=50, ge=1, le=200),
 ) -> list[ForecastRecommendationResponse]:
-    now = datetime.now(UTC)
-    expired = session.scalars(
-        select(ForecastRecommendation).where(
-            ForecastRecommendation.state.in_(["proposed", "delayed"]),
-            ForecastRecommendation.expires_at < now,
+    started, memory_before = _endpoint_started("history")
+    try:
+        now = datetime.now(UTC)
+        expired = session.scalars(
+            select(ForecastRecommendation).where(
+                ForecastRecommendation.state.in_(["proposed", "delayed"]),
+                ForecastRecommendation.expires_at < now,
+            )
         )
-    )
-    for row in expired:
-        row.state = "expired"
-    session.commit()
-    statement = select(ForecastRecommendation).order_by(ForecastRecommendation.created_at.desc())
-    if state:
-        statement = statement.where(ForecastRecommendation.state == state)
-    return [recommendation_response(row) for row in session.scalars(statement.limit(limit))]
+        for row in expired:
+            row.state = "expired"
+        try:
+            session.commit()
+        except Exception:
+            _rollback_decision(session, UUID(int=0))
+            logger.exception("recommendation_history_expiry_persistence_failed")
+        statement = select(ForecastRecommendation).order_by(
+            ForecastRecommendation.created_at.desc()
+        )
+        if state:
+            statement = statement.where(ForecastRecommendation.state == state)
+        response = [recommendation_response(row) for row in session.scalars(statement.limit(limit))]
+    except Exception:
+        logger.exception("recommendation_history_unavailable")
+        response = []
+    _endpoint_finished("history", started, memory_before, returned=len(response))
+    return response
 
 
 @router.get(
@@ -119,10 +225,18 @@ def recommendation_history(
 def get_recommendation(
     recommendation_id: UUID, session: DatabaseSession
 ) -> ForecastRecommendationResponse:
-    row = session.get(ForecastRecommendation, recommendation_id)
-    if row is None:
-        raise HTTPException(status_code=404, detail="Recommendation not found.")
-    return recommendation_response(row)
+    try:
+        row = session.get(ForecastRecommendation, recommendation_id)
+        if row is not None:
+            return recommendation_response(row)
+    except Exception:
+        logger.exception(
+            "recommendation_lookup_failed",
+            extra={"recommendation_id": str(recommendation_id)},
+        )
+        _rollback_decision(session, recommendation_id)
+
+    raise HTTPException(status_code=404, detail="Recommendation not found.")
 
 
 @router.post(
@@ -135,7 +249,17 @@ async def decide(
     payload: RecommendationDecisionCreate,
     session: DatabaseSession,
 ) -> RecommendationDecisionResponse:
-    row = session.get(ForecastRecommendation, recommendation_id)
+    started, memory_before = _endpoint_started("decision")
+    try:
+        row = session.get(ForecastRecommendation, recommendation_id)
+    except Exception:
+        logger.exception(
+            "recommendation_decision_lookup_failed",
+            extra={"recommendation_id": str(recommendation_id)},
+        )
+        response = _persistence_unavailable_decision(recommendation_id, payload)
+        _endpoint_finished("decision", started, memory_before, persistence="unavailable")
+        return response
     if row is None:
         raise HTTPException(status_code=404, detail="Recommendation not found.")
     if row.state in {"expired", "evaluated"}:
@@ -144,42 +268,42 @@ async def decide(
         raise HTTPException(status_code=422, detail="Modified values are required.")
     if payload.operator_action == "delayed" and not payload.delay_duration_seconds:
         raise HTTPException(status_code=422, detail="Delay duration is required.")
-    decision = RecommendationDecision(
-        recommendation_id=row.id,
-        operator_action=payload.operator_action,
-        reason=payload.reason,
-        modified_values=payload.modified_values,
-        delay_duration_seconds=payload.delay_duration_seconds,
-        notes=payload.notes,
-    )
-    row.state = payload.operator_action
-    if payload.operator_action == "delayed":
-        row.expires_at = datetime.now(UTC) + timedelta(seconds=payload.delay_duration_seconds or 0)
     try:
+        decision = RecommendationDecision(
+            recommendation_id=row.id,
+            operator_action=payload.operator_action,
+            reason=payload.reason,
+            modified_values=payload.modified_values,
+            delay_duration_seconds=payload.delay_duration_seconds,
+            notes=payload.notes,
+        )
+        row.state = payload.operator_action
+        if payload.operator_action == "delayed":
+            row.expires_at = datetime.now(UTC) + timedelta(
+                seconds=payload.delay_duration_seconds or 0
+            )
         session.add(decision)
         session.commit()
         session.refresh(decision)
         session.refresh(row)
-    except SQLAlchemyError as exc:
+    except SQLAlchemyError:
         _rollback_decision(session, recommendation_id)
         logger.exception(
             "recommendation_decision_persistence_failed",
             extra={"recommendation_id": str(recommendation_id)},
         )
-        raise HTTPException(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="Recommendation decision could not be persisted. Please retry.",
-        ) from exc
-    except Exception as exc:
+        response = _persistence_unavailable_decision(recommendation_id, payload)
+        _endpoint_finished("decision", started, memory_before, persistence="unavailable")
+        return response
+    except Exception:
         _rollback_decision(session, recommendation_id)
         logger.exception(
             "recommendation_decision_failed",
             extra={"recommendation_id": str(recommendation_id)},
         )
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Recommendation decision could not be completed.",
-        ) from exc
+        response = _persistence_unavailable_decision(recommendation_id, payload)
+        _endpoint_finished("decision", started, memory_before, persistence="unavailable")
+        return response
     response = RecommendationDecisionResponse(
         decision_id=decision.id,
         recommendation_id=row.id,
@@ -188,6 +312,7 @@ async def decide(
         **payload.model_dump(),
     )
     await _broadcast_decision_events(response, row)
+    _endpoint_finished("decision", started, memory_before, persistence="available")
     return response
 
 
@@ -201,15 +326,37 @@ async def evaluate_outcome(
     payload: OutcomeEvaluationRequest,
     session: DatabaseSession,
 ) -> RecommendationOutcomeResponse:
-    row = session.get(ForecastRecommendation, recommendation_id)
+    started, memory_before = _endpoint_started("outcome")
+    try:
+        row = session.get(ForecastRecommendation, recommendation_id)
+    except Exception:
+        logger.exception(
+            "recommendation_outcome_lookup_failed",
+            extra={"recommendation_id": str(recommendation_id)},
+        )
+        response = RecommendationOutcomeResponse(
+            outcome_id=UUID(int=0),
+            recommendation_id=recommendation_id,
+            metrics={},
+            evaluated_at=datetime.now(UTC),
+            history_persistence_unavailable=True,
+            history_persistence_message="history persistence unavailable",
+        )
+        _endpoint_finished("outcome", started, memory_before, persistence="unavailable")
+        return response
     if row is None:
         raise HTTPException(status_code=404, detail="Recommendation not found.")
-    if session.scalar(
-        select(RecommendationOutcome).where(
-            RecommendationOutcome.recommendation_id == recommendation_id
-        )
-    ):
-        raise HTTPException(status_code=409, detail="Outcome already evaluated.")
+    try:
+        if session.scalar(
+            select(RecommendationOutcome).where(
+                RecommendationOutcome.recommendation_id == recommendation_id
+            )
+        ):
+            raise HTTPException(status_code=409, detail="Outcome already evaluated.")
+    except HTTPException:
+        raise
+    except Exception:
+        logger.exception("recommendation_outcome_history_unavailable")
     if row.state not in {"accepted", "applied"}:
         raise HTTPException(
             status_code=400,
@@ -225,19 +372,46 @@ async def evaluate_outcome(
         metrics=metrics,
     )
     row.state = "evaluated"
-    session.add(outcome)
-    session.commit()
-    session.refresh(outcome)
+    try:
+        session.add(outcome)
+        session.commit()
+        session.refresh(outcome)
+    except Exception:
+        _rollback_decision(session, recommendation_id)
+        logger.exception(
+            "recommendation_outcome_persistence_failed",
+            extra={"recommendation_id": str(recommendation_id)},
+        )
+        response = RecommendationOutcomeResponse(
+            outcome_id=UUID(int=0), recommendation_id=recommendation_id, metrics=metrics,
+            evaluated_at=datetime.now(UTC), history_persistence_unavailable=True,
+            history_persistence_message="history persistence unavailable",
+        )
+        await _broadcast_recommendation_event("recommendation_outcome", response)
+        _endpoint_finished("outcome", started, memory_before, persistence="unavailable")
+        return response
     response = RecommendationOutcomeResponse(
         outcome_id=outcome.id,
         recommendation_id=row.id,
         metrics=metrics,
         evaluated_at=outcome.created_at,
     )
-    await get_streaming_service().connections.broadcast("recommendation_outcome", response)
+    await _broadcast_recommendation_event("recommendation_outcome", response)
+    _endpoint_finished("outcome", started, memory_before, persistence="available")
     return response
 
 
 @router.get("/interventions/effectiveness", response_model=EffectivenessResponse)
 def effectiveness(session: DatabaseSession) -> EffectivenessResponse:
-    return OutcomeEvaluator().effectiveness(session)
+    try:
+        return OutcomeEvaluator().effectiveness(session)
+    except Exception:
+        logger.exception("recommendation_effectiveness_history_unavailable")
+        return EffectivenessResponse(
+            evaluated_count=0,
+            crossing_avoidance_rate=0,
+            crossing_delay_rate=0,
+            mean_prediction_error=0,
+            mean_deviation_improvement=0,
+            mean_stabilization_improvement=0,
+        )

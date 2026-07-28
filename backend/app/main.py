@@ -20,19 +20,26 @@ configure_logging(settings.log_level)
 logger = get_logger(__name__)
 
 
+def _record_lifecycle_audit(action: str) -> None:
+    try:
+        with SessionFactory() as session:
+            AuditService().record(session, action, "application")
+    except Exception:
+        logger.exception("lifecycle_audit_failed", extra={"action": action})
+
+
 @asynccontextmanager
 async def lifespan(_: FastAPI) -> AsyncIterator[None]:
     with SessionFactory() as session:
         IntelligenceService(settings, session).ensure_ready()
         ModelRegistryService().bootstrap_existing(session, settings)
-        AuditService().record(session, "application_startup", "application")
+    _record_lifecycle_audit("application_startup")
     stream = get_streaming_service(settings)
     await stream.start()
     logger.info("application_started", extra={"environment": settings.environment})
     yield
     await stream.stop()
-    with SessionFactory() as session:
-        AuditService().record(session, "application_shutdown", "application")
+    _record_lifecycle_audit("application_shutdown")
     dispose_engine()
     logger.info("application_stopped")
 

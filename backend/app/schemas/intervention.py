@@ -97,6 +97,8 @@ class RecommendationDecisionResponse(RecommendationDecisionCreate):
     recommendation_id: UUID
     timestamp: datetime
     state: RecommendationState
+    history_persistence_unavailable: bool = False
+    history_persistence_message: str | None = None
 
 
 class OutcomeEvaluationRequest(InterventionModel):
@@ -108,6 +110,8 @@ class RecommendationOutcomeResponse(InterventionModel):
     recommendation_id: UUID
     metrics: dict[str, float | bool]
     evaluated_at: datetime
+    history_persistence_unavailable: bool = False
+    history_persistence_message: str | None = None
 
 
 class EffectivenessResponse(InterventionModel):

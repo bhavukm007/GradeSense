@@ -1,10 +1,12 @@
 from datetime import UTC, datetime, timedelta
 from itertools import combinations, product
+from uuid import uuid4
 
 import numpy as np
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from app.core.logging import get_logger
 from app.models.intelligence import (
     ForecastHistory,
     ForecastRecommendation,
@@ -21,6 +23,8 @@ from app.schemas.intervention import (
 )
 from app.services.constraints import LIMITS, ConstraintEngine
 from app.services.forecasting.service import ForecastingService
+
+logger = get_logger(__name__)
 
 
 def recommendation_response(row: ForecastRecommendation) -> ForecastRecommendationResponse:
@@ -77,6 +81,7 @@ class InterventionEngine:
         forecast_row: ForecastHistory,
         max_results: int,
         max_variables: int,
+        persist: bool = True,
     ) -> list[ForecastRecommendation]:
         request = ForecastRequest.model_validate(forecast_row.request_data)
         from app.api.routes.forecasting import response_from_row
@@ -139,12 +144,22 @@ class InterventionEngine:
         rows = []
         for rank, (_score, simulation, details) in enumerate(candidates[:max_results], start=1):
             validation, metrics = details
-            historical_evidence = self._historical_evidence(
-                session,
-                request.current_grade,
-                request.target_grade,
-                [change.variable for change in simulation.changes],
-            )
+            try:
+                historical_evidence = self._historical_evidence(
+                    session,
+                    request.current_grade,
+                    request.target_grade,
+                    [change.variable for change in simulation.changes],
+                )
+            except Exception:
+                # Historical evidence enriches a recommendation but is never
+                # required to generate its forecast-derived action.
+                logger.exception("recommendation_historical_evidence_unavailable")
+                historical_evidence = HistoricalRecommendationEvidence(
+                    similar_transition_count=0,
+                    historical_acceptance_rate=0,
+                    historical_effectiveness=0,
+                )
             inference_sources = ["Forecast", "Historical Trend", "Correlation Analysis"]
             if validation.recipe_rules:
                 inference_sources.append("Recipe Constraint")
@@ -161,6 +176,9 @@ class InterventionEngine:
                 for change in simulation.changes
             ]
             row = ForecastRecommendation(
+                id=uuid4(),
+                created_at=datetime.now(UTC),
+                updated_at=datetime.now(UTC),
                 forecast_id=forecast_row.id,
                 state="proposed",
                 rank=rank,
@@ -207,9 +225,10 @@ class InterventionEngine:
             )
             session.add(row)
             rows.append(row)
-        session.commit()
-        for row in rows:
-            session.refresh(row)
+        if persist:
+            session.commit()
+            for row in rows:
+                session.refresh(row)
         return rows
 
     @staticmethod
@@ -219,7 +238,15 @@ class InterventionEngine:
         target_grade: str,
         affected_variables: list[str],
     ) -> HistoricalRecommendationEvidence:
-        recommendations = list(session.scalars(select(ForecastRecommendation)))
+        # Recommendation history is supporting evidence, not a prerequisite for
+        # creating a current recommendation.  Keep this bounded on Render Free.
+        recommendations = list(
+            session.scalars(
+                select(ForecastRecommendation)
+                .order_by(ForecastRecommendation.created_at.desc())
+                .limit(200)
+            )
+        )
         similar: list[ForecastRecommendation] = []
         affected = set(affected_variables)
         for recommendation in recommendations:

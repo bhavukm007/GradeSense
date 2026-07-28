@@ -1,6 +1,7 @@
 from datetime import UTC, datetime
 from pathlib import Path
 from threading import RLock
+from uuid import uuid4
 
 import pandas as pd
 from sqlalchemy import func, select
@@ -70,12 +71,15 @@ class IntelligenceService:
             training_metrics=metadata.metrics,
         )
 
-    def predict(self, process_input: ProcessInput) -> PredictionResponse:
+    def predict(
+        self, process_input: ProcessInput, persist_history: bool = True
+    ) -> PredictionResponse:
         values = process_input.model_dump()
         prediction = self.model_service.predict(values)
         explanation = self.explainability_service.explain(values, prediction)
         artifact = self.model_service.load()
         history = PredictionHistory(
+            id=uuid4(),
             model_version=artifact["version"],
             input_data=values,
             quality_score=prediction.quality_score,
@@ -83,9 +87,10 @@ class IntelligenceService:
             stabilization_time=prediction.stabilization_time,
             explanation=explanation.model_dump(mode="json"),
         )
-        self.session.add(history)
-        self.session.commit()
-        self.session.refresh(history)
+        if persist_history:
+            self.session.add(history)
+            self.session.commit()
+            self.session.refresh(history)
         return PredictionResponse(
             prediction_id=history.id,
             quality_score=round(prediction.quality_score, 3),
@@ -93,29 +98,33 @@ class IntelligenceService:
             expected_stabilization_time=round(prediction.stabilization_time, 3),
             model_version=artifact["version"],
             explanation=explanation,
-            created_at=self._as_utc(history.created_at),
+            created_at=self._as_utc(history.created_at or datetime.now(UTC)),
         )
 
-    def recommend(self, process_input: ProcessInput) -> RecommendationResponse:
-        prediction_response = self.predict(process_input)
+    def recommend(
+        self, process_input: ProcessInput, persist_history: bool = True
+    ) -> RecommendationResponse:
+        prediction_response = self.predict(process_input, persist_history=persist_history)
         baseline = self.model_service.predict(process_input.model_dump())
         recommendations = self.recommendation_service.recommend(
             process_input.model_dump(), baseline
         )
         history = RecommendationHistory(
+            id=uuid4(),
             prediction_id=prediction_response.prediction_id,
             recommendations=[
                 recommendation.model_dump(mode="json") for recommendation in recommendations
             ],
         )
-        self.session.add(history)
-        self.session.commit()
-        self.session.refresh(history)
+        if persist_history:
+            self.session.add(history)
+            self.session.commit()
+            self.session.refresh(history)
         return RecommendationResponse(
             recommendation_id=history.id,
             prediction=prediction_response,
             recommendations=recommendations,
-            created_at=self._as_utc(history.created_at),
+            created_at=self._as_utc(history.created_at or datetime.now(UTC)),
         )
 
     def correlations(self, limit: int = 10) -> CorrelationResponse:

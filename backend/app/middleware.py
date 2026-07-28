@@ -98,7 +98,9 @@ class ProductionMiddleware(BaseHTTPMiddleware):
                     )
             except Exception:
                 # Audit persistence must not replace a successful API response.
-                pass
+                from app.core.logging import get_logger
+
+                get_logger(__name__).exception("best_effort_audit_failed")
         return self._secured(response, request_id)
 
     @staticmethod
