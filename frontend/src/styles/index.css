@@ -64,6 +64,14 @@ a {
     box-shadow 150ms ease;
 }
 
+.workflow-steps {
+  scrollbar-width: none;
+}
+
+.workflow-steps::-webkit-scrollbar {
+  display: none;
+}
+
 button:disabled {
   cursor: not-allowed;
   opacity: 0.5;

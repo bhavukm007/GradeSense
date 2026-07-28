@@ -342,6 +342,13 @@ export interface RecommendationOutcome {
   evaluated_at: string
 }
 
+export interface RecommendationAuditEvent {
+  timestamp: string
+  event: string
+  recommendation_id: string
+  summary: string
+}
+
 export interface RegisteredModel {
   model_id: string
   version: string

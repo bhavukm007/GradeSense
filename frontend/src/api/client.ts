@@ -25,6 +25,7 @@ import type {
   AdminMetrics,
   AdminHealth,
   RecommendationOutcome,
+  RecommendationAuditEvent,
   TrajectoryPoint,
   RelationshipDiscovery,
   DemoSeedResult,
@@ -162,6 +163,7 @@ export const api = {
       undefined,
       120_000,
     ),
+  interventionAudit: () => request<RecommendationAuditEvent[]>('/interventions/audit'),
   decideRecommendation: (
     id: string,
     body: {

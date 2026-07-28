@@ -121,3 +121,10 @@ class EffectivenessResponse(InterventionModel):
     mean_prediction_error: float
     mean_deviation_improvement: float
     mean_stabilization_improvement: float
+
+
+class RecommendationAuditEvent(InterventionModel):
+    timestamp: datetime
+    event: str
+    recommendation_id: UUID
+    summary: str

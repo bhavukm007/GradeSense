@@ -23,6 +23,7 @@ from app.schemas.intervention import (
     EffectivenessResponse,
     ForecastRecommendationResponse,
     OutcomeEvaluationRequest,
+    RecommendationAuditEvent,
     RecommendationDecisionCreate,
     RecommendationDecisionResponse,
     RecommendationGenerationRequest,
@@ -265,6 +266,86 @@ def recommendation_history(
         response = []
     _endpoint_finished("history", started, memory_before, returned=len(response))
     return response
+
+
+@router.get("/interventions/audit", response_model=list[RecommendationAuditEvent])
+def recommendation_audit(
+    session: DatabaseSession,
+    limit: int = Query(default=100, ge=1, le=300),
+) -> list[RecommendationAuditEvent]:
+    """Return the recorded recommendation lifecycle without inventing workflow events."""
+    try:
+        recommendations = list(
+            session.scalars(
+                select(ForecastRecommendation)
+                .order_by(ForecastRecommendation.created_at.desc())
+                .limit(limit)
+            )
+        )
+        recommendation_by_id = {row.id: row for row in recommendations}
+        ids = list(recommendation_by_id)
+        if not ids:
+            return []
+        decisions = list(
+            session.scalars(
+                select(RecommendationDecision).where(
+                    RecommendationDecision.recommendation_id.in_(ids)
+                )
+            )
+        )
+        outcomes = list(
+            session.scalars(
+                select(RecommendationOutcome).where(
+                    RecommendationOutcome.recommendation_id.in_(ids)
+                )
+            )
+        )
+        events = [
+            RecommendationAuditEvent(
+                timestamp=row.created_at,
+                event="Recommendation Generated",
+                recommendation_id=row.id,
+                summary=(
+                    "Forecast identified an intervention for "
+                    + ", ".join(row.affected_variables)
+                    + "."
+                ),
+            )
+            for row in recommendations
+        ]
+        for decision in decisions:
+            row = recommendation_by_id[decision.recommendation_id]
+            action = decision.operator_action.capitalize()
+            changes = ", ".join(item["variable"].replace("_", " ") for item in row.changes)
+            events.append(
+                RecommendationAuditEvent(
+                    timestamp=decision.created_at,
+                    event=f"Operator {action}",
+                    recommendation_id=decision.recommendation_id,
+                    summary=decision.reason or f"Operator {decision.operator_action} {changes}.",
+                )
+            )
+        for outcome in outcomes:
+            row = recommendation_by_id[outcome.recommendation_id]
+            reduction = (
+                float(row.metrics["crossing_probability_before"])
+                - float(row.metrics["crossing_probability_after"])
+            ) * 100
+            events.append(
+                RecommendationAuditEvent(
+                    timestamp=outcome.created_at,
+                    event="Outcome Evaluated",
+                    recommendation_id=outcome.recommendation_id,
+                    summary=(
+                        "Recorded forecast crossing-probability change: "
+                        f"{reduction:+.2f} percentage points."
+                    ),
+                )
+            )
+        return sorted(events, key=lambda event: event.timestamp, reverse=True)[:limit]
+    except Exception:
+        logger.exception("recommendation_audit_history_unavailable")
+        return []
 
 
 @router.get(

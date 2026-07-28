@@ -152,6 +152,27 @@ def test_outcome_evaluation_and_effectiveness(client) -> None:
     assert effectiveness.json()["evaluated_count"] >= 1
 
 
+def test_recommendation_audit_returns_recorded_lifecycle_events(client) -> None:
+    forecast = create_forecast(client)
+    recommendation = client.post(
+        "/interventions/recommendations",
+        json={"forecast_id": forecast["forecast_id"], "max_results": 1},
+    ).json()[0]
+    decision = client.post(
+        f"/interventions/recommendations/{recommendation['recommendation_id']}/decisions",
+        json={"operator_action": "accepted", "reason": "Recorded audit check"},
+    )
+    assert decision.status_code == 201
+    audit = client.get("/interventions/audit")
+    assert audit.status_code == 200
+    events = [
+        item
+        for item in audit.json()
+        if item["recommendation_id"] == recommendation["recommendation_id"]
+    ]
+    assert {item["event"] for item in events} >= {"Recommendation Generated", "Operator Accepted"}
+
+
 def test_outcome_rejects_ineligible_recommendation_states(client) -> None:
     forecast = create_forecast(client)
     for state, decision in (

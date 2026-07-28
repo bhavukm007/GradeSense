@@ -43,14 +43,14 @@ const requirements = [
 
 const workflowStages = [
   'Current Process',
-  'Forecast',
-  'Risk Prediction',
-  'Ranked Recommendations',
-  'Inference Source Evidence',
+  'Sequential Forecast',
+  'Transition Risk Prediction',
+  'Ranked Operator Recommendations',
+  'Inference Sources',
   'Accept / Reject / Apply',
-  'Evaluation Summary',
+  'Transition Effectiveness Summary',
   'Historical Effectiveness',
-  'Audit History',
+  'Operator Audit Trail',
   'Capability Coverage',
 ] as const
 
@@ -72,6 +72,7 @@ export function DemoWorkspacePage() {
     queryKey: ['intervention-effectiveness'],
     queryFn: api.interventionEffectiveness,
   })
+  const auditEvents = useQuery({ queryKey: ['intervention-audit'], queryFn: api.interventionAudit })
   const live = useQuery({ queryKey: ['live-metrics'], queryFn: api.liveMetrics })
   const allCriticalEndpointsFailed = health.isError && forecasts.isError && live.isError
   const discoveries = useRelationshipDiscoveries(5)
@@ -144,6 +145,13 @@ export function DemoWorkspacePage() {
   const recommendationForecastIds = new Set(
     (recommendations.data ?? []).map((item) => item.forecast_id),
   )
+  const correlationVariables = useMemo(
+    () =>
+      new Set(
+        topDiscoveries.flatMap((item) => [item.variable, ...(item.interacts_with ? [item.interacts_with] : [])]),
+      ),
+    [topDiscoveries],
+  )
   const forecast =
     forecasts.data?.items.find(
       (item) =>
@@ -191,18 +199,6 @@ export function DemoWorkspacePage() {
             : 'In progress'
     return { accepted, rejected, applied, evaluated, status }
   }, [rows])
-  const workflowAudit = useMemo(
-    () =>
-      [
-        { label: 'Simulation Started', actor: 'Simulation', count: forecast ? 1 : 0 },
-        { label: 'Recommendations Generated', actor: 'Simulation', count: rows.length },
-        { label: 'Operator Accepted', actor: 'Operator', count: lifecycle.accepted },
-        { label: 'Operator Rejected', actor: 'Operator', count: lifecycle.rejected },
-        { label: 'Recommendation Applied', actor: 'Operator', count: lifecycle.applied },
-        { label: 'Outcome Evaluated', actor: 'Operator', count: lifecycle.evaluated },
-      ].filter((event) => event.count > 0),
-    [forecast, lifecycle, rows.length],
-  )
   const currentBasisWeight = live.data?.sensor?.basis_weight
   const chartData = useMemo(
     () =>
@@ -240,6 +236,13 @@ export function DemoWorkspacePage() {
     }
   }, [])
 
+  useEffect(() => {
+    const activeStage = document.querySelector<HTMLElement>(
+      '[aria-label="Operator decision workflow"] [aria-current="step"]',
+    )
+    activeStage?.scrollIntoView?.({ behavior: 'smooth', block: 'nearest', inline: 'nearest' })
+  }, [activeStep])
+
   return (
     <>
       <PageHeader
@@ -251,7 +254,7 @@ export function DemoWorkspacePage() {
         aria-label="Operator decision workflow"
         className="sticky top-20 z-20 mt-6 rounded-2xl border border-slate-200 bg-white/95 p-3 shadow-panel backdrop-blur-xl dark:border-white/[0.08] dark:bg-ink-900/95"
       >
-        <ol className="grid grid-cols-2 gap-1 sm:grid-cols-5 xl:grid-cols-10">
+        <ol className="workflow-steps grid grid-flow-col auto-cols-[minmax(9.5rem,1fr)] gap-1 overflow-x-auto pb-1 xl:auto-cols-[minmax(10.5rem,1fr)]">
           {workflowStages.map((stage, index) => (
             <li key={stage} className="min-w-0">
               <button
@@ -264,7 +267,7 @@ export function DemoWorkspacePage() {
                     ?.scrollIntoView({ behavior: 'smooth', block: 'start' })
                   window.setTimeout(() => setActiveStep(index + 1), 700)
                 }}
-                className={`flex min-h-12 w-full items-center gap-2 rounded-xl px-2 text-left text-[11px] font-semibold leading-4 ${
+                className={`flex min-h-12 w-full items-center gap-2 rounded-xl px-2.5 text-left text-[11px] font-semibold leading-4 ${
                   activeStep === index + 1
                     ? 'bg-cyan-500/15 text-cyan-700 ring-1 ring-cyan-500/30 dark:text-cyan-300'
                     : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/5'
@@ -329,7 +332,7 @@ export function DemoWorkspacePage() {
         </div>
       </Step>
 
-      <Step number={2} title="Forecast" icon={CircleGauge}>
+      <Step number={2} title="Sequential Forecast" icon={CircleGauge}>
         {forecast ? (
           <div className="h-80 min-w-0">
             <ResponsiveContainer width="100%" height="100%">
@@ -376,7 +379,7 @@ export function DemoWorkspacePage() {
         )}
       </Step>
 
-      <Step number={3} title="Risk Prediction" icon={Target}>
+      <Step number={3} title="Transition Risk Prediction" icon={Target}>
         <div className="grid gap-3 sm:grid-cols-4">
           <Stat
             label="Crossing probability"
@@ -399,13 +402,15 @@ export function DemoWorkspacePage() {
         {forecast && <p className="mt-3 text-sm text-slate-500">{forecast.explanation}</p>}
       </Step>
 
-      <Step number={4} title="Ranked Recommendations" icon={Lightbulb}>
+      <Step number={4} title="Ranked Operator Recommendations" icon={Lightbulb}>
         <button
           onClick={() => generate.mutate()}
           disabled={!forecast || generate.isPending}
           className="mb-4 rounded-xl bg-emerald-500 px-4 py-2.5 text-sm font-semibold text-ink-950 shadow-sm hover:bg-emerald-400"
         >
-          {generate.isPending ? 'Generating recommendations…' : 'Generate ranked recommendations'}
+          {generate.isPending
+            ? 'Ranking interventions and validating recipe constraints…'
+            : 'Generate ranked recommendations'}
         </button>
         {fatalGenerationError && (
           <p className="mb-4 text-sm text-rose-500" role="alert">
@@ -429,6 +434,7 @@ export function DemoWorkspacePage() {
           </p>
         )}
         <div className="space-y-4">
+          {generate.isPending && <RecommendationSkeletons />}
           {rows.slice(0, 5).map((item) => (
             <RecommendationEvidence
               key={item.recommendation_id}
@@ -443,6 +449,7 @@ export function DemoWorkspacePage() {
               }
               onDecision={(action) => decide.mutate({ recommendation: item, action })}
               onEvaluate={() => evaluate.mutate(item)}
+              correlationVariables={correlationVariables}
             />
           ))}
           {!rows.length && !fatalGenerationError && !auxiliaryRecommendationWarning && (
@@ -451,7 +458,7 @@ export function DemoWorkspacePage() {
         </div>
       </Step>
 
-      <Step number={5} title="Inference Source Evidence" icon={Database}>
+      <Step number={5} title="Inference Sources" icon={Database}>
         <p className="text-sm text-slate-500">
           Each card above identifies whether the recommendation came from the forecast, historical
           trend, recipe constraint, correlation analysis, or a historically successful transition.
@@ -491,7 +498,7 @@ export function DemoWorkspacePage() {
         </div>
       </Step>
 
-      <Step number={7} title="Evaluation Summary" icon={Target}>
+      <Step number={7} title="Transition Effectiveness Summary" icon={Target}>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
           <Stat label="Accepted" value={String(lifecycle.accepted)} />
           <Stat label="Rejected" value={String(lifecycle.rejected)} />
@@ -519,24 +526,26 @@ export function DemoWorkspacePage() {
         </div>
       </Step>
 
-      <Step number={9} title="Audit History" icon={History}>
+      <Step number={9} title="Operator Audit Trail" icon={History}>
         <div className="space-y-2">
-          {workflowAudit.map((event, index) => (
+          {(auditEvents.data ?? []).map((event) => (
             <div
-              key={event.label}
-              className="grid items-center gap-3 rounded-xl bg-slate-50 p-3 text-sm dark:bg-white/[0.04] sm:grid-cols-[auto_1fr_auto_auto]"
+              key={`${event.recommendation_id}-${event.event}-${event.timestamp}`}
+              className="grid items-start gap-3 rounded-xl bg-slate-50 p-3 text-sm dark:bg-white/[0.04] sm:grid-cols-[auto_1fr]"
             >
-              <span className="grid size-7 place-items-center rounded-full bg-cyan-500/10 text-xs font-bold text-cyan-600 dark:text-cyan-400">
-                {index + 1}
+              <span className="rounded-full bg-cyan-500/10 px-2 py-1 text-xs font-bold text-cyan-600 dark:text-cyan-400">
+                {formatTime(event.timestamp)}
               </span>
-              <b>{event.label}</b>
-              <span className="text-slate-500">{event.actor}</span>
-              <span className="rounded-full bg-slate-200 px-2.5 py-1 text-xs font-semibold dark:bg-white/10">
-                {event.count}
-              </span>
+              <div>
+                <b>{event.event}</b>
+                <p className="mt-1 text-xs text-slate-500">{event.summary}</p>
+              </div>
             </div>
           ))}
-          {!workflowAudit.length && <Empty>No workflow events have been recorded yet.</Empty>}
+          {auditEvents.isLoading && <Empty>Loading recorded operator actions…</Empty>}
+          {!auditEvents.isLoading && !auditEvents.data?.length && (
+            <Empty>No recorded operator actions yet.</Empty>
+          )}
         </div>
       </Step>
 
@@ -641,6 +650,7 @@ function RecommendationEvidence({
   feedback,
   onDecision,
   onEvaluate,
+  correlationVariables,
 }: {
   item: ForecastRecommendation
   highlighted: boolean
@@ -649,7 +659,9 @@ function RecommendationEvidence({
   feedback?: string
   onDecision: (action: 'accepted' | 'rejected' | 'applied') => void
   onEvaluate: () => void
+  correlationVariables: Set<string>
 }) {
+  const sources = visibleInferenceSources(item, correlationVariables)
   return (
     <article
       className={`relative overflow-hidden rounded-2xl border p-5 transition ${
@@ -664,7 +676,7 @@ function RecommendationEvidence({
         </div>
       )}
       <div className="flex flex-wrap justify-between gap-3">
-        <div className={highlighted ? 'pr-28' : ''}>
+        <div className={highlighted ? 'pr-0 sm:pr-28' : ''}>
           <p className="text-base font-semibold">
             #{item.rank}{' '}
             {item.changes
@@ -676,16 +688,17 @@ function RecommendationEvidence({
         {!highlighted && item.state !== 'evaluated' && <StatusBadge state={item.state} />}
       </div>
       <div className="mt-3 flex flex-wrap gap-2">
-        {item.inference_sources.map((source) => (
+        {sources.map((source) => (
           <Badge key={source}>{source}</Badge>
         ))}
       </div>
-      <div className="mt-4 grid gap-3 sm:grid-cols-3">
+      <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
         <ComparisonMetric
           label="Crossing probability"
-          before={formatPercent(item.metrics.crossing_probability_before)}
-          after={formatPercent(item.metrics.crossing_probability_after)}
+          before={formatRiskProbability(item.metrics.crossing_probability_before, item.metrics.crossing_probability_after)}
+          after={formatRiskProbability(item.metrics.crossing_probability_after, item.metrics.crossing_probability_before)}
           improved={item.metrics.crossing_probability_after < item.metrics.crossing_probability_before}
+          improvement={crossingRiskChange(item)}
         />
         <ComparisonMetric
           label="Peak deviation"
@@ -695,15 +708,21 @@ function RecommendationEvidence({
             item.metrics.predicted_peak_deviation_after <
             item.metrics.predicted_peak_deviation_before
           }
+          improvement={peakDeviationImprovement(item)}
         />
         <ComparisonMetric
           label="Stabilization time"
           before={formatSteps(item.metrics.predicted_stabilization_time_before)}
           after={formatSteps(item.metrics.predicted_stabilization_time_after)}
           improved={stabilizationGain(item) > 0}
+          improvement={stabilizationImprovement(item)}
+          unavailable={
+            item.metrics.predicted_stabilization_time_before == null ||
+            item.metrics.predicted_stabilization_time_after == null
+          }
         />
       </div>
-      <div className="mt-3 grid gap-3 sm:grid-cols-3 lg:grid-cols-6">
+      <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
         <Stat
           label="Acceptance"
           value={formatPercent(item.historical_evidence.historical_acceptance_rate)}
@@ -718,25 +737,29 @@ function RecommendationEvidence({
         />
         <ConfidenceStat label="Forecast confidence" value={item.confidence} />
         <Stat
-          label="Crossing reduction"
-          value={formatPercent(
-            Math.max(
-              item.metrics.crossing_probability_before - item.metrics.crossing_probability_after,
-              0,
-            ),
-          )}
+          label="Crossing-risk change"
+          value={crossingRiskChange(item)}
         />
-        <Stat label="Stabilization gain" value={`${stabilizationGain(item)} steps`} />
+        <Stat label="Stabilization gain" value={stabilizationGainLabel(item)} />
       </div>
       <div className="mt-3 rounded-xl bg-slate-50 p-3 text-sm dark:bg-white/[0.04]">
-        <p>{item.explanation.trajectory_effect}</p>
+        <p className="font-semibold">Expected effect</p>
+        <ul className="mt-2 list-disc space-y-1 pl-5 text-xs text-slate-600 dark:text-slate-300">
+          <li>Crossing probability: {crossingRiskChange(item)}.</li>
+          <li>Peak deviation: {peakDeviationImprovement(item)}.</li>
+          <li>Stabilization: {stabilizationImprovement(item)}.</li>
+          <li>Constraint validation {item.constraint_validation.feasible ? 'passed' : 'blocked'}.</li>
+          <li>Similar successful transitions: {item.historical_evidence.similar_transition_count}.</li>
+        </ul>
+        <div className="hidden">
         <p className="mt-2 text-xs text-slate-500">
           Constraint: {item.constraint_validation.feasible ? 'validated' : 'blocked'} · Predicted
           improvement {formatPercent(item.metrics.estimated_improvement)}
         </p>
-        <p className="mt-1 text-xs text-slate-500">
+        <p className="mt-1">
           Recipe: {item.explanation.recipe_attribution.join('; ') || 'Equipment operating limits'}
         </p>
+        </div>
       </div>
       {feedback && (
         <div
@@ -822,16 +845,29 @@ function ComparisonMetric({
   before,
   after,
   improved,
+  improvement,
+  unavailable = false,
 }: {
   label: string
   before: string
   after: string
   improved: boolean
+  improvement: string
+  unavailable?: boolean
 }) {
   return (
     <div className="rounded-xl border border-slate-200/80 bg-slate-50 p-3 dark:border-white/[0.06] dark:bg-white/[0.04]">
       <p className="text-xs font-medium text-slate-500">{label}</p>
-      <div className="mt-2 flex items-center gap-2">
+      {unavailable ? (
+        <p className="mt-2 text-sm font-medium text-slate-500">Insufficient historical evidence</p>
+      ) : (
+        <dl className="mt-2 grid grid-cols-3 gap-2 text-xs">
+          <div><dt className="text-slate-500">Current</dt><dd className="mt-1 font-semibold">{before}</dd></div>
+          <div><dt className="text-slate-500">Predicted</dt><dd className="mt-1 font-semibold">{after}</dd></div>
+          <div><dt className="text-slate-500">Improvement</dt><dd className={`mt-1 font-semibold ${improved ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-700 dark:text-slate-200'}`}>{improvement}</dd></div>
+        </dl>
+      )}
+      <div className="hidden">
         <span className="text-sm text-slate-500 line-through decoration-slate-400/60">{before}</span>
         <span aria-hidden="true" className="text-slate-400">
           →
@@ -865,11 +901,14 @@ function ConfidenceStat({ label, value }: { label: string; value: number }) {
     <div className="rounded-xl bg-slate-50 p-3 dark:bg-white/[0.04]">
       <p className="text-xs text-slate-500">{label}</p>
       <div className="mt-1 flex flex-wrap items-center gap-2">
-        <p className="font-semibold">{formatPercent(value)}</p>
+        <p className="font-semibold">{formatPercent(value, 0)}</p>
         <span className={`rounded-full px-2 py-1 text-[10px] font-bold uppercase ${tone}`}>
           {level}
         </span>
       </div>
+      {value < 0.3 && (
+        <p className="mt-1 text-[11px] text-slate-500">Limited similar historical transitions.</p>
+      )}
     </div>
   )
 }
@@ -940,6 +979,82 @@ function stabilizationGain(item: ForecastRecommendation) {
   const before = item.metrics.predicted_stabilization_time_before
   const after = item.metrics.predicted_stabilization_time_after
   return before != null && after != null ? Math.max(before - after, 0) : 0
+}
+
+function crossingRiskChange(item: ForecastRecommendation) {
+  const percentagePoints =
+    (item.metrics.crossing_probability_after - item.metrics.crossing_probability_before) * 100
+  if (Math.abs(percentagePoints) < 0.005) return 'No measurable change'
+  const direction = percentagePoints < 0 ? 'Reduced' : 'Increased'
+  return `${direction} ${formatNumber(Math.abs(percentagePoints), 2)} pp`
+}
+
+function formatRiskProbability(value: number, comparison: number) {
+  const oneDecimalMatches = Math.round(value * 1000) === Math.round(comparison * 1000)
+  return formatPercent(value, oneDecimalMatches ? 3 : 2)
+}
+
+function peakDeviationImprovement(item: ForecastRecommendation) {
+  const before = item.metrics.predicted_peak_deviation_before
+  const after = item.metrics.predicted_peak_deviation_after
+  if (before <= 0) return 'No measurable improvement'
+  const improvement = ((before - after) / before) * 100
+  return improvement > 0.005
+    ? `${formatNumber(improvement, 1)}% reduction`
+    : 'No measurable improvement'
+}
+
+function stabilizationImprovement(item: ForecastRecommendation) {
+  const before = item.metrics.predicted_stabilization_time_before
+  const after = item.metrics.predicted_stabilization_time_after
+  if (before == null || after == null) return 'Insufficient historical evidence'
+  const improvement = before - after
+  return improvement > 0 ? `${formatNumber(improvement, 0)} steps faster` : 'No measurable improvement'
+}
+
+function stabilizationGainLabel(item: ForecastRecommendation) {
+  const before = item.metrics.predicted_stabilization_time_before
+  const after = item.metrics.predicted_stabilization_time_after
+  if (before == null || after == null) return 'Not enough transition history'
+  return stabilizationGain(item) > 0
+    ? `${formatNumber(stabilizationGain(item), 0)} steps`
+    : 'No measurable improvement'
+}
+
+function visibleInferenceSources(item: ForecastRecommendation, correlationVariables: Set<string>) {
+  return item.inference_sources.filter((source) => {
+    if (source === 'Forecast') return true
+    if (source === 'Recipe Constraint') return item.constraint_validation.recipe_rules.length > 0
+    if (source === 'Historical Successful Transition') {
+      return item.historical_evidence.historical_effectiveness > 0
+    }
+    if (source === 'Historical Trend') return item.historical_evidence.similar_transition_count > 0
+    if (source === 'Correlation Analysis') {
+      return item.affected_variables.some((variable) => correlationVariables.has(variable))
+    }
+    return false
+  })
+}
+
+function formatTime(timestamp: string) {
+  return new Intl.DateTimeFormat(undefined, { hour: '2-digit', minute: '2-digit' }).format(
+    new Date(timestamp),
+  )
+}
+
+function RecommendationSkeletons() {
+  return (
+    <div className="grid animate-pulse gap-3 md:grid-cols-2 xl:grid-cols-3" role="status">
+      {['Running sequential prediction…', 'Finding similar transitions…', 'Validating recipe constraints…'].map(
+        (label) => (
+          <div key={label} className="rounded-xl bg-slate-100 p-4 dark:bg-white/[0.04]">
+            <div className="h-3 w-2/3 rounded bg-slate-200 dark:bg-white/10" />
+            <p className="mt-3 text-xs text-slate-500">{label}</p>
+          </div>
+        ),
+      )}
+    </div>
+  )
 }
 
 function formatSteps(value: number | null) {
